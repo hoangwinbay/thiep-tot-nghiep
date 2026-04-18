@@ -3,108 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Chúc Mừng Tốt Nghiệp - Trần Đoàn Yến Nhi</title>
+    <title>Tốt Nghiệp Yến Nhi - Memory</title>
     
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     
     <style>
-        :root {
-            --accent: #c2185b;
-            --pink-light: #fce4ec;
-            --pink-bg: #ffe0e9;
-        }
-
+        :root { --accent: #c2185b; --pink-light: #fce4ec; --pink-bg: #ffe0e9; }
         body { margin: 0; font-family: 'Quicksand', sans-serif; background-color: var(--pink-light); color: #333; overflow-x: hidden; }
 
-        /* Sections */
         .section-intro { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: linear-gradient(to bottom, var(--pink-bg), var(--pink-light)); padding: 20px; box-sizing: border-box; }
         .name { font-family: 'Dancing Script', cursive; font-size: 45px; color: var(--accent); margin: 15px 0; }
-        .gallery-container { padding: 40px 20px; max-width: 500px; margin: 0 auto; padding-bottom: 150px; }
+        
+        .gallery-container { padding: 40px 20px; max-width: 500px; margin: 0 auto; padding-bottom: 200px; }
         .photo-item { width: 100%; margin-bottom: 80px; background: white; padding: 15px; border-radius: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); box-sizing: border-box; }
         .photo-item img { width: 100%; border-radius: 18px; display: block; }
-        .photo-caption { margin-top: 20px; font-size: 14px; line-height: 1.7; text-align: justify; }
+        .photo-caption { margin-top: 20px; font-size: 14px; line-height: 1.8; text-align: justify; }
+        .photo-caption strong { display: block; font-size: 18px; color: var(--accent); margin-bottom: 8px; text-align: center; }
 
-        /* KHUNG TIN NHẮN TRÔI THEO MÀN HÌNH (FIXED) */
-        #fixed-wish-container {
+        /* VÙNG CHỨA TIN NHẮN TRÔI (FIXED) */
+        #wish-overlay {
             position: fixed;
-            bottom: 100px; /* Nằm trên thanh nhập tin nhắn */
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none; /* Để không chặn thao tác vuốt */
+            z-index: 9999;
+        }
+
+        .scroll-wish {
+            position: absolute;
             left: 50%;
             transform: translateX(-50%);
-            width: 85%;
-            max-width: 380px;
-            z-index: 999;
-            pointer-events: none; /* Để không vướng khi chạm màn hình */
-        }
-
-        .single-wish {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(8px);
-            padding: 12px 20px;
+            width: 80%;
+            max-width: 320px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            padding: 12px 18px;
             border-radius: 20px;
-            box-shadow: 0 8px 25px rgba(194, 24, 91, 0.2);
+            box-shadow: 0 10px 25px rgba(194, 24, 91, 0.2);
             border-left: 6px solid var(--accent);
             font-size: 14px;
-            
-            /* Hiệu ứng mặc định: Trôi lên và mờ dần */
-            animation: slideUpFade 5s ease-in-out forwards;
+            opacity: 0;
+            animation: flowUpFade 4s ease-out forwards;
         }
 
-        @keyframes slideUpFade {
-            0% { transform: translateY(30px); opacity: 0; }
-            20% { transform: translateY(0); opacity: 1; }
-            80% { transform: translateY(-20px); opacity: 1; }
-            100% { transform: translateY(-50px); opacity: 0; }
+        @keyframes flowUpFade {
+            0% { bottom: 10%; opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { bottom: 60%; opacity: 0; }
         }
 
-        /* Input bar */
-        .input-sticky { position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 420px; background: white; padding: 10px 15px; border-radius: 50px; display: flex; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.25); z-index: 1001; }
-        .input-sticky input { border: none; outline: none; padding: 10px; flex: 1; font-size: 15px; }
+        /* Input Bar */
+        .input-sticky { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 420px; background: white; padding: 8px 15px; border-radius: 50px; display: flex; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.25); z-index: 10000; box-sizing: border-box; }
+        .input-sticky input { border: none; outline: none; padding: 10px; font-size: 14px; }
         #name-in { width: 30%; border-right: 1px solid #eee; }
-        .btn-send { background: var(--accent); color: white; border: none; width: 45px; height: 45px; border-radius: 50%; font-size: 22px; cursor: pointer; }
+        #msg-in { flex-grow: 1; padding-left: 10px; }
+        .btn-send { background: var(--accent); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; }
     </style>
 </head>
 <body>
 
     <div class="section-intro">
-        <h1 data-aos="fade-down">Lễ Tốt Nghiệp</h1>
+        <div data-aos="zoom-in" style="font-size: 50px;">🎓</div>
+        <h1>Lễ Tốt Nghiệp</h1>
         <div class="name">Trần Đoàn Yến Nhi</div>
-        <div style="margin-top:20px; color:#888;">Vuốt xuống để xem và đọc lời chúc ↓</div>
+        <p>26.04.2026</p>
+        <p style="color: #888; font-size: 13px; margin-top: 20px;">Hãy vuốt màn hình để đọc lời chúc của mọi người</p>
     </div>
 
-    <div id="fixed-wish-container"></div>
+    <div id="wish-overlay"></div>
 
     <div class="gallery-container">
         <div class="photo-item" data-aos="fade-up">
             <img src="anh1.jpg" alt="1">
-            <div class="photo-caption"><strong>Kỷ niệm 1</strong><br>Hành trình bắt đầu...</div>
+            <div class="photo-caption"><strong>Khởi đầu hành trình</strong>Nhớ ngày đầu bỡ ngỡ bước vào cổng trường...</div>
         </div>
         <div class="photo-item" data-aos="fade-up">
             <img src="anh2.jpg" alt="2">
-            <div class="photo-caption"><strong>Kỷ niệm 2</strong><br>Nỗ lực không ngừng...</div>
+            <div class="photo-caption"><strong>Nỗ lực miệt mài</strong>Những đêm thức trắng bên ánh đèn bàn...</div>
         </div>
         <div class="photo-item" data-aos="fade-up">
             <img src="anh3.jpg" alt="3">
-            <div class="photo-caption"><strong>Kỷ niệm 3</strong><br>Tình bạn rực rỡ...</div>
+            <div class="photo-caption"><strong>Tình bạn rực rỡ</strong>Thanh xuân đẹp nhất vì có các bạn...</div>
         </div>
         <div class="photo-item" data-aos="fade-up">
             <img src="anh4.jpg" alt="4">
-            <div class="photo-caption"><strong>Kỷ niệm 4</strong><br>Gia đình yêu thương...</div>
+            <div class="photo-caption"><strong>Gia đình yêu thương</strong>Điểm tựa bình yên nhất của Nhi...</div>
         </div>
         <div class="photo-item" data-aos="fade-up">
             <img src="anh5.jpg" alt="5">
-            <div class="photo-caption"><strong>Kỷ niệm 5</strong><br>Niềm vui vỡ òa...</div>
+            <div class="photo-caption"><strong>Niềm tự hào</strong>Sự đền đáp xứng đáng cho mọi cố gắng...</div>
         </div>
         <div class="photo-item" data-aos="fade-up">
             <img src="anh6.jpg" alt="6">
-            <div class="photo-caption"><strong>Kỷ niệm 6</strong><br>Tương lai rộng mở...</div>
+            <div class="photo-caption"><strong>Tương lai rạng ngời</strong>Thế giới đang chờ đợi em khám phá!</div>
         </div>
     </div>
 
     <div class="input-sticky">
         <input type="text" id="name-in" placeholder="Tên..">
-        <input type="text" id="msg-in" placeholder="Gửi lời chúc...">
+        <input type="text" id="msg-in" placeholder="Gửi lời chúc đến Nhi...">
         <button class="btn-send" onclick="send()">❤</button>
     </div>
 
@@ -114,7 +114,7 @@
     
     <script>
         AOS.init();
-        
+
         const firebaseConfig = {
             apiKey: "AIzaSyB4PKGLjoQ_-TtjMZfJVXz8dD_6DBeJQeM",
             authDomain: "thieptotnghiep-1e79e.firebaseapp.com",
@@ -126,58 +126,48 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        let wishes = [];
-        let currentIndex = 0;
-        let lastScrollY = window.scrollY;
+        let allWishes = [];
+        let lastScrollTime = 0;
 
-        // Tải dữ liệu từ Firebase
+        // Tải toàn bộ lời nhắn từ Firebase (Kể cả tin cũ và tin của người khác)
         db.ref('wishes').on('value', (snapshot) => {
-            wishes = [];
-            snapshot.forEach((child) => {
-                wishes.push(child.val());
-            });
+            const data = snapshot.val();
+            allWishes = data ? Object.values(data) : [];
         });
 
-        // Hàm hiển thị tin nhắn
-        function showNextWish() {
-            if (wishes.length === 0) return;
-            
-            const container = document.getElementById('fixed-wish-container');
-            // Xóa tin nhắn cũ nếu có
-            container.innerHTML = '';
+        // Hàm tạo tin nhắn trôi lên khi vuốt
+        function triggerWishOnScroll() {
+            if (allWishes.length === 0) return;
 
-            const wish = wishes[currentIndex % wishes.length];
+            const now = Date.now();
+            if (now - lastScrollTime < 1500) return; // Chỉ hiện tin nhắn cách nhau 1.5s để tránh bị rối
+            lastScrollTime = now;
+
+            const overlay = document.getElementById('wish-overlay');
+            const randomWish = allWishes[Math.floor(Math.random() * allWishes.length)];
+
             const wishEl = document.createElement('div');
-            wishEl.className = 'single-wish';
-            wishEl.innerHTML = `<strong>${wish.name}:</strong> ${wish.message}`;
+            wishEl.className = 'scroll-wish';
+            wishEl.innerHTML = `<strong>${randomWish.name}:</strong> ${randomWish.message}`;
             
-            container.appendChild(wishEl);
-            currentIndex++;
+            overlay.appendChild(wishEl);
+
+            // Xóa sau khi bay xong
+            wishEl.addEventListener('animationend', () => wishEl.remove());
         }
 
-        // Lắng nghe sự kiện vuốt màn hình (Scroll)
-        let scrollTimeout;
+        // Lắng nghe sự kiện vuốt
         window.addEventListener('scroll', () => {
-            const currentScrollY = window.scrollY;
-            
-            // Nếu người dùng cuộn một khoảng đủ xa (ví dụ 300px)
-            if (Math.abs(currentScrollY - lastScrollY) > 300) {
-                lastScrollY = currentScrollY;
-                
-                // Debounce để không hiện quá nhiều tin nhắn cùng lúc
-                clearTimeout(scrollTimeout);
-                scrollTimeout = setTimeout(() => {
-                    showNextWish();
-                }, 100);
-            }
+            triggerWishOnScroll();
         });
 
+        // Gửi tin nhắn mới
         function send() {
             const n = document.getElementById('name-in').value;
             const m = document.getElementById('msg-in').value;
             if(n && m) {
-                db.ref('wishes').push({ name: n, message: m });
-                confetti({ particleCount: 100, origin: { y: 0.9 } });
+                db.ref('wishes').push({ name: n, message: m, time: Date.now() });
+                confetti({ particleCount: 100, origin: { y: 0.8 } });
                 document.getElementById('msg-in').value = '';
             }
         }
