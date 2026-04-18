@@ -39,7 +39,7 @@
         .name { font-family: 'Dancing Script', cursive; font-size: clamp(45px, 10vw, 60px); color: var(--accent); margin: 15px 0; }
         .scroll-hint { margin-top: 30px; font-size: 14px; color: #888; animation: bounce 2s infinite; }
 
-        /* 2. Gallery Layout (6 Ảnh So Le) */
+        /* 2. Gallery Layout */
         .gallery-container {
             padding: 100px 15px; max-width: 800px; margin: 0 auto;
             display: flex; flex-direction: column; gap: 150px;
@@ -75,16 +75,41 @@
             text-align: center; border: 2px dashed var(--accent);
         }
         .info-item { margin: 15px 0; font-size: 18px; color: #444; line-height: 1.6; }
-        .info-item i { color: var(--accent); font-size: 24px; margin-bottom: 5px; display: block; }
 
-        /* 3. Wish Section */
+        /* 3. Wish Section - HIỆU ỨNG TRÔI LÊN CHẬM */
         .section-wishes {
             background: white; padding: 40px 20px 180px 20px;
             border-radius: 50px 50px 0 0; margin-top: 30px;
         }
         .wish-list-title { text-align: center; font-family: 'Dancing Script', cursive; font-size: 45px; color: var(--accent); margin-bottom: 40px; }
-        #static-wish-list { display: flex; flex-direction: column; gap: 20px; max-width: 550px; margin: 0 auto; }
-        .wish-card { background: var(--pink-light); padding: 18px; border-radius: 18px; border-left: 6px solid var(--accent); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        
+        #static-wish-list { 
+            display: flex; flex-direction: column; gap: 20px; 
+            max-width: 550px; margin: 0 auto; 
+            overflow: hidden; /* Giữ các lời chúc trong vùng hiển thị */
+        }
+
+        .wish-card { 
+            background: var(--pink-light); 
+            padding: 18px; 
+            border-radius: 18px; 
+            border-left: 6px solid var(--accent); 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            /* Hiệu ứng trôi lên */
+            animation: floatUp 1.5s ease-out forwards;
+            opacity: 0; 
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
 
         /* 4. Input Bar */
         .input-sticky {
@@ -119,7 +144,6 @@
                 <p>Nhi có nhớ ngày đầu tiên bước chân vào cổng trường không? Đó là khoảnh khắc của sự bỡ ngỡ hòa cùng những ước mơ cháy bỏng. Tấm ảnh này là kỷ niệm đẹp về một Yến Nhi đầy nhiệt huyết.</p>
             </div>
         </div>
-
         <div class="photo-block" data-aos="fade-left">
             <div class="photo-frame"><img src="anh2.jpg"></div>
             <div class="meaning-box">
@@ -127,7 +151,7 @@
                 <p>Thành công không đến từ may mắn, mà từ những đêm trắng bên trang sách. Nhìn vào bức ảnh này, ta thấy được sự kiên trì và bản lĩnh thép của Nhi.</p>
             </div>
         </div>
-
+        
         <div class="photo-block" data-aos="fade-right">
             <div class="photo-frame"><img src="anh3.jpg"></div>
             <div class="meaning-box">
@@ -210,6 +234,7 @@
                 const card = document.createElement('div');
                 card.className = 'wish-card';
                 card.innerHTML = `<strong>${data.name}:</strong> ${data.message}`;
+                // Đảo ngược để lời chúc mới nhất trôi lên đầu danh sách
                 list.prepend(card);
             });
         });
