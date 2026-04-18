@@ -2,100 +2,189 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chúc Mừng Tốt Nghiệp</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Lễ Tốt Nghiệp - Phạm Yến Phương</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
-            --primary-color: #2c3e50;
-            --accent-color: #e74c3c;
-            --bg-color: #f9f9f9;
+            --accent: #c2185b;
+            --pink-bg: #ffe0e9;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
             margin: 0;
+            padding: 0;
+            font-family: 'Quicksand', sans-serif;
+            background-color: #fce4ec;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            overflow: hidden;
         }
 
+        /* Khung điện thoại */
         .card {
-            background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            max-width: 500px;
-            width: 90%;
-            text-align: center;
-        }
-
-        h1 { color: var(--primary-color); }
-
-        .graduation-cap { font-size: 50px; margin-bottom: 10px; }
-
-        .form-group {
-            margin-top: 20px;
-            text-align: left;
-        }
-
-        input, textarea {
             width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            max-width: 450px;
+            height: 100vh;
+            background: var(--pink-bg) url('https://img.freepik.com/free-vector/abstract-pink-watercolor-background_23-2148491410.jpg') center/cover;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
             box-sizing: border-box;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
         }
 
-        button {
-            margin-top: 20px;
-            background-color: var(--primary-color);
+        h1 {
+            font-size: 28px;
+            color: #2c3e50;
+            margin: 10px 0 5px;
+        }
+
+        .name {
+            font-family: 'Dancing Script', cursive;
+            font-size: 36px;
+            color: var(--accent);
+            margin: 0 0 20px;
+        }
+
+        /* Countdown */
+        .countdown {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .count-box {
+            background: white;
+            padding: 8px 10px;
+            border-radius: 10px;
+            text-align: center;
+            min-width: 45px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .count-num { font-weight: bold; font-size: 20px; color: #333; }
+        .count-label { font-size: 10px; color: #777; }
+
+        /* Ảnh và Brush */
+        .photo-container {
+            width: 250px;
+            height: 250px;
+            position: relative;
+            margin-bottom: 15px;
+        }
+        .photo-img {
+            width: 100%;
+            height: 100%;
+            /* THAY LINK ẢNH CỦA BẠN VÀO ĐÂY */
+            background: url('https://cdn.pixabay.com/photo/2017/09/26/17/51/graduation-2789416_1280.png') center/cover;
+            border-radius: 50%;
+            border: 5px solid white;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        /* Lời chúc nổi bật */
+        .highlight-wish {
+            background: rgba(194, 24, 91, 0.85);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 15px;
+            font-size: 14px;
+            text-align: center;
+            width: 85%;
+            z-index: 2;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Danh sách lời chúc bên dưới */
+        #wish-container {
+            width: 100%;
+            flex-grow: 1;
+            overflow-y: auto;
+            margin-bottom: 70px; /* Chừa chỗ cho thanh nhập */
+            padding-right: 5px;
+        }
+        .wish-item {
+            background: rgba(255, 255, 255, 0.6);
+            margin-bottom: 8px;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 13px;
+            border-left: 4px solid var(--accent);
+        }
+
+        /* Form nhập lời chúc (Sticky Bottom) */
+        .input-bar {
+            position: absolute;
+            bottom: 15px;
+            width: 90%;
+            display: flex;
+            gap: 8px;
+            background: white;
+            padding: 8px;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        input {
+            border: none;
+            outline: none;
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+        #name { width: 30%; border-right: 1px solid #eee; }
+        #message { width: 50%; flex-grow: 1; }
+
+        .btn-send {
+            background: var(--accent);
             color: white;
             border: none;
-            padding: 12px 25px;
-            border-radius: 25px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
             cursor: pointer;
-            font-size: 16px;
-            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        button:hover { background-color: #34495e; }
-
-        #wish-container {
-            margin-top: 30px;
-            max-height: 200px;
-            overflow-y: auto;
-            border-top: 1px solid #eee;
-            padding-top: 10px;
-        }
-
-        .wish-item {
-            background: #fff8e1;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            font-style: italic;
-            border-left: 4px solid #f1c40f;
-        }
+        /* Custom scrollbar */
+        #wish-container::-webkit-scrollbar { width: 3px; }
+        #wish-container::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <div class="graduation-cap">🎓</div>
-    <h1>Happy Graduation!</h1>
-    <p>Hãy để lại lời chúc ý nghĩa cho ngày đặc biệt này nhé!</p>
+    <h1>Lễ Tốt Nghiệp</h1>
+    <div class="name">Phạm Yến Phương</div>
 
-    <div class="form-group">
-        <input type="text" id="name" placeholder="Tên của bạn...">
-        <textarea id="message" rows="3" placeholder="Lời chúc của bạn..."></textarea>
-        <button onclick="sendWish()">Gửi Lời Chúc ✨</button>
+    <div class="countdown">
+        <div class="count-box"><div class="count-num" id="d">00</div><div class="count-label">Ngày</div></div>
+        <div class="count-box"><div class="count-num" id="h">00</div><div class="count-label">Giờ</div></div>
+        <div class="count-box"><div class="count-num" id="m">00</div><div class="count-label">Phút</div></div>
+        <div class="count-box"><div class="count-num" id="s">00</div><div class="count-label">Giây</div></div>
+    </div>
+
+    <div class="photo-container">
+        <div class="photo-img"></div>
+    </div>
+
+    <div class="highlight-wish">
+        Chúc mừng Yến Phương tốt nghiệp thật rạng rỡ! <br>
+        <strong>Mãi xinh đẹp và đạt được mọi nguyện vọng nhé! ✨</strong>
     </div>
 
     <div id="wish-container">
+    </div>
+
+    <div class="input-bar">
+        <input type="text" id="name" placeholder="Tên..">
+        <input type="text" id="message" placeholder="Gửi lời chúc...">
+        <button class="btn-send" onclick="sendWish()">❤</button>
     </div>
 </div>
 
@@ -103,57 +192,64 @@
 <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
 
 <script>
-    // 1. DÁN ĐOẠN CONFIG CỦA BẠN VÀO ĐÂY
+    // 1. Cấu hình Firebase của bạn
     const firebaseConfig = {
-  apiKey: "AIzaSyB4PKGLjoQ_-TtjMZfJVXz8dD_6DBeJQeM",
-  authDomain: "thieptotnghiep-1e79e.firebaseapp.com",
-  projectId: "thieptotnghiep-1e79e",
-  storageBucket: "thieptotnghiep-1e79e.firebasestorage.app",
-  messagingSenderId: "6578169222",
-  appId: "1:6578169222:web:23bb55a36b073d60eff807",
-  measurementId: "G-BFFBMY2ZBQ"
-};
+        apiKey: "AIzaSyB4PKGLjoQ_-TtjMZfJVXz8dD_6DBeJQeM",
+        authDomain: "thieptotnghiep-1e79e.firebaseapp.com",
+        projectId: "thieptotnghiep-1e79e",
+        storageBucket: "thieptotnghiep-1e79e.firebasestorage.app",
+        messagingSenderId: "6578169222",
+        appId: "1:6578169222:web:23bb55a36b073d60eff807"
+    };
 
-    // Khởi tạo Firebase
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
 
-    // 2. Hàm gửi lời chúc (đã kết nối Database)
+    // 2. Đồng hồ đếm ngược (Ví dụ đến 20/05/2026)
+    const targetDate = new Date("May 20, 2026 08:00:00").getTime();
+    setInterval(() => {
+        const now = new Date().getTime();
+        const diff = targetDate - now;
+        if (diff > 0) {
+            document.getElementById('d').innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
+            document.getElementById('h').innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            document.getElementById('m').innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            document.getElementById('s').innerText = Math.floor((diff % (1000 * 60)) / 1000);
+        }
+    }, 1000);
+
+    // 3. Gửi lời chúc
     function sendWish() {
-      const name = document.getElementById('name').value;
-      const message = document.getElementById('message').value;
+        const nameVal = document.getElementById('name').value;
+        const msgVal = document.getElementById('message').value;
 
-      if (name && message) {
-        // Đẩy dữ liệu lên Firebase
-        database.ref('wishes').push({
-          name: name,
-          message: message,
-          timestamp: Date.now()
-        });
+        if (nameVal && msgVal) {
+            database.ref('wishes').push({
+                name: nameVal,
+                message: msgVal,
+                timestamp: Date.now()
+            });
 
-        // Hiệu ứng pháo giấy
-        confetti({
-          particleCount: 100,
-          spread: 70,
-          origin: { y: 0.6 }
-        });
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.8 }
+            });
 
-        // Xóa nội dung input
-        document.getElementById('name').value = '';
-        document.getElementById('message').value = '';
-      } else {
-        alert("Vui lòng nhập tên và lời chúc nha!");
-      }
+            document.getElementById('message').value = '';
+        } else {
+            alert("Vui lòng nhập đầy đủ thông tin!");
+        }
     }
 
-    // 3. Lắng nghe dữ liệu mới để hiển thị ra màn hình
+    // 4. Lấy lời chúc về
     database.ref('wishes').on('child_added', (snapshot) => {
-      const data = snapshot.val();
-      const container = document.getElementById('wish-container');
-      const newWish = document.createElement('div');
-      newWish.className = 'wish-item';
-      newWish.innerHTML = `<strong>${data.name}:</strong> ${data.message}`;
-      container.prepend(newWish); // Hiện lời chúc mới nhất lên đầu
+        const data = snapshot.val();
+        const container = document.getElementById('wish-container');
+        const item = document.createElement('div');
+        item.className = 'wish-item';
+        item.innerHTML = `<strong>${data.name}:</strong> ${data.message}`;
+        container.prepend(item);
     });
 </script>
 
