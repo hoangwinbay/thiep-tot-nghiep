@@ -9,32 +9,36 @@
     <style>
         :root { 
             --accent: #c2185b; 
-            /* ========================================== */
-            /* BƯỚC 1: DÁN LINK ẢNH NỀN CỦA BẠN VÀO ĐÂY */
+            /* Link ảnh nền của bạn */
             --bg-image: url('https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/175974/Originals/background%20thiep%20moi%20(2).jpg'); 
-            /* ========================================== */
-            --pink-overlay: rgba(255, 255, 255, 0.4); /* Độ mờ của lớp phủ (0.1 đến 0.9) */
+            --pink-overlay: rgba(255, 255, 255, 0.4); 
         }
 
         body { 
             margin: 0; padding: 0; 
             font-family: 'Quicksand', sans-serif; 
             background-color: #fce4ec; 
-            display: flex; justify-content: center; align-items: center; 
-            min-height: 100vh; overflow: hidden; 
+            display: flex; justify-content: center; 
+            min-height: 100vh; 
+            overflow-x: hidden;
+            overflow-y: auto; /* Cho phép cuộn trang */
+            -webkit-overflow-scrolling: touch;
         }
 
         .card {
-            width: 100%; max-width: 450px; height: 100vh;
+            width: 100%; max-width: 450px; 
+            min-height: 100vh; /* Chiều cao tối thiểu là toàn màn hình */
             background-image: var(--bg-image);
             background-position: center;
             background-size: cover;
             background-repeat: no-repeat;
+            background-attachment: fixed; /* Giữ nền cố định khi cuộn */
             position: relative; display: flex; flex-direction: column; align-items: center; 
-            padding: 20px; box-sizing: border-box;
+            padding: 20px 20px 120px 20px; /* Padding dưới để không bị thanh input che */
+            box-sizing: border-box;
         }
 
-        /* Lớp phủ này rất quan trọng để nhìn rõ chữ trên nền ảnh */
+        /* Lớp phủ làm mờ nền */
         .card::before {
             content: "";
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -68,16 +72,43 @@
 
         .highlight-wish {
             background: rgba(194, 24, 91, 0.9); color: white; padding: 12px 15px;
-            border-radius: 15px; font-size: 13px; text-align: center; width: 85%; margin-bottom: 15px;
+            border-radius: 15px; font-size: 13px; text-align: center; width: 85%; margin-bottom: 20px;
         }
 
-        #wish-container { width: 100%; flex-grow: 1; overflow-y: auto; margin-bottom: 75px; padding: 0 5px; }
-        .wish-item { background: rgba(255, 255, 255, 0.85); margin-bottom: 8px; padding: 10px; border-radius: 10px; font-size: 13px; border-left: 4px solid var(--accent); }
+        #wish-container { width: 100%; margin-bottom: 20px; }
+        .wish-item { 
+            background: rgba(255, 255, 255, 0.85); 
+            margin-bottom: 10px; 
+            padding: 12px; 
+            border-radius: 12px; 
+            font-size: 13px; 
+            border-left: 5px solid var(--accent);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
 
-        .input-bar { position: absolute; bottom: 20px; width: 90%; display: flex; gap: 8px; background: white; padding: 8px; border-radius: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); box-sizing: border-box;}
+        /* Thanh nhập liệu cố định ở dưới cùng */
+        .input-bar { 
+            position: fixed; 
+            bottom: 20px; 
+            width: 90%; 
+            max-width: 410px;
+            display: flex; 
+            gap: 8px; 
+            background: white; 
+            padding: 8px; 
+            border-radius: 30px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2); 
+            box-sizing: border-box;
+            z-index: 100;
+        }
         input { border: none; outline: none; font-size: 14px; background: transparent; }
         #name-input { width: 30%; border-right: 1px solid #eee; padding-left: 10px; }
-        .btn-send { background: var(--accent); color: white; border: none; width: 42px; height: 42px; border-radius: 50%; cursor: pointer; }
+        #message-input { flex-grow: 1; }
+        .btn-send { 
+            background: var(--accent); color: white; border: none; 
+            width: 42px; height: 42px; border-radius: 50%; 
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+        }
     </style>
 </head>
 <body>
