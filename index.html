@@ -10,189 +10,117 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     
     <style>
-        :root {
-            --accent: #c2185b;
-            --pink-light: #fce4ec;
-            --pink-bg: #ffe0e9;
-            --text-main: #333;
-            --text-sub: #607d8b;
+        :root { 
+            --accent: #c2185b; 
+            --pink-light: #fce4ec; 
+            --pink-bg: #ffe0e9; 
             --white-glass: rgba(255, 255, 255, 0.92);
         }
 
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Quicksand', sans-serif;
-            background-color: var(--pink-light);
+        body { 
+            margin: 0; 
+            font-family: 'Quicksand', sans-serif; 
+            background-color: var(--pink-light); 
             background-image: linear-gradient(135deg, #fffafa 0%, #fde2e4 100%);
-            color: var(--text-main);
-            overflow-x: hidden;
+            color: #333; 
+            overflow-x: hidden; 
         }
 
-        /* 1. Intro Section (Có Ảnh & Countdown) */
-        .section-intro {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            background: linear-gradient(to bottom, var(--pink-bg), var(--pink-light));
-            padding: 20px;
+        /* 1. Intro Section */
+        .section-intro { 
+            height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            text-align: center; 
+            background: linear-gradient(to bottom, var(--pink-bg), var(--pink-light)); 
+            padding: 20px; 
             box-sizing: border-box;
         }
-
-        .cap-icon { font-size: 60px; margin-bottom: 10px; animation: bounce 2s infinite; }
-        h1 { font-size: 24px; color: #2c3e50; text-transform: uppercase; letter-spacing: 3px; margin: 0; }
-        .name { font-family: 'Dancing Script', cursive; font-size: 48px; color: var(--accent); margin: 10px 0; }
-        
-        /* Ảnh khởi đầu */
+        .name { font-family: 'Dancing Script', cursive; font-size: 50px; color: var(--accent); margin: 10px 0; }
         .hero-photo {
-            width: 150px;
-            height: 150px;
+            width: 160px; height: 160px;
             border-radius: 50%;
             object-fit: cover;
             border: 5px solid white;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            margin: 20px 0;
-            display: block;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            margin: 15px 0;
         }
 
         /* Countdown */
         .countdown-container {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-            background: rgba(255, 255, 255, 0.6);
-            padding: 10px 20px;
-            border-radius: 30px;
-            backdrop-filter: blur(5px);
+            display: flex; gap: 12px; margin-top: 20px;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 10px 15px; border-radius: 25px;
         }
-        .countdown-item { display: flex; flex-direction: column; align-items: center; }
-        .countdown-time { font-size: 24px; font-weight: 700; color: var(--accent); }
-        .countdown-label { font-size: 11px; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1px; }
+        .countdown-item { display: flex; flex-direction: column; min-width: 50px; }
+        .countdown-time { font-size: 22px; font-weight: 700; color: var(--accent); }
+        .countdown-label { font-size: 10px; text-transform: uppercase; color: #777; }
 
-        .scroll-hint { margin-top: 40px; font-size: 13px; color: #888; animation: bounce 2s infinite; }
-
-        /* 2. Gallery Layout (Bố cục so le) */
-        .gallery-container {
-            padding: 80px 15px;
-            max-width: 850px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 150px;
-        }
-
+        /* 2. Gallery Layout */
+        .gallery-container { padding: 80px 15px; max-width: 850px; margin: 0 auto; display: flex; flex-direction: column; gap: 140px; }
         .photo-block { display: flex; flex-direction: column; width: 100%; position: relative; }
-        .photo-frame {
-            width: 85%;
-            max-width: 400px;
-            background: white;
-            padding: 15px;
-            border-radius: 20px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.12);
-        }
-        .photo-frame img { width: 100%; height: 500px; object-fit: cover; border-radius: 12px; display: block; }
-
-        .meaning-box {
-            width: 95%;
-            background: var(--white-glass);
-            padding: 30px;
-            border-radius: 25px;
-            margin-top: -60px; 
-            z-index: 2;
-            box-shadow: 0 20px 45px rgba(194, 24, 91, 0.1);
-            border-left: 8px solid var(--accent);
-            box-sizing: border-box;
-        }
-
+        .photo-frame { width: 85%; max-width: 400px; background: white; padding: 15px; border-radius: 20px; box-shadow: 0 30px 60px rgba(0,0,0,0.12); }
+        .photo-frame img { width: 100%; height: 480px; object-fit: cover; border-radius: 12px; }
+        .meaning-box { width: 95%; background: var(--white-glass); padding: 25px; border-radius: 25px; margin-top: -60px; z-index: 2; border-left: 8px solid var(--accent); box-sizing: border-box; }
         .photo-block:nth-child(even) .photo-frame { align-self: flex-end; }
         .photo-block:nth-child(even) .meaning-box { align-self: flex-start; border-left: 0; border-right: 8px solid var(--accent); }
         .photo-block:nth-child(odd) .photo-frame { align-self: flex-start; }
         .photo-block:nth-child(odd) .meaning-box { align-self: flex-end; }
+        .meaning-box h3 { margin: 0 0 12px 0; color: var(--accent); font-family: 'Dancing Script', cursive; font-size: 28px; }
+        .meaning-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #444; text-align: justify; }
 
-        .meaning-box h3 { margin: 0 0 15px 0; color: var(--accent); font-family: 'Dancing Script', cursive; font-size: 30px; }
-        .meaning-box p { margin: 0; font-size: 15.5px; line-height: 2; color: #444; text-align: justify; }
-
-        /* Floating Message - One time slow animation */
-        #wish-overlay { 
-            position: fixed; 
-            top: 0; left: 0; 
-            width: 100%; height: 100%; 
-            pointer-events: none; 
-            z-index: 9999; 
+        /* 3. Event Info Card (Phần mới thêm) */
+        .section-info-detail {
+            max-width: 500px; margin: 50px auto;
+            background: white; padding: 30px;
+            border-radius: 30px; text-align: center;
+            box-shadow: 0 15px 40px rgba(194, 24, 91, 0.15);
+            border: 2px dashed var(--accent);
         }
+        .info-title { font-family: 'Dancing Script', cursive; font-size: 32px; color: var(--accent); margin-bottom: 15px; }
+        .info-row { font-size: 17px; margin: 10px 0; color: #444; }
 
+        /* Floating Overlay */
+        #wish-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
         .floating-bubble {
-            position: absolute; 
-            left: 50%; 
-            transform: translateX(-50%);
-            width: 85%; 
-            max-width: 350px; 
-            background: white;
-            padding: 20px; 
-            border-radius: 20px; 
-            border-top: 5px solid var(--accent);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.25); 
-            font-size: 15px;
+            position: absolute; left: 50%; transform: translateX(-50%);
+            width: 85%; max-width: 320px; background: white;
+            padding: 18px; border-radius: 20px; border-top: 5px solid var(--accent);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2); font-size: 14px;
             animation: flowUpOnce 10s linear forwards;
         }
+        @keyframes flowUpOnce { 0% { bottom: -120px; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { bottom: 95vh; opacity: 0; } }
 
-        @keyframes flowUpOnce { 
-            0% { bottom: -150px; opacity: 0; } 
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { bottom: 95vh; opacity: 0; } 
-        }
+        /* 4. Wish Section */
+        .section-wishes { background: white; padding: 60px 20px 180px 20px; border-radius: 50px 50px 0 0; }
+        .wish-list-title { text-align: center; font-family: 'Dancing Script', cursive; font-size: 40px; color: var(--accent); margin-bottom: 35px; }
+        #static-wish-list { display: flex; flex-direction: column; gap: 20px; max-width: 550px; margin: 0 auto; }
+        .wish-card { background: var(--pink-light); padding: 18px; border-radius: 15px; border-left: 5px solid var(--accent); }
 
-        /* Wish Section */
-        .section-wishes { background: white; padding: 80px 20px 180px 20px; border-radius: 60px 60px 0 0; }
-        .wish-list-title { text-align: center; font-family: 'Dancing Script', cursive; font-size: 45px; color: var(--accent); margin-bottom: 40px; }
-        #static-wish-list { display: flex; flex-direction: column; gap: 25px; max-width: 600px; margin: 0 auto; }
-        .wish-card { background: var(--pink-light); padding: 20px; border-radius: 20px; border-left: 6px solid var(--accent); }
-
-        /* Input Bar */
-        .input-sticky { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 450px; background: white; padding: 15px 20px; border-radius: 50px; display: flex; align-items: center; box-shadow: 0 20px 50px rgba(0,0,0,0.3); z-index: 10000; }
-        .input-sticky input { border: none; outline: none; flex: 1; font-size: 16px; }
-        #name-in { width: 30%; border-right: 1px solid #eee; padding-right: 10px; }
-        #msg-in { padding-left: 15px; }
-        .btn-send { background: var(--accent); color: white; border: none; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; font-size: 22px; }
-
-        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} 60% {transform: translateY(-5px);} }
+        /* Input */
+        .input-sticky { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 420px; background: white; padding: 12px 18px; border-radius: 50px; display: flex; align-items: center; box-shadow: 0 10px 40px rgba(0,0,0,0.25); z-index: 10000; }
+        .input-sticky input { border: none; outline: none; flex: 1; font-size: 15px; }
+        #name-in { width: 30%; border-right: 1px solid #eee; padding-right: 8px; }
+        .btn-send { background: var(--accent); color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <div class="section-intro">
-        <div class="cap-icon" data-aos="zoom-in">🎓</div>
+        <div data-aos="zoom-in" style="font-size: 60px;">✨</div>
         <h1 data-aos="fade-down">Lễ Tốt Nghiệp</h1>
-        <div class="name" data-aos="fade-down" data-aos-delay="200">Trần Đoàn Yến Nhi</div>
+        <div class="name" data-aos="fade-down">Trần Đoàn Yến Nhi</div>
         
-        <img src="anh_hero.jpg" alt="Trần Đoàn Yến Nhi" class="hero-photo" data-aos="fade-up" data-aos-delay="400">
+        <img src="anh_hero.jpg" alt="Yến Nhi" class="hero-photo" data-aos="zoom-in" data-aos-delay="300">
         
-        <p data-aos="fade-up" data-aos-delay="600">Chúc mừng chặng đường rực rỡ!</p>
-
-        <div class="countdown-container" data-aos="fade-up" data-aos-delay="800">
-            <div class="countdown-item">
-                <div class="countdown-time" id="days">00</div>
-                <div class="countdown-label">Ngày</div>
-            </div>
-            <div class="countdown-item">
-                <div class="countdown-time" id="hours">00</div>
-                <div class="countdown-label">Giờ</div>
-            </div>
-            <div class="countdown-item">
-                <div class="countdown-time" id="minutes">00</div>
-                <div class="countdown-label">Phút</div>
-            </div>
-            <div class="countdown-item">
-                <div class="countdown-time" id="seconds">00</div>
-                <div class="countdown-label">Giây</div>
-            </div>
+        <div class="countdown-container" data-aos="fade-up">
+            <div class="countdown-item"><div class="countdown-time" id="days">00</div><div class="countdown-label">Ngày</div></div>
+            <div class="countdown-item"><div class="countdown-time" id="hours">00</div><div class="countdown-label">Giờ</div></div>
+            <div class="countdown-item"><div class="countdown-time" id="minutes">00</div><div class="countdown-label">Phút</div></div>
+            <div class="countdown-item"><div class="countdown-time" id="seconds">00</div><div class="countdown-label">Giây</div></div>
         </div>
-
-        <div class="scroll-hint">Kéo xuống xem hành trình của Nhi ↓</div>
     </div>
 
     <div id="wish-overlay"></div>
@@ -202,44 +130,52 @@
             <div class="photo-frame"><img src="anh1.jpg"></div>
             <div class="meaning-box">
                 <h3>Khúc dạo đầu của ước mơ</h3>
-                <p>Mỗi hành trình vạn dặm đều bắt đầu từ một bước chân nhỏ bé. Nhi có nhớ ngày đầu tiên ấy không? Khi giảng đường còn là một khái niệm xa lạ và đầy bỡ ngỡ, khi ánh mắt ta còn chứa đựng cả sự rụt rè lẫn những khát khao cháy bỏng. Đó không chỉ là sự bắt đầu của một chương học vấn, mà còn là khoảnh khắc Nhi dũng cảm rời xa vòng tay bảo bọc để tự mình viết nên những trang nhật ký trưởng thành đầu tiên. Tấm ảnh này là minh chứng cho sự ngây ngô nhưng đầy quyết tâm của ngày hôm ấy.</p>
+                <p>Mỗi hành trình vạn dặm đều bắt đầu từ một bước chân nhỏ bé. Nhi có nhớ ngày đầu tiên ấy không? Khi giảng đường còn là một khái niệm xa lạ và đầy bỡ ngỡ, đó không chỉ là sự bắt đầu của một chương học vấn, mà còn là khoảnh khắc Nhi dũng cảm rời xa vòng tay bảo bọc để tự mình viết nên những trang nhật ký trưởng thành đầu tiên.</p>
             </div>
         </div>
         <div class="photo-block" data-aos="fade-up">
             <div class="photo-frame"><img src="anh2.jpg"></div>
             <div class="meaning-box">
                 <h3>Bản lĩnh qua từng trang sách</h3>
-                <p>Thành công của ngày hôm nay không được xây đắp bằng hoa hồng, mà được dệt nên từ những đêm trắng miệt mài bên ánh đèn bàn leo lét. Có những lúc mệt mỏi rã rời, có những khi áp lực thi cử khiến ta muốn dừng lại, nhưng Nhi đã chọn cách đối mặt và vượt qua. Tấm ảnh này ghi lại bóng dáng của một cô gái không biết mệt mỏi, người đã bền bỉ gom góp từng kiến thức, từng kỹ năng để rèn giũa nên một bản lĩnh thép. Chính sự nỗ lực âm thầm đó đã tạo nên một Yến Nhi rạng rỡ và tự tin như hiện tại.</p>
+                <p>Thành công của ngày hôm nay không được xây đắp bằng hoa hồng, mà được dệt nên từ những đêm trắng miệt mài bên ánh đèn bàn leo lét. Có những lúc mệt mỏi rã rời, nhưng Nhi đã chọn cách đối mặt và vượt qua. Chính sự nỗ lực âm thầm đó đã tạo nên một Yến Nhi rạng rỡ và tự tin như hiện tại.</p>
             </div>
         </div>
         <div class="photo-block" data-aos="fade-up">
             <div class="photo-frame"><img src="anh3.jpg"></div>
             <div class="meaning-box">
                 <h3>Những mảnh ghép thanh xuân</h3>
-                <p>Người ta nói thanh xuân sẽ thật tẻ nhạt nếu thiếu đi những người bạn đồng hành. Cảm ơn vì đã có những người bạn tuyệt vời xuất hiện trong đời Nhi, cùng sẻ chia những bữa cơm vội, cùng nhau thức khuya ôn bài và cùng tận hưởng những niềm vui nhỏ bé nhất. Họ là những mảnh ghép không thể thiếu, giúp bức tranh đại học của Nhi thêm phần sinh động và ấm áp. Những nụ cười vô tư lự trong tấm ảnh này chính là kho báu quý giá nhất mà thời gian không bao giờ có thể xóa nhòa.</p>
+                <p>Thanh xuân sẽ thật tẻ nhạt nếu thiếu đi những người bạn đồng hành. Cảm ơn vì đã có những người bạn tuyệt vời xuất hiện trong đời Nhi, cùng sẻ chia những bữa cơm vội, cùng nhau thức khuya ôn bài. Những nụ cười vô tư lự chính là kho báu quý giá nhất mà thời gian không bao giờ có thể xóa nhòa.</p>
             </div>
         </div>
         <div class="photo-block" data-aos="fade-up">
             <div class="photo-frame"><img src="anh4.jpg"></div>
             <div class="meaning-box">
                 <h3>Gia đình - Điểm tựa bình yên</h3>
-                <p>Dù ngoài kia sóng gió có lớn thế nào, khi trở về nhà, Nhi vẫn luôn là cô con gái nhỏ bé của ba mẹ. Tấm bằng tốt nghiệp này không chỉ là thành quả của Nhi, mà còn là niềm tự hào và là món quà tri ân sâu sắc nhất dành cho những người đã luôn âm thầm hy sinh, lo lắng cho Nhi từng chút một. Ánh mắt hạnh phúc của ba mẹ, sự ủng hộ vô điều kiện của gia đình chính là nguồn động lực lớn lao nhất để Nhi có thể vững vàng bước tiếp. Đây chính là bến đỗ bình yên nhất mà Nhi luôn có thể tựa vào.</p>
+                <p>Dù ngoài kia sóng gió thế nào, khi trở về nhà, Nhi vẫn luôn là cô con gái nhỏ bé của ba mẹ. Tấm bằng này là món quà tri ân sâu sắc nhất dành cho sự hy sinh thầm lặng của gia đình. Ánh mắt hạnh phúc của ba mẹ chính là động lực lớn lao nhất để Nhi vững vàng bước tiếp.</p>
             </div>
         </div>
         <div class="photo-block" data-aos="fade-up">
             <div class="photo-frame"><img src="anh5.jpg"></div>
             <div class="meaning-box">
                 <h3>Giây phút của sự tự hào</h3>
-                <p>Khoảnh khắc tên Nhi vang lên trong buổi lễ tốt nghiệp, đó là giây phút mọi nỗ lực suốt 4 năm qua đều được đền đáp xứng đáng. Cảm giác cầm trên tay tấm bằng cử nhân, khoác lên mình bộ lễ phục trang trọng, Nhi của lúc này đã thực sự trưởng thành và bản lĩnh. Niềm hạnh phúc vỡ òa này chính là cột mốc quan trọng nhất, đánh dấu việc Nhi đã hoàn thành xuất sắc nhiệm vụ của một sinh viên và sẵn sàng để đương đầu với những thử thách mới lớn lao hơn trong cuộc đời.</p>
+                <p>Khoảnh khắc tên Nhi vang lên trong buổi lễ tốt nghiệp, đó là giây phút mọi nỗ lực đều được đền đáp xứng đáng. Cầm trên tay tấm bằng cử nhân, Nhi đã thực sự trưởng thành. Niềm hạnh phúc vỡ òa này đánh dấu việc Nhi sẵn sàng đương đầu với những thử thách mới lớn lao hơn.</p>
             </div>
         </div>
         <div class="photo-block" data-aos="fade-up">
             <div class="photo-frame"><img src="anh6.jpg"></div>
             <div class="meaning-box">
                 <h3>Cánh cửa tới những chân trời mới</h3>
-                <p>Ngày hôm nay một cánh cửa khép lại, nhưng cũng là lúc muôn vàn cánh cửa khác rực rỡ hơn mở ra. Thế giới ngoài kia rộng lớn và còn nhiều điều đang chờ Nhi khám phá. Đừng bao giờ ngừng mơ ước, đừng bao giờ ngừng cố gắng vì Nhi xứng đáng với những điều tốt đẹp nhất. Hãy cứ vững tin bước đi với trái tim nhiệt huyết và khối óc đầy tri thức của mình. Chúc cho hành trình mới của Yến Nhi luôn đầy ắp những thành công vang dội, những trải nghiệm tuyệt vời và những niềm vui không dứt!</p>
+                <p>Ngày hôm nay một cánh cửa khép lại, nhưng muôn vàn chân trời rực rỡ khác đang mở ra. Đừng bao giờ ngừng mơ ước vì Nhi xứng đáng với những điều tốt đẹp nhất. Hãy cứ vững tin bước đi với trái tim nhiệt huyết và khối óc đầy tri thức. Chúc hành trình mới của Nhi luôn đầy ắp thành công!</p>
             </div>
         </div>
+    </div>
+
+    <div class="section-info-detail" data-aos="zoom-in">
+        <div class="info-title">Thông Tin Buổi Lễ</div>
+        <div class="info-row"><strong>⏰ Thời gian:</strong> 10:00 sáng</div>
+        <div class="info-row"><strong>📅 Ngày:</strong> 26/04/2026</div>
+        <div class="info-row"><strong>📍 Địa điểm:</strong> Trường THPT Nguyễn Trường Thúy</div>
+        <p style="margin-top:20px; font-style: italic; color: #888; font-size: 14px;">Rất mong được đón tiếp mọi người!</p>
     </div>
 
     <div class="section-wishes">
@@ -249,7 +185,7 @@
 
     <div class="input-sticky">
         <input type="text" id="name-in" placeholder="Tên..">
-        <input type="text" id="msg-in" placeholder="Lời chúc ý nghĩa dành cho Nhi...">
+        <input type="text" id="msg-in" placeholder="Gửi lời chúc đến Nhi...">
         <button class="btn-send" onclick="send()">❤</button>
     </div>
 
@@ -258,9 +194,8 @@
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
     
     <script>
-        AOS.init({ duration: 1500, once: true });
+        AOS.init({ duration: 1200, once: true });
 
-        // Firebase Config (Giữ nguyên của Hoàng)
         const firebaseConfig = {
             apiKey: "AIzaSyB4PKGLjoQ_-TtjMZfJVXz8dD_6DBeJQeM",
             authDomain: "thieptotnghiep-1e79e.firebaseapp.com",
@@ -276,7 +211,7 @@
         let wishesArr = [];
         let hasSpawned = false; 
 
-        // 1. Tải dữ liệu Realtime
+        // Load Wishes
         db.ref('wishes').on('value', (snapshot) => {
             const listContainer = document.getElementById('static-wish-list');
             listContainer.innerHTML = ''; 
@@ -293,66 +228,50 @@
             }
         });
 
-        // 2. Logic "One-Time Spawn" tin nhắn trôi
-        function spawnOneWish() {
-            if (hasSpawned || wishesArr.length === 0) return;
-            hasSpawned = true; 
-            const randomWish = wishesArr[Math.floor(Math.random() * wishesArr.length)];
-            const overlay = document.getElementById('wish-overlay');
-            const bubble = document.createElement('div');
-            bubble.className = 'floating-bubble';
-            bubble.innerHTML = `<strong>${randomWish.name}:</strong> ${randomWish.message}`;
-            overlay.appendChild(bubble);
-            bubble.addEventListener('animationend', () => bubble.remove());
+        // Countdown Logic (26/04/2026 - 10:00)
+        function updateCountdown() {
+            const target = new Date("April 26, 2026 10:00:00").getTime();
+            const now = new Date().getTime();
+            const diff = target - now;
+            if (diff < 0) {
+                document.querySelector('.countdown-container').innerHTML = "🎉 Lễ Tốt Nghiệp Đang Diễn Ra! 🎉";
+                return;
+            }
+            const d = Math.floor(diff / (1000*60*60*24));
+            const h = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+            const m = Math.floor((diff % (1000*60*60)) / (1000*60));
+            const s = Math.floor((diff % (1000*60)) / 1000);
+            document.getElementById("days").innerText = d < 10 ? "0"+d : d;
+            document.getElementById("hours").innerText = h < 10 ? "0"+h : h;
+            document.getElementById("minutes").innerText = m < 10 ? "0"+m : m;
+            document.getElementById("seconds").innerText = s < 10 ? "0"+s : s;
         }
+        setInterval(updateCountdown, 1000);
 
+        // One-time Floating Wish
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 100) {
-                spawnOneWish();
+            if (window.scrollY > 200 && !hasSpawned && wishesArr.length > 0) {
+                hasSpawned = true;
+                const wish = wishesArr[Math.floor(Math.random() * wishesArr.length)];
+                const bubble = document.createElement('div');
+                bubble.className = 'floating-bubble';
+                bubble.innerHTML = `<strong>${wish.name}:</strong> ${wish.message}`;
+                document.getElementById('wish-overlay').appendChild(bubble);
+                bubble.addEventListener('animationend', () => bubble.remove());
             }
         });
 
-        // 3. Logic Gửi tin nhắn
+        // Send Wish
         function send() {
             const n = document.getElementById('name-in').value;
             const m = document.getElementById('msg-in').value;
             if(n && m) {
                 db.ref('wishes').push({ name: n, message: m, timestamp: Date.now() });
-                confetti({ particleCount: 150, spread: 70, origin: { y: 0.8 } });
+                confetti({ particleCount: 150, origin: { y: 0.8 } });
                 document.getElementById('name-in').value = '';
                 document.getElementById('msg-in').value = '';
             }
         }
-
-        // --- PHẦN MỚI: SCRIPT ĐẾM NGƯỢC ---
-        function updateCountdown() {
-            // Ngày tốt nghiệp: 26/04/2026
-            const graduationDate = new Date("April 26, 2026 00:00:00").getTime();
-            const now = new Date().getTime();
-            const distance = graduationDate - now;
-
-            // Nếu đã qua ngày tốt nghiệp
-            if (distance < 0) {
-                document.querySelector('.countdown-container').innerHTML = "<div class='name'>🎉 NHI ĐÃ TỐT NGHIỆP! 🎉</div>";
-                return;
-            }
-
-            // Tính toán thời gian
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            // Cập nhật giao diện (thêm số 0 phía trước nếu < 10)
-            document.getElementById("days").innerText = days < 10 ? "0" + days : days;
-            document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
-            document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
-            document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
-        }
-
-        // Chạy hàm ngay lập tức và sau đó mỗi giây
-        updateCountdown();
-        setInterval(updateCountdown, 1000);
     </script>
 </body>
 </html>
