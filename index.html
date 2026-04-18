@@ -86,7 +86,6 @@
         #static-wish-list { 
             display: flex; flex-direction: column; gap: 20px; 
             max-width: 550px; margin: 0 auto; 
-            overflow: hidden; /* Giữ các lời chúc trong vùng hiển thị */
         }
 
         .wish-card { 
@@ -95,19 +94,20 @@
             border-radius: 18px; 
             border-left: 6px solid var(--accent); 
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            /* Hiệu ứng trôi lên */
-            animation: floatUp 1.5s ease-out forwards;
-            opacity: 0; 
+            /* Định nghĩa animation trôi lên */
+            opacity: 0;
+            transform: translateY(40px);
+            animation: floatUp 1s ease-out forwards;
         }
 
         @keyframes floatUp {
-            0% {
-                transform: translateY(50px);
+            from {
                 opacity: 0;
+                transform: translateY(40px);
             }
-            100% {
-                transform: translateY(0);
+            to {
                 opacity: 1;
+                transform: translateY(0);
             }
         }
 
@@ -151,7 +151,6 @@
                 <p>Thành công không đến từ may mắn, mà từ những đêm trắng bên trang sách. Nhìn vào bức ảnh này, ta thấy được sự kiên trì và bản lĩnh thép của Nhi.</p>
             </div>
         </div>
-        
         <div class="photo-block" data-aos="fade-right">
             <div class="photo-frame"><img src="anh3.jpg"></div>
             <div class="meaning-box">
@@ -159,7 +158,6 @@
                 <p>Thanh xuân đẹp nhất là khi có những người bạn đồng hành. Những nụ cười vô tư trong tấm ảnh này chính là kho báu quý giá nhất.</p>
             </div>
         </div>
-
         <div class="photo-block" data-aos="fade-left">
             <div class="photo-frame"><img src="anh4.jpg"></div>
             <div class="meaning-box">
@@ -167,7 +165,6 @@
                 <p>Đằng sau mỗi bước đi của Nhi luôn có sự dõi theo từ gia đình. Bức ảnh này là lời tri ân ngọt ngào nhất dành cho những người thân yêu.</p>
             </div>
         </div>
-
         <div class="photo-block" data-aos="fade-right">
             <div class="photo-frame"><img src="anh5.jpg"></div>
             <div class="meaning-box">
@@ -175,7 +172,6 @@
                 <p>Khi tiếng chuông tốt nghiệp vang lên, mọi mệt mỏi đều tan biến. Nhi thực sự là một đóa hoa đang nở rộ rực rỡ nhất, đánh dấu cột mốc trưởng thành.</p>
             </div>
         </div>
-
         <div class="photo-block" data-aos="fade-left">
             <div class="photo-frame"><img src="anh6.jpg"></div>
             <div class="meaning-box">
@@ -229,13 +225,24 @@
         db.ref('wishes').on('value', (snapshot) => {
             const list = document.getElementById('static-wish-list');
             list.innerHTML = '';
+            
+            let items = [];
             snapshot.forEach((child) => {
-                const data = child.val();
+                items.push(child.val());
+            });
+
+            // Đảo ngược để tin nhắn mới nhất lên đầu
+            items.reverse();
+
+            items.forEach((data, index) => {
                 const card = document.createElement('div');
                 card.className = 'wish-card';
+                
+                // TẠO ĐỘ TRỄ (DELAY) ĐỂ THẤY CHÚNG TRÔI LÊN TỪNG CÁI MỘT
+                card.style.animationDelay = `${index * 0.15}s`;
+                
                 card.innerHTML = `<strong>${data.name}:</strong> ${data.message}`;
-                // Đảo ngược để lời chúc mới nhất trôi lên đầu danh sách
-                list.prepend(card);
+                list.appendChild(card);
             });
         });
 
