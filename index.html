@@ -3,109 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Chúc Mừng Tốt Nghiệp - Trần Đoàn Yến Nhi</title>
+    <title>Chúc Mừng Tốt Nghiệp - Yến Nhi</title>
     
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     
     <style>
-        :root { --accent: #c2185b; --pink-light: #fce4ec; --pink-bg: #ffe0e9; }
+        :root { --accent: #c2185b; --pink-bg: #ffe0e9; }
         
         body { 
             margin: 0; padding: 0; 
             font-family: 'Quicksand', sans-serif; 
-            background: var(--pink-light); 
-            /* Cho phép cuộn trang để xem ảnh */
-            overflow-y: auto; 
+            background: #fffafa;
             overflow-x: hidden;
+            min-height: 200vh; /* Tạo chiều cao để có thể vuốt màn hình */
         }
 
-        /* 1. Intro & Content (Nội dung trang web bình thường) */
-        .section-intro { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-        .gallery { padding: 50px 20px; }
-        .photo-card { background: white; padding: 15px; border-radius: 20px; margin-bottom: 50px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .photo-card img { width: 100%; border-radius: 10px; }
+        /* 1. NỘI DUNG CHÍNH (ẢNH, CHỮ...) */
+        .content-wrapper {
+            padding: 20px;
+            text-align: center;
+        }
+        .placeholder-photo {
+            width: 100%; max-width: 400px; height: 500px;
+            background: #eee; border-radius: 20px;
+            margin: 20px auto; display: flex; align-items: center; justify-content: center;
+        }
 
-        /* 2. PHẦN TIN NHẮN TRÔI CỐ ĐỊNH (FIXED OVERLAY) */
-        .fixed-wish-container {
+        /* 2. VÙNG TIN NHẮN TRÔI - CỐ ĐỊNH 100% */
+        .wish-overlay {
             position: fixed; /* Cố định trên màn hình */
-            top: 20%;        /* Cách đỉnh màn hình 20% */
-            right: 10px;     /* Nằm bên phải */
-            width: 180px;    /* Độ rộng của vùng tin nhắn */
-            height: 300px;   /* Chiều cao vùng hiển thị */
-            z-index: 999;    /* Nằm trên tất cả các thành phần khác */
-            pointer-events: none; /* Cho phép vuốt xuyên qua vùng này để cuộn trang */
+            top: 0; left: 0;
+            width: 100%; height: 100%; /* Phủ toàn màn hình */
+            pointer-events: none; /* QUAN TRỌNG: Vuốt xuyên qua lớp này để cuộn trang */
+            z-index: 9999; /* Luôn nằm trên cùng */
             overflow: hidden;
         }
 
         #scroll-container {
+            position: absolute;
+            bottom: -100px; /* Bắt đầu từ dưới cùng */
+            left: 20px; /* Căn lề trái hoặc phải tùy bạn */
+            width: 250px;
             display: flex;
             flex-direction: column;
-            position: absolute;
-            width: 100%;
-            animation: scrollUp linear infinite;
+            animation: moveUp linear infinite; /* Gọi hiệu ứng trôi */
         }
 
         .wish-bubble {
-            background: rgba(255, 255, 255, 0.9); /* Màu trắng trong suốt */
-            border-radius: 15px;
-            padding: 8px 12px;
-            margin-bottom: 10px;
-            font-size: 13px;
-            border-left: 4px solid var(--accent);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            color: #333;
-            pointer-events: auto; /* Vẫn cho phép nhấn vào tin nhắn nếu cần */
+            background: rgba(255, 255, 255, 0.95);
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border-radius: 20px;
+            border-left: 5px solid var(--accent);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            font-size: 14px;
+            pointer-events: auto; /* Để có thể nhấn vào tin nhắn nếu muốn */
         }
 
-        @keyframes scrollUp {
-            0% { transform: translateY(300px); } /* Bắt đầu từ dưới đáy khung nhìn */
-            100% { transform: translateY(-100%); } /* Trôi lên hết danh sách */
+        /* HIỆU ỨNG TRÔI TỪ DƯỚI LÊN TRÊN HẾT MÀN HÌNH */
+        @keyframes moveUp {
+            0% { transform: translateY(100vh); }
+            100% { transform: translateY(-120%); } 
         }
 
-        /* 3. Input Bar */
-        .input-sticky { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 85%; max-width: 400px; background: white; padding: 10px 15px; border-radius: 50px; display: flex; box-shadow: 0 10px 30px rgba(0,0,0,0.2); z-index: 1000; }
-        .input-sticky input { border: none; outline: none; flex: 1; font-size: 14px; }
-        .btn-send { background: var(--accent); color: white; border: none; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; }
+        /* 3. THANH NHẬP LIỆU */
+        .input-bar {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 400px; background: white;
+            padding: 10px 15px; border-radius: 50px;
+            display: flex; align-items: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            z-index: 10000;
+        }
+        input { border: none; outline: none; flex: 1; padding: 5px; }
+        .btn { background: var(--accent); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <div class="section-intro">
-        <h1 data-aos="fade-down">Lễ Tốt Nghiệp</h1>
-        <div style="font-family: 'Dancing Script'; font-size: 40px; color: var(--accent);">Yến Nhi</div>
-        <p>Vuốt xuống để xem ảnh nhé ↓</p>
+    <div class="content-wrapper">
+        <h1 style="color: var(--accent);">Chúc Mừng Yến Nhi</h1>
+        <p>Thử vuốt màn hình lên xuống nhé, tin nhắn vẫn trôi!</p>
+        <div class="placeholder-photo">Ảnh tốt nghiệp 1</div>
+        <div class="placeholder-photo">Ảnh tốt nghiệp 2</div>
+        <div class="placeholder-photo">Ảnh tốt nghiệp 3</div>
     </div>
 
-    <div class="gallery">
-        <div class="photo-card" data-aos="fade-up">
-            <img src="anh1.jpg" alt="Kỷ niệm 1">
-            <p>Khoảnh khắc rạng rỡ của Nhi.</p>
-        </div>
-        <div class="photo-card" data-aos="fade-up">
-            <img src="anh2.jpg" alt="Kỷ niệm 2">
-            <p>Hành trình nỗ lực không ngừng.</p>
-        </div>
-    </div>
-
-    <div class="fixed-wish-container">
+    <div class="wish-overlay">
         <div id="scroll-container">
             </div>
     </div>
 
-    <div class="input-sticky">
-        <input type="text" id="name-in" placeholder="Tên" style="width: 50px; border-right: 1px solid #eee; margin-right: 5px;">
-        <input type="text" id="msg-in" placeholder="Gửi lời chúc...">
-        <button class="btn-send" onclick="send()">❤</button>
+    <div class="input-bar">
+        <input type="text" id="n" placeholder="Tên" style="width: 50px;">
+        <input type="text" id="m" placeholder="Lời chúc...">
+        <button class="btn" onclick="send()">❤</button>
     </div>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
     
     <script>
-        AOS.init();
         const firebaseConfig = {
             apiKey: "AIzaSyB4PKGLjoQ_-TtjMZfJVXz8dD_6DBeJQeM",
             authDomain: "thieptotnghiep-1e79e.firebaseapp.com",
@@ -118,34 +117,31 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
+        // Lấy dữ liệu
         db.ref('wishes').on('value', (snapshot) => {
             const container = document.getElementById('scroll-container');
-            let content = '';
+            container.innerHTML = '';
             
             snapshot.forEach((child) => {
                 const data = child.val();
-                content += `
-                    <div class="wish-bubble">
-                        <strong>${data.name}</strong>: ${data.message}
-                    </div>
-                `;
+                const div = document.createElement('div');
+                div.className = 'wish-bubble';
+                div.innerHTML = `<strong>${data.name}</strong>: ${data.message}`;
+                container.appendChild(div);
             });
 
-            // Nhân đôi nội dung để trôi vô tận
-            container.innerHTML = content + content;
-            
-            // Chỉnh tốc độ trôi dựa trên số lượng tin nhắn
-            const count = snapshot.numChildren();
-            container.style.animationDuration = `${count * 4 + 5}s`;
+            // Điều chỉnh tốc độ trôi dựa trên số lượng tin nhắn (ví dụ: 10 giây + 2s mỗi tin nhắn)
+            const duration = 10 + (snapshot.numChildren() * 2);
+            container.style.animationDuration = `${duration}s`;
         });
 
         function send() {
-            const n = document.getElementById('name-in').value;
-            const m = document.getElementById('msg-in').value;
-            if(n && m) {
-                db.ref('wishes').push({ name: n, message: m, timestamp: Date.now() });
-                confetti({ particleCount: 80, spread: 50, origin: { y: 0.9 } });
-                document.getElementById('msg-in').value = '';
+            const name = document.getElementById('n').value;
+            const msg = document.getElementById('m').value;
+            if(name && msg) {
+                db.ref('wishes').push({ name: name, message: msg });
+                confetti({ particleCount: 100, origin: { y: 0.8 } });
+                document.getElementById('m').value = '';
             }
         }
     </script>
