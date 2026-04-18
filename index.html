@@ -10,109 +10,93 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     
     <style>
-        :root {
-            --accent: #c2185b;
-            --pink-light: #fce4ec;
-            --pink-bg: #ffe0e9;
+        :root { --accent: #c2185b; --pink-light: #fce4ec; --pink-bg: #ffe0e9; }
+        
+        body { 
+            margin: 0; padding: 0; 
+            font-family: 'Quicksand', sans-serif; 
+            background: var(--pink-light); 
+            /* Cho phép cuộn trang để xem ảnh */
+            overflow-y: auto; 
+            overflow-x: hidden;
         }
 
-        body {
-            margin: 0; padding: 0; width: 100%; font-family: 'Quicksand', sans-serif;
-            background-color: var(--pink-light);
-            background-image: linear-gradient(135deg, #fffafa 0%, #fde2e4 100%);
-            color: #333; overflow-x: hidden;
+        /* 1. Intro & Content (Nội dung trang web bình thường) */
+        .section-intro { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        .gallery { padding: 50px 20px; }
+        .photo-card { background: white; padding: 15px; border-radius: 20px; margin-bottom: 50px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .photo-card img { width: 100%; border-radius: 10px; }
+
+        /* 2. PHẦN TIN NHẮN TRÔI CỐ ĐỊNH (FIXED OVERLAY) */
+        .fixed-wish-container {
+            position: fixed; /* Cố định trên màn hình */
+            top: 20%;        /* Cách đỉnh màn hình 20% */
+            right: 10px;     /* Nằm bên phải */
+            width: 180px;    /* Độ rộng của vùng tin nhắn */
+            height: 300px;   /* Chiều cao vùng hiển thị */
+            z-index: 999;    /* Nằm trên tất cả các thành phần khác */
+            pointer-events: none; /* Cho phép vuốt xuyên qua vùng này để cuộn trang */
+            overflow: hidden;
         }
 
-        /* 1. Intro Section */
-        .section-intro {
-            height: 100vh; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; text-align: center;
-            background: linear-gradient(to bottom, var(--pink-bg), var(--pink-light));
-        }
-        .name { font-family: 'Dancing Script', cursive; font-size: clamp(45px, 10vw, 60px); color: var(--accent); margin: 15px 0; }
-
-        /* 2. Gallery Layout */
-        .gallery-container { padding: 50px 15px; max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 100px; }
-        .photo-frame { width: 85%; max-width: 350px; background: white; padding: 10px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .photo-frame img { width: 100%; border-radius: 12px; }
-        .meaning-box { width: 95%; background: white; padding: 20px; border-radius: 20px; margin-top: -40px; border-left: 6px solid var(--accent); }
-
-        /* PHẦN LƯU BÚT TRÔI CHẬM (SCROLLING WISHES) */
-        .section-wishes {
-            background: white; padding: 40px 20px 150px 20px;
-            border-radius: 50px 50px 0 0; margin-top: 50px;
-            text-align: center;
-        }
-        .wish-list-title { font-family: 'Dancing Script', cursive; font-size: 40px; color: var(--accent); margin-bottom: 20px; }
-
-        /* Khung chứa hiệu ứng cuộn */
-        .wish-display-area {
-            max-width: 500px; height: 400px; margin: 0 auto;
-            overflow: hidden; position: relative;
-            background: #fff5f7; border-radius: 25px;
-            border: 1px solid #fce4ec;
-        }
-
-        /* Container chứa các tin nhắn đang chạy */
         #scroll-container {
-            position: absolute; width: 100%;
-            animation: scrollUp 20s linear infinite; /* Điều chỉnh số giây để nhanh/chậm */
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            width: 100%;
+            animation: scrollUp linear infinite;
         }
 
-        /* Dừng lại khi di chuột vào để dễ đọc */
-        .wish-display-area:hover #scroll-container { animation-play-state: paused; }
-
-        .wish-card {
-            background: white; margin: 15px auto; padding: 15px;
-            width: 85%; border-radius: 15px; border-bottom: 3px solid var(--pink-bg);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-            text-align: left;
+        .wish-bubble {
+            background: rgba(255, 255, 255, 0.9); /* Màu trắng trong suốt */
+            border-radius: 15px;
+            padding: 8px 12px;
+            margin-bottom: 10px;
+            font-size: 13px;
+            border-left: 4px solid var(--accent);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            color: #333;
+            pointer-events: auto; /* Vẫn cho phép nhấn vào tin nhắn nếu cần */
         }
 
         @keyframes scrollUp {
-            0% { transform: translateY(100%); }
-            100% { transform: translateY(-100%); }
+            0% { transform: translateY(300px); } /* Bắt đầu từ dưới đáy khung nhìn */
+            100% { transform: translateY(-100%); } /* Trôi lên hết danh sách */
         }
 
-        /* 4. Input Bar */
-        .input-sticky {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 450px; background: white; padding: 10px 20px;
-            border-radius: 50px; display: flex; align-items: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2); z-index: 1000;
-        }
-        .input-sticky input { border: none; outline: none; flex: 1; padding: 5px; }
-        .btn-send { background: var(--accent); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; }
+        /* 3. Input Bar */
+        .input-sticky { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 85%; max-width: 400px; background: white; padding: 10px 15px; border-radius: 50px; display: flex; box-shadow: 0 10px 30px rgba(0,0,0,0.2); z-index: 1000; }
+        .input-sticky input { border: none; outline: none; flex: 1; font-size: 14px; }
+        .btn-send { background: var(--accent); color: white; border: none; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <div class="section-intro">
         <h1 data-aos="fade-down">Lễ Tốt Nghiệp</h1>
-        <div class="name">Trần Đoàn Yến Nhi</div>
-        <p>Hành trình của những giấc mơ</p>
+        <div style="font-family: 'Dancing Script'; font-size: 40px; color: var(--accent);">Yến Nhi</div>
+        <p>Vuốt xuống để xem ảnh nhé ↓</p>
     </div>
 
-    <div class="gallery-container">
-        <div class="meaning-box" data-aos="zoom-in" style="margin-top: 0; text-align: center; border-left: none; border: 2px dashed var(--accent);">
-            <h3 style="font-family: 'Dancing Script'; font-size: 30px; color: var(--accent);">Hẹn Nhi vào lúc</h3>
-            <p><strong>10:00 - Ngày 26/04/2026</strong></p>
-            <p>Trường THPT Nguyễn Trường Thúy</p>
+    <div class="gallery">
+        <div class="photo-card" data-aos="fade-up">
+            <img src="anh1.jpg" alt="Kỷ niệm 1">
+            <p>Khoảnh khắc rạng rỡ của Nhi.</p>
+        </div>
+        <div class="photo-card" data-aos="fade-up">
+            <img src="anh2.jpg" alt="Kỷ niệm 2">
+            <p>Hành trình nỗ lực không ngừng.</p>
         </div>
     </div>
 
-    <div class="section-wishes">
-        <div class="wish-list-title">Lời chúc trôi lên...</div>
-        
-        <div class="wish-display-area">
-            <div id="scroll-container">
-                </div>
-        </div>
+    <div class="fixed-wish-container">
+        <div id="scroll-container">
+            </div>
     </div>
 
     <div class="input-sticky">
-        <input type="text" id="name-in" placeholder="Tên.." style="width: 60px; border-right: 1px solid #eee;">
-        <input type="text" id="msg-in" placeholder="Gửi lời chúc đến Nhi..." style="padding-left: 10px;">
+        <input type="text" id="name-in" placeholder="Tên" style="width: 50px; border-right: 1px solid #eee; margin-right: 5px;">
+        <input type="text" id="msg-in" placeholder="Gửi lời chúc...">
         <button class="btn-send" onclick="send()">❤</button>
     </div>
 
@@ -134,28 +118,25 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // Lấy dữ liệu và tạo nội dung cuộn
         db.ref('wishes').on('value', (snapshot) => {
             const container = document.getElementById('scroll-container');
-            container.innerHTML = '';
+            let content = '';
             
-            let allWishesHTML = '';
             snapshot.forEach((child) => {
                 const data = child.val();
-                allWishesHTML += `
-                    <div class="wish-card">
+                content += `
+                    <div class="wish-bubble">
                         <strong>${data.name}</strong>: ${data.message}
                     </div>
                 `;
             });
 
-            // Để hiệu ứng cuộn mượt mà và không bị hở, ta nhân đôi nội dung
-            container.innerHTML = allWishesHTML + allWishesHTML;
+            // Nhân đôi nội dung để trôi vô tận
+            container.innerHTML = content + content;
             
-            // Điều chỉnh tốc độ dựa trên số lượng tin nhắn (càng nhiều tin nhắn chạy càng lâu)
+            // Chỉnh tốc độ trôi dựa trên số lượng tin nhắn
             const count = snapshot.numChildren();
-            const duration = Math.max(10, count * 3); // Tối thiểu 10 giây
-            container.style.animationDuration = `${duration}s`;
+            container.style.animationDuration = `${count * 4 + 5}s`;
         });
 
         function send() {
@@ -163,7 +144,7 @@
             const m = document.getElementById('msg-in').value;
             if(n && m) {
                 db.ref('wishes').push({ name: n, message: m, timestamp: Date.now() });
-                confetti({ particleCount: 100, spread: 70, origin: { y: 0.8 } });
+                confetti({ particleCount: 80, spread: 50, origin: { y: 0.9 } });
                 document.getElementById('msg-in').value = '';
             }
         }
