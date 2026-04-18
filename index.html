@@ -2,256 +2,168 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Lễ Tốt Nghiệp - Phạm Yến Phương</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tốt Nghiệp Yến Nhi - Gallery</title>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        :root {
-            --accent: #c2185b;
-            --pink-bg: #ffe0e9;
-        }
-
+        :root { --accent: #c2185b; --pink-soft: #fce4ec; }
+        
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Quicksand', sans-serif;
-            background-color: #fce4ec;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow: hidden;
+            margin: 0; font-family: 'Quicksand', sans-serif;
+            background-color: var(--pink-soft);
+            color: #333; overflow-x: hidden;
         }
 
-        /* Khung điện thoại */
-        .card {
-            width: 100%;
-            max-width: 450px;
+        /* 1. Header Section (Phần đầu trang) */
+        .section-intro {
             height: 100vh;
-            background: var(--pink-bg) url('https://img.freepik.com/free-vector/abstract-pink-watercolor-background_23-2148491410.jpg') center/cover;
-            position: relative;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            padding: 20px;
-            box-sizing: border-box;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-        }
-
-        h1 {
-            font-size: 28px;
-            color: #2c3e50;
-            margin: 10px 0 5px;
-        }
-
-        .name {
-            font-family: 'Dancing Script', cursive;
-            font-size: 36px;
-            color: var(--accent);
-            margin: 0 0 20px;
-        }
-
-        /* Countdown */
-        .countdown {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .count-box {
-            background: white;
-            padding: 8px 10px;
-            border-radius: 10px;
-            text-align: center;
-            min-width: 45px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-        }
-        .count-num { font-weight: bold; font-size: 20px; color: #333; }
-        .count-label { font-size: 10px; color: #777; }
-
-        /* Ảnh và Brush */
-        .photo-container {
-            width: 250px;
-            height: 250px;
-            position: relative;
-            margin-bottom: 15px;
-        }
-        .photo-img {
-            width: 100%;
-            height: 100%;
-            /* THAY LINK ẢNH CỦA BẠN VÀO ĐÂY */
-            background: url('https://cdn.pixabay.com/photo/2017/09/26/17/51/graduation-2789416_1280.png') center/cover;
-            border-radius: 50%;
-            border: 5px solid white;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-
-        /* Lời chúc nổi bật */
-        .highlight-wish {
-            background: rgba(194, 24, 91, 0.85);
-            color: white;
-            padding: 12px 20px;
-            border-radius: 15px;
-            font-size: 14px;
-            text-align: center;
-            width: 85%;
-            z-index: 2;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        /* Danh sách lời chúc bên dưới */
-        #wish-container {
-            width: 100%;
-            flex-grow: 1;
-            overflow-y: auto;
-            margin-bottom: 70px; /* Chừa chỗ cho thanh nhập */
-            padding-right: 5px;
-        }
-        .wish-item {
-            background: rgba(255, 255, 255, 0.6);
-            margin-bottom: 8px;
-            padding: 10px;
-            border-radius: 10px;
-            font-size: 13px;
-            border-left: 4px solid var(--accent);
-        }
-
-        /* Form nhập lời chúc (Sticky Bottom) */
-        .input-bar {
-            position: absolute;
-            bottom: 15px;
-            width: 90%;
-            display: flex;
-            gap: 8px;
-            background: white;
-            padding: 8px;
-            border-radius: 30px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        input {
-            border: none;
-            outline: none;
-            padding: 8px 12px;
-            font-size: 14px;
-        }
-        #name { width: 30%; border-right: 1px solid #eee; }
-        #message { width: 50%; flex-grow: 1; }
-
-        .btn-send {
-            background: var(--accent);
-            color: white;
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(to bottom, #ffe0e9, var(--pink-soft));
         }
 
-        /* Custom scrollbar */
-        #wish-container::-webkit-scrollbar { width: 3px; }
-        #wish-container::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
+        .name { font-family: 'Dancing Script', cursive; font-size: 45px; color: var(--accent); margin: 10px 0; }
+        .scroll-down { margin-top: 50px; font-size: 12px; color: #888; animation: bounce 2s infinite; }
+
+        /* 2. Gallery Section (Kéo xuống để xem ảnh) */
+        .gallery-container { padding: 20px; max-width: 600px; margin: 0 auto; }
+
+        .photo-item {
+            width: 100%;
+            margin-bottom: 50px;
+            background: white;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+        }
+
+        .photo-item img {
+            width: 100%;
+            border-radius: 10px;
+            display: block;
+        }
+
+        .photo-caption {
+            margin-top: 15px;
+            font-style: italic;
+            text-align: center;
+            color: #555;
+        }
+
+        /* 3. Lời chúc Section (Cuối trang) */
+        .section-wishes {
+            min-height: 100vh;
+            padding: 40px 20px;
+            box-sizing: border-box;
+            background: white;
+            border-top-left-radius: 30px;
+            border-top-right-radius: 30px;
+        }
+
+        #wish-list { margin-top: 20px; }
+        .wish-box {
+            background: var(--pink-soft);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            border-left: 5px solid var(--accent);
+        }
+
+        /* Form nhập lời chúc (Sticky) */
+        .input-sticky {
+            position: fixed; bottom: 20px; left: 50%;
+            transform: translateX(-50%);
+            width: 90%; max-width: 400px;
+            background: white; padding: 10px;
+            border-radius: 30px; display: flex;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            z-index: 100;
+        }
+        .input-sticky input { border: none; outline: none; padding: 10px; flex: 1; }
+        .btn-heart { background: var(--accent); border: none; color: white; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; }
+
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} 60% {transform: translateY(-5px);} }
     </style>
 </head>
 <body>
 
-<div class="card">
-    <h1>Lễ Tốt Nghiệp</h1>
-    <div class="name">Phạm Yến Phương</div>
-
-    <div class="countdown">
-        <div class="count-box"><div class="count-num" id="d">00</div><div class="count-label">Ngày</div></div>
-        <div class="count-box"><div class="count-num" id="h">00</div><div class="count-label">Giờ</div></div>
-        <div class="count-box"><div class="count-num" id="m">00</div><div class="count-label">Phút</div></div>
-        <div class="count-box"><div class="count-num" id="s">00</div><div class="count-label">Giây</div></div>
+    <div class="section-intro">
+        <div data-aos="zoom-in">🎓</div>
+        <h1 data-aos="fade-up">Lễ Tốt Nghiệp</h1>
+        <div class="name" data-aos="fade-up" data-aos-delay="300">Trần Đoàn Yến Nhi</div>
+        <p data-aos="fade-up" data-aos-delay="500">26 Tháng 04, 2026</p>
+        <div class="scroll-down">Kéo xuống để xem thêm ↓</div>
     </div>
 
-    <div class="photo-container">
-        <div class="photo-img"></div>
+    <div class="gallery-container">
+        <div class="photo-item" data-aos="fade-right">
+            <img src="anh1.jpg" alt="Kỷ niệm 1">
+            <div class="photo-caption">Ngày đầu nhập học...</div>
+        </div>
+
+        <div class="photo-item" data-aos="fade-left">
+            <img src="anh2.jpg" alt="Kỷ niệm 2">
+            <div class="photo-caption">Những người bạn thân thiết</div>
+        </div>
+
+        <div class="photo-item" data-aos="fade-up">
+            <img src="anh3.jpg" alt="Kỷ niệm 3">
+            <div class="photo-caption">Khoảnh khắc rạng rỡ nhất</div>
+        </div>
     </div>
 
-    <div class="highlight-wish">
-        Chúc mừng Yến Phương tốt nghiệp thật rạng rỡ! <br>
-        <strong>Mãi xinh đẹp và đạt được mọi nguyện vọng nhé! ✨</strong>
+    <div class="section-wishes">
+        <h2 style="text-align: center; color: var(--accent);">Lời Chúc Ý Nghĩa</h2>
+        <div id="wish-list"></div>
     </div>
 
-    <div id="wish-container">
+    <div class="input-sticky">
+        <input type="text" id="name-in" placeholder="Tên bạn.." style="width: 30%; border-right: 1px solid #eee;">
+        <input type="text" id="msg-in" placeholder="Viết gì đó thật hay...">
+        <button class="btn-heart" onclick="send()">❤</button>
     </div>
 
-    <div class="input-bar">
-        <input type="text" id="name" placeholder="Tên..">
-        <input type="text" id="message" placeholder="Gửi lời chúc...">
-        <button class="btn-send" onclick="sendWish()">❤</button>
-    </div>
-</div>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
+    <script>
+        AOS.init({ duration: 1000 }); // Khởi tạo hiệu ứng cuộn
 
-<script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
+        // FIREBASE CONFIG (Nhớ dùng lại code config của bạn nhé)
+        const firebaseConfig = {
+            apiKey: "AIzaSyB4PKGLjoQ_-TtjMZfJVXz8dD_6DBeJQeM",
+            authDomain: "thieptotnghiep-1e79e.firebaseapp.com",
+            projectId: "thieptotnghiep-1e79e",
+            storageBucket: "thieptotnghiep-1e79e.firebasestorage.app",
+            messagingSenderId: "6578169222",
+            appId: "1:6578169222:web:23bb55a36b073d60eff807"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
 
-<script>
-    // 1. Cấu hình Firebase của bạn
-    const firebaseConfig = {
-        apiKey: "AIzaSyB4PKGLjoQ_-TtjMZfJVXz8dD_6DBeJQeM",
-        authDomain: "thieptotnghiep-1e79e.firebaseapp.com",
-        projectId: "thieptotnghiep-1e79e",
-        storageBucket: "thieptotnghiep-1e79e.firebasestorage.app",
-        messagingSenderId: "6578169222",
-        appId: "1:6578169222:web:23bb55a36b073d60eff807"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const database = firebase.database();
-
-    // 2. Đồng hồ đếm ngược (Ví dụ đến 20/05/2026)
-    const targetDate = new Date("May 20, 2026 08:00:00").getTime();
-    setInterval(() => {
-        const now = new Date().getTime();
-        const diff = targetDate - now;
-        if (diff > 0) {
-            document.getElementById('d').innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
-            document.getElementById('h').innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            document.getElementById('m').innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            document.getElementById('s').innerText = Math.floor((diff % (1000 * 60)) / 1000);
+        function send() {
+            const n = document.getElementById('name-in').value;
+            const m = document.getElementById('msg-in').value;
+            if(n && m) {
+                db.ref('wishes').push({ name: n, message: m });
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.9 } });
+                document.getElementById('msg-in').value = '';
+            }
         }
-    }, 1000);
 
-    // 3. Gửi lời chúc
-    function sendWish() {
-        const nameVal = document.getElementById('name').value;
-        const msgVal = document.getElementById('message').value;
-
-        if (nameVal && msgVal) {
-            database.ref('wishes').push({
-                name: nameVal,
-                message: msgVal,
-                timestamp: Date.now()
-            });
-
-            confetti({
-                particleCount: 100,
-                spread: 70,
-                origin: { y: 0.8 }
-            });
-
-            document.getElementById('message').value = '';
-        } else {
-            alert("Vui lòng nhập đầy đủ thông tin!");
-        }
-    }
-
-    // 4. Lấy lời chúc về
-    database.ref('wishes').on('child_added', (snapshot) => {
-        const data = snapshot.val();
-        const container = document.getElementById('wish-container');
-        const item = document.createElement('div');
-        item.className = 'wish-item';
-        item.innerHTML = `<strong>${data.name}:</strong> ${data.message}`;
-        container.prepend(item);
-    });
-</script>
-
+        db.ref('wishes').on('child_added', (s) => {
+            const d = s.val();
+            const div = document.createElement('div');
+            div.className = 'wish-box';
+            div.innerHTML = `<strong>${d.name}:</strong> ${d.message}`;
+            document.getElementById('wish-list').prepend(div);
+        });
+    </script>
 </body>
 </html>
