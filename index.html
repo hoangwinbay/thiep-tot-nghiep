@@ -18,147 +18,93 @@
 
         body { margin: 0; font-family: 'Quicksand', sans-serif; background-color: var(--pink-light); color: #333; overflow-x: hidden; }
 
-        /* 1. Intro Section */
+        /* Sections */
         .section-intro { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: linear-gradient(to bottom, var(--pink-bg), var(--pink-light)); padding: 20px; box-sizing: border-box; }
-        .cap-icon { font-size: 60px; margin-bottom: 10px; }
-        h1 { font-size: 22px; color: #2c3e50; text-transform: uppercase; letter-spacing: 3px; margin: 0; }
         .name { font-family: 'Dancing Script', cursive; font-size: 45px; color: var(--accent); margin: 15px 0; }
-        .date { font-size: 18px; color: #607d8b; font-weight: 500; }
-        .scroll-hint { margin-top: 50px; font-size: 13px; color: #888; animation: bounce 2s infinite; }
-
-        /* 2. Gallery Section */
-        .gallery-container { padding: 40px 20px; max-width: 500px; margin: 0 auto; }
+        .gallery-container { padding: 40px 20px; max-width: 500px; margin: 0 auto; padding-bottom: 150px; }
         .photo-item { width: 100%; margin-bottom: 80px; background: white; padding: 15px; border-radius: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); box-sizing: border-box; }
-        .photo-item img { width: 100%; border-radius: 18px; display: block; object-fit: cover; }
-        .photo-caption { margin-top: 25px; font-size: 15px; line-height: 1.8; text-align: justify; color: #444; }
-        .photo-caption strong { display: block; font-size: 19px; color: var(--accent); margin-bottom: 12px; text-align: center; }
+        .photo-item img { width: 100%; border-radius: 18px; display: block; }
+        .photo-caption { margin-top: 20px; font-size: 14px; line-height: 1.7; text-align: justify; }
 
-        /* 3. Single Flying Wish Section (HIỆU ỨNG MỚI) */
-        .section-wishes {
-            height: 60vh; /* Giảm chiều cao để tập trung vào 1 tin nhắn */
-            position: relative;
-            background: white;
-            border-radius: 40px 40px 0 0;
-            overflow: hidden;
-            box-shadow: 0 -10px 40px rgba(0,0,0,0.05);
-            display: flex;
-            justify-content: center;
-            align-items: center; /* Căn giữa tin nhắn theo chiều dọc */
-        }
-
-        .wish-header { text-align: center; padding-top: 30px; font-family: 'Dancing Script', cursive; font-size: 38px; color: var(--accent); position: absolute; top: 0; width: 100%; z-index: 10; }
-
-        #wish-display-area {
-            width: 90%;
-            max-width: 350px;
-            height: 150px; /* Vùng hiển thị tin nhắn */
-            position: relative;
+        /* KHUNG TIN NHẮN TRÔI THEO MÀN HÌNH (FIXED) */
+        #fixed-wish-container {
+            position: fixed;
+            bottom: 100px; /* Nằm trên thanh nhập tin nhắn */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 85%;
+            max-width: 380px;
+            z-index: 999;
+            pointer-events: none; /* Để không vướng khi chạm màn hình */
         }
 
         .single-wish {
-            position: absolute;
-            bottom: -50px; /* Bắt đầu từ dưới đáy vùng hiển thị */
-            left: 0;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(5px);
-            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(8px);
+            padding: 12px 20px;
             border-radius: 20px;
-            box-shadow: 0 5px 20px rgba(194, 24, 91, 0.15);
-            font-size: 14px;
+            box-shadow: 0 8px 25px rgba(194, 24, 91, 0.2);
             border-left: 6px solid var(--accent);
-            opacity: 0; /* Ban đầu ẩn */
-            box-sizing: border-box;
+            font-size: 14px;
             
-            /* Animation trôi lên, mờ dần và mất */
-            animation: flowUpAndFade 8s ease-in-out forwards; /* 8 giây cho 1 chu kỳ */
+            /* Hiệu ứng mặc định: Trôi lên và mờ dần */
+            animation: slideUpFade 5s ease-in-out forwards;
         }
 
-        @keyframes flowUpAndFade {
-            0% { transform: translateY(0); opacity: 0; }
-            15% { transform: translateY(-30px); opacity: 1; } /* Hiện rõ khi trôi lên 1 chút */
-            70% { transform: translateY(-70px); opacity: 1; } /* Giữ nguyên khi trôi tiếp */
-            100% { transform: translateY(-100px); opacity: 0; } /* Mờ dần và biến mất ở trên */
+        @keyframes slideUpFade {
+            0% { transform: translateY(30px); opacity: 0; }
+            20% { transform: translateY(0); opacity: 1; }
+            80% { transform: translateY(-20px); opacity: 1; }
+            100% { transform: translateY(-50px); opacity: 0; }
         }
 
-        /* 4. Sticky Input Bar */
-        .input-sticky {
-            position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
-            width: 92%; max-width: 420px; background: white; padding: 10px 15px;
-            border-radius: 50px; display: flex; align-items: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.25); z-index: 1001; box-sizing: border-box;
-        }
-        .input-sticky input { border: none; outline: none; padding: 10px; font-family: inherit; font-size: 15px; }
+        /* Input bar */
+        .input-sticky { position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 420px; background: white; padding: 10px 15px; border-radius: 50px; display: flex; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.25); z-index: 1001; }
+        .input-sticky input { border: none; outline: none; padding: 10px; flex: 1; font-size: 15px; }
         #name-in { width: 30%; border-right: 1px solid #eee; }
-        #msg-in { flex-grow: 1; padding-left: 15px; }
-        .btn-send { background: var(--accent); color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; font-size: 22px; display: flex; align-items: center; justify-content: center; }
-
-        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-12px);} }
+        .btn-send { background: var(--accent); color: white; border: none; width: 45px; height: 45px; border-radius: 50%; font-size: 22px; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <div class="section-intro">
-        <div class="cap-icon" data-aos="zoom-in">🎓</div>
-        <h1>Lễ Tốt Nghiệp</h1>
+        <h1 data-aos="fade-down">Lễ Tốt Nghiệp</h1>
         <div class="name">Trần Đoàn Yến Nhi</div>
-        <div class="date">26 Tháng 04, 2026</div>
-        <div class="scroll-hint">Kéo xuống để xem hành trình và gửi lời chúc ↓</div>
+        <div style="margin-top:20px; color:#888;">Vuốt xuống để xem và đọc lời chúc ↓</div>
     </div>
+
+    <div id="fixed-wish-container"></div>
 
     <div class="gallery-container">
         <div class="photo-item" data-aos="fade-up">
-            <img src="anh1.jpg" alt="Ảnh 1">
-            <div class="photo-caption">
-                <strong>Hành trình vạn dặm bắt đầu từ bước chân đầu tiên...</strong>
-                Nhớ ngày nào em còn bỡ ngỡ bước vào cổng trường với bao lo lắng và hoài bão. Thời gian trôi qua thật nhanh, mỗi góc sân trường đều đã chứng kiến sự trưởng thành từng ngày của Yến Nhi.
-            </div>
-        </div>
-        <div class="photo-item" data-aos="fade-right">
-            <img src="anh2.jpg" alt="Ảnh 2">
-            <div class="photo-caption">
-                <strong>Những đêm thức trắng bên ánh đèn bàn...</strong>
-                Thành công không bao giờ đến dễ dàng. Đằng sau tấm bằng tốt nghiệp hôm nay là những ngày tháng ôn thi miệt mài, là những áp lực từ bài vở. Nhưng chính những thử thách đó đã tôi luyện nên một cô gái mạnh mẽ như hôm nay.
-            </div>
-        </div>
-        <div class="photo-item" data-aos="fade-left">
-            <img src="anh3.jpg" alt="Ảnh 3">
-            <div class="photo-caption">
-                <strong>Thanh xuân rực rỡ bởi vì có các bạn!</strong>
-                Cảm ơn những người bạn đã luôn bên cạnh, cùng cười, cùng khóc và cùng nhau đi qua những năm tháng đẹp nhất. Dù sau này mỗi người một hướng, nhưng những kỷ niệm này sẽ mãi là một phần đẹp đẽ trong trái tim Nhi.
-            </div>
-        </div>
-        <div class="photo-item" data-aos="zoom-in">
-            <img src="anh4.jpg" alt="Ảnh 4">
-            <div class="photo-caption">
-                <strong>Gia đình - Điểm tựa bình yên nhất.</strong>
-                Cảm ơn ba mẹ và gia đình đã luôn là hậu phương vững chắc, tiếp thêm sức mạnh cho em trên mỗi bước đường đời. Tốt nghiệp chính là món quà tri ân ý nghĩa nhất mà Nhi dành tặng cho những người thân yêu.
-            </div>
-        </div>
-        <div class="photo-item" data-aos="fade-right">
-            <img src="anh5.jpg" alt="Ảnh 5">
-            <div class="photo-caption">
-                <strong>Khoảnh khắc của sự tự hào!</strong>
-                Ngày hôm nay, khi cầm trên tay tấm bằng tốt nghiệp, hãy tự hào về chính bản thân mình. Mọi cố gắng đã được đền đáp xứng đáng. Hãy cứ tự tin tỏa sáng và theo đuổi đam mê, vì bầu trời phía trước là của em.
-            </div>
+            <img src="anh1.jpg" alt="1">
+            <div class="photo-caption"><strong>Kỷ niệm 1</strong><br>Hành trình bắt đầu...</div>
         </div>
         <div class="photo-item" data-aos="fade-up">
-            <img src="anh6.jpg" alt="Ảnh 6">
-            <div class="photo-caption">
-                <strong>Khép lại chương cũ, mở ra tương lai rạng ngời.</strong>
-                Cánh cửa đại học khép lại cũng là lúc cánh cửa cuộc đời mở ra với bao cơ hội mới. Chúc Trần Đoàn Yến Nhi luôn giữ vững niềm tin, không ngừng học hỏi và gặt hái được thật nhiều thành công trên con đường phía trước!
-            </div>
+            <img src="anh2.jpg" alt="2">
+            <div class="photo-caption"><strong>Kỷ niệm 2</strong><br>Nỗ lực không ngừng...</div>
         </div>
-    </div>
-
-    <div class="section-wishes">
-        <div class="wish-header">Dòng Lưu Bút</div>
-        <div id="wish-display-area"></div>
+        <div class="photo-item" data-aos="fade-up">
+            <img src="anh3.jpg" alt="3">
+            <div class="photo-caption"><strong>Kỷ niệm 3</strong><br>Tình bạn rực rỡ...</div>
+        </div>
+        <div class="photo-item" data-aos="fade-up">
+            <img src="anh4.jpg" alt="4">
+            <div class="photo-caption"><strong>Kỷ niệm 4</strong><br>Gia đình yêu thương...</div>
+        </div>
+        <div class="photo-item" data-aos="fade-up">
+            <img src="anh5.jpg" alt="5">
+            <div class="photo-caption"><strong>Kỷ niệm 5</strong><br>Niềm vui vỡ òa...</div>
+        </div>
+        <div class="photo-item" data-aos="fade-up">
+            <img src="anh6.jpg" alt="6">
+            <div class="photo-caption"><strong>Kỷ niệm 6</strong><br>Tương lai rộng mở...</div>
+        </div>
     </div>
 
     <div class="input-sticky">
         <input type="text" id="name-in" placeholder="Tên..">
-        <input type="text" id="msg-in" placeholder="Gửi lời chúc đến Nhi...">
+        <input type="text" id="msg-in" placeholder="Gửi lời chúc...">
         <button class="btn-send" onclick="send()">❤</button>
     </div>
 
@@ -167,9 +113,8 @@
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
     
     <script>
-        AOS.init({ duration: 1000, once: true });
-
-        // Firebase Configuration (Giữ nguyên của Hoàng)
+        AOS.init();
+        
         const firebaseConfig = {
             apiKey: "AIzaSyB4PKGLjoQ_-TtjMZfJVXz8dD_6DBeJQeM",
             authDomain: "thieptotnghiep-1e79e.firebaseapp.com",
@@ -181,50 +126,61 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // MẢNG CHỨA HÀNG ĐỢI TIN NHẮN (MESSAGE QUEUE)
-        let wishQueue = [];
-        let isDisplaying = false; // Cờ kiểm tra xem có tin nhắn nào đang hiển thị không
+        let wishes = [];
+        let currentIndex = 0;
+        let lastScrollY = window.scrollY;
 
-        // Gửi lời chúc
+        // Tải dữ liệu từ Firebase
+        db.ref('wishes').on('value', (snapshot) => {
+            wishes = [];
+            snapshot.forEach((child) => {
+                wishes.push(child.val());
+            });
+        });
+
+        // Hàm hiển thị tin nhắn
+        function showNextWish() {
+            if (wishes.length === 0) return;
+            
+            const container = document.getElementById('fixed-wish-container');
+            // Xóa tin nhắn cũ nếu có
+            container.innerHTML = '';
+
+            const wish = wishes[currentIndex % wishes.length];
+            const wishEl = document.createElement('div');
+            wishEl.className = 'single-wish';
+            wishEl.innerHTML = `<strong>${wish.name}:</strong> ${wish.message}`;
+            
+            container.appendChild(wishEl);
+            currentIndex++;
+        }
+
+        // Lắng nghe sự kiện vuốt màn hình (Scroll)
+        let scrollTimeout;
+        window.addEventListener('scroll', () => {
+            const currentScrollY = window.scrollY;
+            
+            // Nếu người dùng cuộn một khoảng đủ xa (ví dụ 300px)
+            if (Math.abs(currentScrollY - lastScrollY) > 300) {
+                lastScrollY = currentScrollY;
+                
+                // Debounce để không hiện quá nhiều tin nhắn cùng lúc
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(() => {
+                    showNextWish();
+                }, 100);
+            }
+        });
+
         function send() {
             const n = document.getElementById('name-in').value;
             const m = document.getElementById('msg-in').value;
             if(n && m) {
-                db.ref('wishes').push({ name: n, message: m, timestamp: Date.now() });
-                confetti({ particleCount: 150, spread: 70, origin: { y: 0.9 } });
+                db.ref('wishes').push({ name: n, message: m });
+                confetti({ particleCount: 100, origin: { y: 0.9 } });
                 document.getElementById('msg-in').value = '';
             }
         }
-
-        // HÀM XỬ LÝ HÀNG ĐỢI VÀ HIỂN THỊ 1 TIN NHẮN
-        function processWishQueue() {
-            // Nếu không có tin nhắn trong hàng đợi hoặc có tin nhắn đang hiển thị, thì thoát
-            if (wishQueue.length === 0 || isDisplaying) return;
-
-            isDisplaying = true; // Đánh dấu là bắt đầu hiển thị
-            const currentWish = wishQueue.shift(); // Lấy tin nhắn đầu tiên ra khỏi hàng đợi
-
-            const displayArea = document.getElementById('wish-display-area');
-            const wishEl = document.createElement('div');
-            wishEl.className = 'single-wish';
-            wishEl.innerHTML = `<strong>${currentWish.name}:</strong> ${currentWish.message}`;
-
-            displayArea.appendChild(wishEl);
-
-            // Lắng nghe sự kiện khi animation kết thúc
-            wishEl.addEventListener('animationend', () => {
-                wishEl.remove(); // Xóa tin nhắn cũ khỏi DOM
-                isDisplaying = false; // Đánh dấu là đã hiển thị xong
-                processWishQueue(); // Gọi lại hàm để xử lý tin nhắn tiếp theo trong hàng đợi
-            });
-        }
-
-        // Lắng nghe Firebase và thêm vào hàng đợi
-        db.ref('wishes').on('child_added', (snapshot) => {
-            const d = snapshot.val();
-            wishQueue.push(d); // Thêm tin nhắn mới vào cuối hàng đợi
-            processWishQueue(); // Cố gắng xử lý hàng đợi
-        });
     </script>
 </body>
 </html>
