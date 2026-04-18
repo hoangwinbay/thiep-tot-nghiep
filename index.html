@@ -16,14 +16,11 @@
             --pink-bg: #ffe0e9;
         }
 
-        html { overflow-y: scroll !important; height: auto; }
-
         body {
-            margin: 0; padding: 0; width: 100%; min-height: 100vh;
-            font-family: 'Quicksand', sans-serif;
+            margin: 0; padding: 0; width: 100%; font-family: 'Quicksand', sans-serif;
             background-color: var(--pink-light);
             background-image: linear-gradient(135deg, #fffafa 0%, #fde2e4 100%);
-            color: #333; overflow-x: hidden; display: block;
+            color: #333; overflow-x: hidden;
         }
 
         /* 1. Intro Section */
@@ -31,175 +28,91 @@
             height: 100vh; display: flex; flex-direction: column;
             justify-content: center; align-items: center; text-align: center;
             background: linear-gradient(to bottom, var(--pink-bg), var(--pink-light));
-            padding: 20px;
         }
-
-        .cap-icon { font-size: 70px; margin-bottom: 10px; animation: bounce 2s infinite; }
-        h1 { font-size: 24px; color: #2c3e50; text-transform: uppercase; letter-spacing: 2px; margin: 0; }
         .name { font-family: 'Dancing Script', cursive; font-size: clamp(45px, 10vw, 60px); color: var(--accent); margin: 15px 0; }
-        .scroll-hint { margin-top: 30px; font-size: 14px; color: #888; animation: bounce 2s infinite; }
 
         /* 2. Gallery Layout */
-        .gallery-container {
-            padding: 100px 15px; max-width: 800px; margin: 0 auto;
-            display: flex; flex-direction: column; gap: 150px;
-        }
+        .gallery-container { padding: 50px 15px; max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 100px; }
+        .photo-frame { width: 85%; max-width: 350px; background: white; padding: 10px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .photo-frame img { width: 100%; border-radius: 12px; }
+        .meaning-box { width: 95%; background: white; padding: 20px; border-radius: 20px; margin-top: -40px; border-left: 6px solid var(--accent); }
 
-        .photo-block { display: flex; flex-direction: column; width: 100%; position: relative; }
-        .photo-frame {
-            width: 85%; max-width: 380px; background: white; padding: 15px;
-            border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        }
-        .photo-frame img { width: 100%; height: auto; min-height: 400px; object-fit: cover; border-radius: 12px; }
-
-        .meaning-box {
-            width: 95%; background: rgba(255, 255, 255, 0.95); padding: 25px;
-            border-radius: 25px; margin-top: -60px; z-index: 2;
-            box-shadow: 0 15px 35px rgba(194, 24, 91, 0.1);
-            border-left: 8px solid var(--accent); box-sizing: border-box;
-        }
-
-        .photo-block:nth-child(odd) .photo-frame { align-self: flex-start; }
-        .photo-block:nth-child(odd) .meaning-box { align-self: flex-end; }
-        .photo-block:nth-child(even) .photo-frame { align-self: flex-end; }
-        .photo-block:nth-child(even) .meaning-box { align-self: flex-start; border-left: 0; border-right: 8px solid var(--accent); }
-
-        .meaning-box h3 { margin: 0 0 12px 0; color: var(--accent); font-family: 'Dancing Script', cursive; font-size: 32px; }
-        .meaning-box p { margin: 0; font-size: 15.5px; line-height: 1.8; text-align: justify; color: #444; }
-
-        /* KHỐI THÔNG TIN LỄ TỐT NGHIỆP */
-        .info-card {
-            max-width: 550px; margin: 50px auto 20px;
-            background: white; padding: 30px; border-radius: 30px;
-            box-shadow: 0 15px 40px rgba(194, 24, 91, 0.15);
-            text-align: center; border: 2px dashed var(--accent);
-        }
-        .info-item { margin: 15px 0; font-size: 18px; color: #444; line-height: 1.6; }
-
-        /* 3. Wish Section - HIỆU ỨNG TRÔI LÊN CHẬM */
+        /* PHẦN LƯU BÚT TRÔI CHẬM (SCROLLING WISHES) */
         .section-wishes {
-            background: white; padding: 40px 20px 180px 20px;
-            border-radius: 50px 50px 0 0; margin-top: 30px;
+            background: white; padding: 40px 20px 150px 20px;
+            border-radius: 50px 50px 0 0; margin-top: 50px;
+            text-align: center;
         }
-        .wish-list-title { text-align: center; font-family: 'Dancing Script', cursive; font-size: 45px; color: var(--accent); margin-bottom: 40px; }
-        
-        #static-wish-list { 
-            display: flex; flex-direction: column; gap: 20px; 
-            max-width: 550px; margin: 0 auto; 
+        .wish-list-title { font-family: 'Dancing Script', cursive; font-size: 40px; color: var(--accent); margin-bottom: 20px; }
+
+        /* Khung chứa hiệu ứng cuộn */
+        .wish-display-area {
+            max-width: 500px; height: 400px; margin: 0 auto;
+            overflow: hidden; position: relative;
+            background: #fff5f7; border-radius: 25px;
+            border: 1px solid #fce4ec;
         }
 
-        .wish-card { 
-            background: var(--pink-light); 
-            padding: 18px; 
-            border-radius: 18px; 
-            border-left: 6px solid var(--accent); 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            /* Định nghĩa animation trôi lên */
-            opacity: 0;
-            transform: translateY(40px);
-            animation: floatUp 1s ease-out forwards;
+        /* Container chứa các tin nhắn đang chạy */
+        #scroll-container {
+            position: absolute; width: 100%;
+            animation: scrollUp 20s linear infinite; /* Điều chỉnh số giây để nhanh/chậm */
         }
 
-        @keyframes floatUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        /* Dừng lại khi di chuột vào để dễ đọc */
+        .wish-display-area:hover #scroll-container { animation-play-state: paused; }
+
+        .wish-card {
+            background: white; margin: 15px auto; padding: 15px;
+            width: 85%; border-radius: 15px; border-bottom: 3px solid var(--pink-bg);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            text-align: left;
+        }
+
+        @keyframes scrollUp {
+            0% { transform: translateY(100%); }
+            100% { transform: translateY(-100%); }
         }
 
         /* 4. Input Bar */
         .input-sticky {
-            position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 450px; background: white; padding: 12px 20px;
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 450px; background: white; padding: 10px 20px;
             border-radius: 50px; display: flex; align-items: center;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.25); z-index: 9999;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2); z-index: 1000;
         }
-        .input-sticky input { border: none; outline: none; font-size: 15px; flex: 1; background: transparent; }
-        #name-in { width: 85px; border-right: 1px solid #eee; padding-right: 10px; }
-        #msg-in { padding-left: 15px; }
-        .btn-send { background: var(--accent); color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; margin-left: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
-
-        @keyframes bounce { 0%, 100% {transform: translateY(0);} 50% {transform: translateY(-10px);} }
+        .input-sticky input { border: none; outline: none; flex: 1; padding: 5px; }
+        .btn-send { background: var(--accent); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <div class="section-intro">
-        <div class="cap-icon">🎓</div>
         <h1 data-aos="fade-down">Lễ Tốt Nghiệp</h1>
-        <div class="name" data-aos="zoom-in">Trần Đoàn Yến Nhi</div>
-        <p data-aos="fade-up">Chứng nhân cho một hành trình tỏa sáng</p>
-        <div class="scroll-hint">Hãy cuộn xuống để xem hành trình ↓</div>
+        <div class="name">Trần Đoàn Yến Nhi</div>
+        <p>Hành trình của những giấc mơ</p>
     </div>
 
     <div class="gallery-container">
-        <div class="photo-block" data-aos="fade-right">
-            <div class="photo-frame"><img src="anh1.jpg"></div>
-            <div class="meaning-box">
-                <h3>01. Khởi đầu rực rỡ</h3>
-                <p>Nhi có nhớ ngày đầu tiên bước chân vào cổng trường không? Đó là khoảnh khắc của sự bỡ ngỡ hòa cùng những ước mơ cháy bỏng. Tấm ảnh này là kỷ niệm đẹp về một Yến Nhi đầy nhiệt huyết.</p>
-            </div>
+        <div class="meaning-box" data-aos="zoom-in" style="margin-top: 0; text-align: center; border-left: none; border: 2px dashed var(--accent);">
+            <h3 style="font-family: 'Dancing Script'; font-size: 30px; color: var(--accent);">Hẹn Nhi vào lúc</h3>
+            <p><strong>10:00 - Ngày 26/04/2026</strong></p>
+            <p>Trường THPT Nguyễn Trường Thúy</p>
         </div>
-        <div class="photo-block" data-aos="fade-left">
-            <div class="photo-frame"><img src="anh2.jpg"></div>
-            <div class="meaning-box">
-                <h3>02. Đam mê miệt mài</h3>
-                <p>Thành công không đến từ may mắn, mà từ những đêm trắng bên trang sách. Nhìn vào bức ảnh này, ta thấy được sự kiên trì và bản lĩnh thép của Nhi.</p>
-            </div>
-        </div>
-        <div class="photo-block" data-aos="fade-right">
-            <div class="photo-frame"><img src="anh3.jpg"></div>
-            <div class="meaning-box">
-                <h3>03. Thanh xuân rạng rỡ</h3>
-                <p>Thanh xuân đẹp nhất là khi có những người bạn đồng hành. Những nụ cười vô tư trong tấm ảnh này chính là kho báu quý giá nhất.</p>
-            </div>
-        </div>
-        <div class="photo-block" data-aos="fade-left">
-            <div class="photo-frame"><img src="anh4.jpg"></div>
-            <div class="meaning-box">
-                <h3>04. Điểm tựa yêu thương</h3>
-                <p>Đằng sau mỗi bước đi của Nhi luôn có sự dõi theo từ gia đình. Bức ảnh này là lời tri ân ngọt ngào nhất dành cho những người thân yêu.</p>
-            </div>
-        </div>
-        <div class="photo-block" data-aos="fade-right">
-            <div class="photo-frame"><img src="anh5.jpg"></div>
-            <div class="meaning-box">
-                <h3>05. Giây phút vỡ òa</h3>
-                <p>Khi tiếng chuông tốt nghiệp vang lên, mọi mệt mỏi đều tan biến. Nhi thực sự là một đóa hoa đang nở rộ rực rỡ nhất, đánh dấu cột mốc trưởng thành.</p>
-            </div>
-        </div>
-        <div class="photo-block" data-aos="fade-left">
-            <div class="photo-frame"><img src="anh6.jpg"></div>
-            <div class="meaning-box">
-                <h3>06. Vươn xa thế giới</h3>
-                <p>Một cánh cửa khép lại để muôn vàn cánh cửa khác rực rỡ hơn mở ra. Hãy cứ tự tin, vững bước và mãi giữ vững trái tim nhiệt huyết.</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="info-card" data-aos="fade-up">
-        <h2 style="font-family: 'Dancing Script', cursive; color: var(--accent); font-size: 35px; margin-bottom: 20px;">Thông Tin Buổi Lễ</h2>
-        <div class="info-item">
-            <span>⏰ <strong>Thời gian:</strong> 10:00 - Ngày 26/04/2026</span>
-        </div>
-        <div class="info-item">
-            <span>📍 <strong>Địa điểm:</strong> Trường THPT Nguyễn Trường Thúy</span>
-        </div>
-        <p style="font-size: 14px; color: #888; margin-top: 15px;">Chúc mừng Nhi với cột mốc quan trọng này! ✨</p>
     </div>
 
     <div class="section-wishes">
-        <div class="wish-list-title">Dòng Lưu Bút</div>
-        <div id="static-wish-list"></div>
+        <div class="wish-list-title">Lời chúc trôi lên...</div>
+        
+        <div class="wish-display-area">
+            <div id="scroll-container">
+                </div>
+        </div>
     </div>
 
     <div class="input-sticky">
-        <input type="text" id="name-in" placeholder="Tên..">
-        <input type="text" id="msg-in" placeholder="Gửi lời chúc đến Nhi...">
+        <input type="text" id="name-in" placeholder="Tên.." style="width: 60px; border-right: 1px solid #eee;">
+        <input type="text" id="msg-in" placeholder="Gửi lời chúc đến Nhi..." style="padding-left: 10px;">
         <button class="btn-send" onclick="send()">❤</button>
     </div>
 
@@ -208,8 +121,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
     
     <script>
-        AOS.init({ duration: 1000, once: true });
-
+        AOS.init();
         const firebaseConfig = {
             apiKey: "AIzaSyB4PKGLjoQ_-TtjMZfJVXz8dD_6DBeJQeM",
             authDomain: "thieptotnghiep-1e79e.firebaseapp.com",
@@ -222,28 +134,28 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
+        // Lấy dữ liệu và tạo nội dung cuộn
         db.ref('wishes').on('value', (snapshot) => {
-            const list = document.getElementById('static-wish-list');
-            list.innerHTML = '';
+            const container = document.getElementById('scroll-container');
+            container.innerHTML = '';
             
-            let items = [];
+            let allWishesHTML = '';
             snapshot.forEach((child) => {
-                items.push(child.val());
+                const data = child.val();
+                allWishesHTML += `
+                    <div class="wish-card">
+                        <strong>${data.name}</strong>: ${data.message}
+                    </div>
+                `;
             });
 
-            // Đảo ngược để tin nhắn mới nhất lên đầu
-            items.reverse();
-
-            items.forEach((data, index) => {
-                const card = document.createElement('div');
-                card.className = 'wish-card';
-                
-                // TẠO ĐỘ TRỄ (DELAY) ĐỂ THẤY CHÚNG TRÔI LÊN TỪNG CÁI MỘT
-                card.style.animationDelay = `${index * 0.15}s`;
-                
-                card.innerHTML = `<strong>${data.name}:</strong> ${data.message}`;
-                list.appendChild(card);
-            });
+            // Để hiệu ứng cuộn mượt mà và không bị hở, ta nhân đôi nội dung
+            container.innerHTML = allWishesHTML + allWishesHTML;
+            
+            // Điều chỉnh tốc độ dựa trên số lượng tin nhắn (càng nhiều tin nhắn chạy càng lâu)
+            const count = snapshot.numChildren();
+            const duration = Math.max(10, count * 3); // Tối thiểu 10 giây
+            container.style.animationDuration = `${duration}s`;
         });
 
         function send() {
@@ -251,7 +163,7 @@
             const m = document.getElementById('msg-in').value;
             if(n && m) {
                 db.ref('wishes').push({ name: n, message: m, timestamp: Date.now() });
-                confetti({ particleCount: 150, spread: 70, origin: { y: 0.8 } });
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.8 } });
                 document.getElementById('msg-in').value = '';
             }
         }
