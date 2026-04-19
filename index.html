@@ -232,71 +232,94 @@
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
     
     <script>
-        AOS.init({ duration: 1200, once: true });
+    AOS.init({ duration: 1200, once: true });
 
-        // Firebase Config
-        const firebaseConfig = {
-            apiKey: "AIzaSyB4PKGLjoQ_-TtjMZfJVXz8dD_6DBeJQeM",
-            authDomain: "thieptotnghiep-1e79e.firebaseapp.com",
-            databaseURL: "https://thieptotnghiep-1e79e-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "thieptotnghiep-1e79e",
-            storageBucket: "thieptotnghiep-1e79e.firebasestorage.app",
-            messagingSenderId: "6578169222",
-            appId: "1:6578169222:web:23bb55a36b073d60eff807"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
+    // 1. Firebase Config
+    const firebaseConfig = {
+        apiKey: "AIzaSyB4PKGLjoQ_-TtjMZfJVXz8dD_6DBeJQeM",
+        authDomain: "thieptotnghiep-1e79e.firebaseapp.com",
+        databaseURL: "https://thieptotnghiep-1e79e-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "thieptotnghiep-1e79e",
+        storageBucket: "thieptotnghiep-1e79e.firebasestorage.app",
+        messagingSenderId: "6578169222",
+        appId: "1:6578169222:web:23bb55a36b073d60eff807"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
-        // Nhạc nền
-        const audio = document.getElementById('bg-audio');
-        const mBtn = document.getElementById('music-btn');
-        function toggleMusic() {
-            if (audio.paused) { audio.play(); mBtn.classList.add('rotating'); }
-            else { audio.pause(); mBtn.classList.remove('rotating'); }
+    // 2. XỬ LÝ NHẠC (Phần thay đổi chính)
+    const audio = document.getElementById('bg-audio');
+    const mBtn = document.getElementById('music-btn');
+
+    function toggleMusic() {
+        if (audio.paused) { 
+            audio.play(); 
+            mBtn.classList.add('rotating'); 
+        } else { 
+            audio.pause(); 
+            mBtn.classList.remove('rotating'); 
         }
+    }
 
-        // Tự động play nhạc khi có tương tác đầu tiên
-        window.addEventListener('click', () => {
-            if(audio.paused) { audio.play(); mBtn.classList.add('rotating'); }
-        }, {once: true});
-
-        // Firebase Wishes
-        db.ref('wishes').on('value', (snapshot) => {
-            const listContainer = document.getElementById('static-wish-list');
-            listContainer.innerHTML = ''; 
-            if (snapshot.exists()) {
-                snapshot.forEach((child) => {
-                    const data = child.val();
-                    const card = document.createElement('div');
-                    card.className = 'wish-card';
-                    card.innerHTML = `<strong>${data.name}:</strong> ${data.message}`;
-                    listContainer.prepend(card); 
-                });
-            }
-        });
-
-        function send() {
-            const n = document.getElementById('name-in').value;
-            const m = document.getElementById('msg-in').value;
-            if(n && m) {
-                db.ref('wishes').push({ name: n, message: m, timestamp: Date.now() });
-                confetti({ particleCount: 150, origin: { y: 0.8 } });
-                document.getElementById('name-in').value = '';
-                document.getElementById('msg-in').value = '';
-            }
+    // Hàm kích hoạt nhạc khi có tương tác đầu tiên
+    function enableAutoPlay() {
+        if (audio.paused) {
+            audio.play().then(() => {
+                mBtn.classList.add('rotating');
+                // Sau khi phát thành công thì gỡ bỏ các sự kiện lắng nghe để tối ưu hiệu năng
+                window.removeEventListener('touchstart', enableAutoPlay);
+                window.removeEventListener('click', enableAutoPlay);
+                window.removeEventListener('scroll', enableAutoPlay);
+            }).catch(e => {
+                console.log("Trình duyệt đang chặn tự phát, chờ tương tác thêm...");
+            });
         }
+    }
 
-        function updateCountdown() {
-            const target = new Date("April 26, 2026 10:00:00").getTime();
-            const now = new Date().getTime();
-            const diff = target - now;
-            if (diff < 0) return;
-            document.getElementById("days").innerText = Math.floor(diff / (1000*60*60*24));
-            document.getElementById("hours").innerText = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
-            document.getElementById("minutes").innerText = Math.floor((diff % (1000*60*60)) / (1000*60));
-            document.getElementById("seconds").innerText = Math.floor((diff % (1000*60)) / 1000);
+    // Lắng nghe mọi hành động phổ biến của người dùng
+    window.addEventListener('touchstart', enableAutoPlay);
+    window.addEventListener('click', enableAutoPlay);
+    window.addEventListener('scroll', enableAutoPlay);
+
+    // 3. Firebase Wishes (Lấy lời chúc)
+    db.ref('wishes').on('value', (snapshot) => {
+        const listContainer = document.getElementById('static-wish-list');
+        listContainer.innerHTML = ''; 
+        if (snapshot.exists()) {
+            snapshot.forEach((child) => {
+                const data = child.val();
+                const card = document.createElement('div');
+                card.className = 'wish-card';
+                card.innerHTML = `<strong>${data.name}:</strong> ${data.message}`;
+                listContainer.prepend(card); 
+            });
         }
-        setInterval(updateCountdown, 1000);
-    </script>
+    });
+
+    // 4. Hàm gửi lời chúc
+    function send() {
+        const n = document.getElementById('name-in').value;
+        const m = document.getElementById('msg-in').value;
+        if(n && m) {
+            db.ref('wishes').push({ name: n, message: m, timestamp: Date.now() });
+            confetti({ particleCount: 150, origin: { y: 0.8 } });
+            document.getElementById('name-in').value = '';
+            document.getElementById('msg-in').value = '';
+        }
+    }
+
+    // 5. Đồng hồ đếm ngược
+    function updateCountdown() {
+        const target = new Date("April 26, 2026 10:00:00").getTime();
+        const now = new Date().getTime();
+        const diff = target - now;
+        if (diff < 0) return;
+        document.getElementById("days").innerText = Math.floor(diff / (1000*60*60*24));
+        document.getElementById("hours").innerText = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+        document.getElementById("minutes").innerText = Math.floor((diff % (1000*60*60)) / (1000*60));
+        document.getElementById("seconds").innerText = Math.floor((diff % (1000*60)) / 1000);
+    }
+    setInterval(updateCountdown, 1000);
+</script>
 </body>
 </html>
