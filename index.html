@@ -55,15 +55,48 @@
             background-size: 100% auto;
         }
     }
-</style>
-/* Khử khoảng trống cho thẻ HTML để ảnh tràn ra tận mép màn hình */
-html {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-}
-/* -------------------- */
+<style>
+        /* Định nghĩa các biến màu sắc để dễ quản lý */
+        :root {
+            --pink-bg: #fff0f3;
+            --pink-light: #ffccd5;
+            --accent: #c2185b;
+            --white-glass: rgba(255, 255, 255, 0.85);
+        }
+
+        /* 1. Reset & Khử khoảng trống trình duyệt tuyệt đối */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100%;
+            /* Fix lỗi chiều cao trên Safari iPhone */
+            height: -webkit-fill-available;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            color: #333;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+
+            /* 2. Cấu hình ảnh nền SIÊU BAO TRỌN & LẶP LẠI */
+            /* Thay 'ten-anh-cua-ban.jpg' bằng link ảnh của Hoang */
+            background-image: url('ten-anh-cua-ban.jpg');
+            
+            /* Bao trọn chiều ngang 100% mọi thiết bị, cao tự động theo tỉ lệ */
+            background-size: 100% auto;
+            
+            /* Lặp lại theo chiều dọc khi web dài ra */
+            background-repeat: repeat-y;
+            
+            /* Luôn bắt đầu từ đỉnh trang và căn giữa */
+            background-position: top center;
+            
+            /* Ảnh trôi theo nội dung khi vuốt */
+            background-attachment: scroll;
+        }
 
         /* Music Button */
         #music-btn {
@@ -94,7 +127,8 @@ html {
             justify-content: center; 
             align-items: center; 
             text-align: center; 
-            background: linear-gradient(to bottom, var(--pink-bg), var(--pink-light)); 
+            /* Để nhìn rõ ảnh nền, ta làm nền intro trong suốt nhẹ */
+            background: rgba(255, 240, 243, 0.4); 
             padding: 20px; 
             box-sizing: border-box;
         }
@@ -111,7 +145,7 @@ html {
         /* Countdown */
         .countdown-container {
             display: flex; gap: 12px; margin-top: 20px;
-            background: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.7);
             padding: 10px 15px; border-radius: 25px;
         }
         .countdown-item { display: flex; flex-direction: column; min-width: 50px; }
@@ -124,10 +158,12 @@ html {
         .photo-frame { width: 85%; max-width: 400px; background: white; padding: 15px; border-radius: 20px; box-shadow: 0 30px 60px rgba(0,0,0,0.12); }
         .photo-frame img { width: 100%; height: 480px; object-fit: cover; border-radius: 12px; }
         .meaning-box { width: 95%; background: var(--white-glass); padding: 25px; border-radius: 25px; margin-top: -60px; z-index: 2; border-left: 8px solid var(--accent); box-sizing: border-box; }
+        
         .photo-block:nth-child(even) .photo-frame { align-self: flex-end; }
         .photo-block:nth-child(even) .meaning-box { align-self: flex-start; border-left: 0; border-right: 8px solid var(--accent); }
         .photo-block:nth-child(odd) .photo-frame { align-self: flex-start; }
         .photo-block:nth-child(odd) .meaning-box { align-self: flex-end; }
+        
         .meaning-box h3 { margin: 0 0 12px 0; color: var(--accent); font-family: 'Dancing Script', cursive; font-size: 28px; }
         .meaning-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #444; text-align: justify; }
 
@@ -165,6 +201,12 @@ html {
         .input-sticky input { border: none; outline: none; flex: 1; font-size: 15px; }
         #name-in { width: 30%; border-right: 1px solid #eee; padding-right: 8px; }
         .btn-send { background: var(--accent); color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; }
+
+        /* Tối ưu riêng cho màn hình nhỏ */
+        @media screen and (max-width: 768px) {
+            body { background-size: 100% auto; }
+            .name { font-size: 40px; }
+        }
     </style>
 </head>
 <body>
