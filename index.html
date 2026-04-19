@@ -141,14 +141,32 @@
         @keyframes flowUpOnce { 0% { bottom: -120px; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { bottom: 95vh; opacity: 0; } }
 
         /* 4. Wish Section */
-        .section-wishes { padding: 60px 20px 180px 20px; }
-        #static-wish-list { display: flex; flex-direction: column; gap: 20px; max-width: 550px; margin: 0 auto; }
-        .wish-card { background: var(--white-glass); padding: 18px; border-radius: 15px; border-left: 5px solid var(--accent); backdrop-filter: blur(5px); }
-        /* Input */
-        .input-sticky { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 420px; background: white; padding: 12px 18px; border-radius: 50px; display: flex; align-items: center; box-shadow: 0 10px 40px rgba(0,0,0,0.25); z-index: 10000; }
-        .input-sticky input { border: none; outline: none; flex: 1; font-size: 15px; }
-        #name-in { width: 30%; border-right: 1px solid #eee; padding-right: 8px; }
-        .btn-send { background: var(--accent); color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; }
+        /* Tìm và sửa lại đoạn này trong thẻ <style> */
+.section-wishes { 
+    background: transparent !important; /* Giữ trong suốt để thấy ảnh nền lặp lại */
+    padding: 60px 20px 180px 20px; 
+    position: relative; /* Đảm bảo nó luôn nằm trong luồng hiển thị */
+    width: 100%;
+    display: block !important; /* Ép nó phải hiển thị */
+}
+
+/* Đảm bảo danh sách lời chúc có màu nền trắng nhẹ để không bị chìm vào ảnh nền */
+#static-wish-list { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 20px; 
+    max-width: 550px; 
+    margin: 0 auto; 
+    min-height: 200px; /* Tạo khung sẵn để lời chúc đổ vào */
+}
+
+.wish-card { 
+    background: rgba(255, 255, 255, 0.9) !important; /* Màu trắng đục để nổi bật lời chúc */
+    padding: 18px; 
+    border-radius: 15px; 
+    border-left: 5px solid var(--accent); 
+    color: #333;
+}
     </style>
 </head>
 <body>
