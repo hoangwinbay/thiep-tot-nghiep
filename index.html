@@ -26,6 +26,27 @@
             overflow-x: hidden; 
         }
 
+        /* Music Toggle Button */
+        #music-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 45px;
+            height: 45px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            z-index: 10001;
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.3s ease;
+        }
+        .music-rotating { animation: rotate 3s linear infinite; }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
         /* 1. Intro Section */
         .section-intro { 
             height: 100vh; 
@@ -71,33 +92,40 @@
         .meaning-box h3 { margin: 0 0 12px 0; color: var(--accent); font-family: 'Dancing Script', cursive; font-size: 28px; }
         .meaning-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #444; text-align: justify; }
 
-        /* 3. Event Info Card (Phần mới thêm) */
-        .section-info-detail {
-            max-width: 500px; margin: 50px auto;
-            background: white; padding: 30px;
-            border-radius: 30px; text-align: center;
-            box-shadow: 0 15px 40px rgba(194, 24, 91, 0.15);
-            border: 2px dashed var(--accent);
+        /* VÙNG TIN NHẮN TRÔI CỐ ĐỊNH (FIXED OVERLAY) */
+        #wish-overlay { 
+            position: fixed; 
+            top: 0; left: 0; 
+            width: 100%; height: 100%; 
+            pointer-events: none; 
+            z-index: 9999; 
+            overflow: hidden;
         }
-        .info-title { font-family: 'Dancing Script', cursive; font-size: 32px; color: var(--accent); margin-bottom: 15px; }
-        .info-row { font-size: 17px; margin: 10px 0; color: #444; }
+        
+        #scroll-container {
+            position: absolute;
+            width: 250px;
+            left: 20px;
+            display: flex;
+            flex-direction: column;
+            animation: moveUp linear infinite;
+        }
 
-        /* Floating Overlay */
-        #wish-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
         .floating-bubble {
-            position: absolute; left: 50%; transform: translateX(-50%);
-            width: 85%; max-width: 320px; background: white;
-            padding: 18px; border-radius: 20px; border-top: 5px solid var(--accent);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2); font-size: 14px;
-            animation: flowUpOnce 10s linear forwards;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border-radius: 20px;
+            border-left: 5px solid var(--accent);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            font-size: 13px;
+            pointer-events: auto;
         }
-        @keyframes flowUpOnce { 0% { bottom: -120px; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { bottom: 95vh; opacity: 0; } }
 
-        /* 4. Wish Section */
-        .section-wishes { background: white; padding: 60px 20px 180px 20px; border-radius: 50px 50px 0 0; }
-        .wish-list-title { text-align: center; font-family: 'Dancing Script', cursive; font-size: 40px; color: var(--accent); margin-bottom: 35px; }
-        #static-wish-list { display: flex; flex-direction: column; gap: 20px; max-width: 550px; margin: 0 auto; }
-        .wish-card { background: var(--pink-light); padding: 18px; border-radius: 15px; border-left: 5px solid var(--accent); }
+        @keyframes moveUp {
+            0% { transform: translateY(100vh); }
+            100% { transform: translateY(-100%); }
+        }
 
         /* Input */
         .input-sticky { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 420px; background: white; padding: 12px 18px; border-radius: 50px; display: flex; align-items: center; box-shadow: 0 10px 40px rgba(0,0,0,0.25); z-index: 10000; }
@@ -108,12 +136,22 @@
 </head>
 <body>
 
+    <div id="music-control" onclick="toggleMusic()">
+        <span id="music-icon">🎵</span>
+        <audio id="bg-music" loop>
+            <source src="https://www.bensound.com/bensound-music/bensound-sunny.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <div id="wish-overlay">
+        <div id="scroll-container"></div>
+    </div>
+
     <div class="section-intro">
         <div data-aos="zoom-in" style="font-size: 60px;">✨</div>
         <h1 data-aos="fade-down">Lễ Tốt Nghiệp</h1>
         <div class="name" data-aos="fade-down">Trần Đoàn Yến Nhi</div>
-        
-        <img src="anh_hero.jpg" alt="Yến Nhi" class="hero-photo" data-aos="zoom-in" data-aos-delay="300">
+        <img src="anh_hero.jpg" alt="Yến Nhi" class="hero-photo" data-aos="zoom-in">
         
         <div class="countdown-container" data-aos="fade-up">
             <div class="countdown-item"><div class="countdown-time" id="days">00</div><div class="countdown-label">Ngày</div></div>
@@ -123,65 +161,15 @@
         </div>
     </div>
 
-    <div id="wish-overlay"></div>
-
     <div class="gallery-container">
         <div class="photo-block" data-aos="fade-up">
             <div class="photo-frame"><img src="anh1.jpg"></div>
             <div class="meaning-box">
                 <h3>Khúc dạo đầu của ước mơ</h3>
-                <p>Mỗi hành trình vạn dặm đều bắt đầu từ một bước chân nhỏ bé. Nhi có nhớ ngày đầu tiên ấy không? Khi giảng đường còn là một khái niệm xa lạ và đầy bỡ ngỡ, đó không chỉ là sự bắt đầu của một chương học vấn, mà còn là khoảnh khắc Nhi dũng cảm rời xa vòng tay bảo bọc để tự mình viết nên những trang nhật ký trưởng thành đầu tiên.</p>
+                <p>Mỗi hành trình vạn dặm đều bắt đầu từ một bước chân nhỏ bé. Nhi có nhớ ngày đầu tiên ấy không?...</p>
             </div>
         </div>
-        <div class="photo-block" data-aos="fade-up">
-            <div class="photo-frame"><img src="anh2.jpg"></div>
-            <div class="meaning-box">
-                <h3>Bản lĩnh qua từng trang sách</h3>
-                <p>Thành công của ngày hôm nay không được xây đắp bằng hoa hồng, mà được dệt nên từ những đêm trắng miệt mài bên ánh đèn bàn leo lét. Có những lúc mệt mỏi rã rời, nhưng Nhi đã chọn cách đối mặt và vượt qua. Chính sự nỗ lực âm thầm đó đã tạo nên một Yến Nhi rạng rỡ và tự tin như hiện tại.</p>
-            </div>
         </div>
-        <div class="photo-block" data-aos="fade-up">
-            <div class="photo-frame"><img src="anh3.jpg"></div>
-            <div class="meaning-box">
-                <h3>Những mảnh ghép thanh xuân</h3>
-                <p>Thanh xuân sẽ thật tẻ nhạt nếu thiếu đi những người bạn đồng hành. Cảm ơn vì đã có những người bạn tuyệt vời xuất hiện trong đời Nhi, cùng sẻ chia những bữa cơm vội, cùng nhau thức khuya ôn bài. Những nụ cười vô tư lự chính là kho báu quý giá nhất mà thời gian không bao giờ có thể xóa nhòa.</p>
-            </div>
-        </div>
-        <div class="photo-block" data-aos="fade-up">
-            <div class="photo-frame"><img src="anh4.jpg"></div>
-            <div class="meaning-box">
-                <h3>Gia đình - Điểm tựa bình yên</h3>
-                <p>Dù ngoài kia sóng gió thế nào, khi trở về nhà, Nhi vẫn luôn là cô con gái nhỏ bé của ba mẹ. Tấm bằng này là món quà tri ân sâu sắc nhất dành cho sự hy sinh thầm lặng của gia đình. Ánh mắt hạnh phúc của ba mẹ chính là động lực lớn lao nhất để Nhi vững vàng bước tiếp.</p>
-            </div>
-        </div>
-        <div class="photo-block" data-aos="fade-up">
-            <div class="photo-frame"><img src="anh5.jpg"></div>
-            <div class="meaning-box">
-                <h3>Giây phút của sự tự hào</h3>
-                <p>Khoảnh khắc tên Nhi vang lên trong buổi lễ tốt nghiệp, đó là giây phút mọi nỗ lực đều được đền đáp xứng đáng. Cầm trên tay tấm bằng cử nhân, Nhi đã thực sự trưởng thành. Niềm hạnh phúc vỡ òa này đánh dấu việc Nhi sẵn sàng đương đầu với những thử thách mới lớn lao hơn.</p>
-            </div>
-        </div>
-        <div class="photo-block" data-aos="fade-up">
-            <div class="photo-frame"><img src="anh6.jpg"></div>
-            <div class="meaning-box">
-                <h3>Cánh cửa tới những chân trời mới</h3>
-                <p>Ngày hôm nay một cánh cửa khép lại, nhưng muôn vàn chân trời rực rỡ khác đang mở ra. Đừng bao giờ ngừng mơ ước vì Nhi xứng đáng với những điều tốt đẹp nhất. Hãy cứ vững tin bước đi với trái tim nhiệt huyết và khối óc đầy tri thức. Chúc hành trình mới của Nhi luôn đầy ắp thành công!</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="section-info-detail" data-aos="zoom-in">
-        <div class="info-title">Thông Tin Buổi Lễ</div>
-        <div class="info-row"><strong>⏰ Thời gian:</strong> 10:00 sáng</div>
-        <div class="info-row"><strong>📅 Ngày:</strong> 26/04/2026</div>
-        <div class="info-row"><strong>📍 Địa điểm:</strong> Trường THPT Nguyễn Trường Thúy</div>
-        <p style="margin-top:20px; font-style: italic; color: #888; font-size: 14px;">Rất mong được đón tiếp mọi người!</p>
-    </div>
-
-    <div class="section-wishes">
-        <div class="wish-list-title">Dòng Lưu Bút</div>
-        <div id="static-wish-list"></div>
-    </div>
 
     <div class="input-sticky">
         <input type="text" id="name-in" placeholder="Tên..">
@@ -208,60 +196,55 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        let wishesArr = [];
-        let hasSpawned = false; 
+        // Nhạc
+        const music = document.getElementById('bg-music');
+        const musicBtn = document.getElementById('music-control');
+        const musicIcon = document.getElementById('music-icon');
 
-        // Load Wishes
+        function toggleMusic() {
+            if (music.paused) {
+                music.play();
+                musicBtn.classList.add('music-rotating');
+                musicIcon.innerText = '📻';
+            } else {
+                music.pause();
+                musicBtn.classList.remove('music-rotating');
+                musicIcon.innerText = '🎵';
+            }
+        }
+
+        // Lấy Wishes và tạo hiệu ứng trôi
         db.ref('wishes').on('value', (snapshot) => {
-            const listContainer = document.getElementById('static-wish-list');
-            listContainer.innerHTML = ''; 
-            wishesArr = [];
+            const container = document.getElementById('scroll-container');
+            container.innerHTML = '';
             if (snapshot.exists()) {
                 snapshot.forEach((child) => {
                     const data = child.val();
-                    wishesArr.push(data);
-                    const card = document.createElement('div');
-                    card.className = 'wish-card';
-                    card.innerHTML = `<strong>${data.name}:</strong> ${data.message}`;
-                    listContainer.prepend(card); 
+                    const bubble = document.createElement('div');
+                    bubble.className = 'floating-bubble';
+                    bubble.innerHTML = `<strong>${data.name}:</strong> ${data.message}`;
+                    container.appendChild(bubble);
                 });
+                // Chỉnh tốc độ trôi dựa trên số tin nhắn
+                const duration = 10 + (snapshot.numChildren() * 2);
+                container.style.animationDuration = `${duration}s`;
             }
         });
 
-        // Countdown Logic (26/04/2026 - 10:00)
+        // Countdown Logic
         function updateCountdown() {
             const target = new Date("April 26, 2026 10:00:00").getTime();
             const now = new Date().getTime();
             const diff = target - now;
-            if (diff < 0) {
-                document.querySelector('.countdown-container').innerHTML = "🎉 Lễ Tốt Nghiệp Đang Diễn Ra! 🎉";
-                return;
-            }
-            const d = Math.floor(diff / (1000*60*60*24));
-            const h = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
-            const m = Math.floor((diff % (1000*60*60)) / (1000*60));
-            const s = Math.floor((diff % (1000*60)) / 1000);
-            document.getElementById("days").innerText = d < 10 ? "0"+d : d;
-            document.getElementById("hours").innerText = h < 10 ? "0"+h : h;
-            document.getElementById("minutes").innerText = m < 10 ? "0"+m : m;
-            document.getElementById("seconds").innerText = s < 10 ? "0"+s : s;
+            if (diff < 0) return;
+            document.getElementById("days").innerText = Math.floor(diff / (1000*60*60*24));
+            document.getElementById("hours").innerText = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+            document.getElementById("minutes").innerText = Math.floor((diff % (1000*60*60)) / (1000*60));
+            document.getElementById("seconds").innerText = Math.floor((diff % (1000*60)) / 1000);
         }
         setInterval(updateCountdown, 1000);
 
-        // One-time Floating Wish
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 200 && !hasSpawned && wishesArr.length > 0) {
-                hasSpawned = true;
-                const wish = wishesArr[Math.floor(Math.random() * wishesArr.length)];
-                const bubble = document.createElement('div');
-                bubble.className = 'floating-bubble';
-                bubble.innerHTML = `<strong>${wish.name}:</strong> ${wish.message}`;
-                document.getElementById('wish-overlay').appendChild(bubble);
-                bubble.addEventListener('animationend', () => bubble.remove());
-            }
-        });
-
-        // Send Wish
+        // Gửi Wish
         function send() {
             const n = document.getElementById('name-in').value;
             const m = document.getElementById('msg-in').value;
