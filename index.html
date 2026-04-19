@@ -28,23 +28,28 @@
         }
 
         body {
-            font-family: 'Quicksand', sans-serif;
-            color: #333;
-            overflow-x: hidden;
-            display: flex;
-            flex-direction: column;
+    font-family: 'Quicksand', sans-serif;
+    color: #333;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
 
-            /* 2. Cấu hình SIÊU TRÀN VIỀN (COVER) */
-            background-image: url('nen-cua-toi.jpg'); 
-            
-            /* Lệnh QUAN TRỌNG NHẤT: Phóng to ảnh để luôn khít màn hình */
-            background-size: cover; 
-            
-            /* Giữ ảnh cố định hoặc trôi theo tùy bạn, nhưng repeat phải tắt khi dùng cover */
-            background-repeat: no-repeat; 
-            background-attachment: fixed; /* Ghim nền sẽ giúp ảnh luôn căng cực nét trên mọi máy */
-            background-position: center center;
-        }
+    /* 1. Link ảnh của bạn */
+    background-image: url('ten-anh-cua-ban.jpg');
+    
+    /* 2. Ép chiều ngang bao trọn 100% màn hình thiết bị */
+    /* Chiều cao để 'auto' để giữ tỉ lệ ảnh, không bị mờ */
+    background-size: 100% auto; 
+    
+    /* 3. QUAN TRỌNG: Cho phép lặp lại theo chiều dọc */
+    background-repeat: repeat-y; 
+    
+    /* 4. Để ảnh trôi theo tay khi vuốt */
+    background-attachment: scroll; 
+    
+    /* 5. Căn giữa và bắt đầu từ đỉnh */
+    background-position: top center;
+}
 
         /* Khi cuộn trên mobile, nếu muốn ảnh trôi đi thì dùng đoạn này */
         @media screen and (max-width: 768px) {
