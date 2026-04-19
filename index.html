@@ -30,12 +30,18 @@
             overflow-x: hidden;
             display: block;
 
-            /* HÌNH NỀN: SỬA ĐỔI TẠI ĐÂY */
+            /* HÌNH NỀN: ÉP PHỦ KÍN NGANG VÀ CUỘN THEO TAY */
             background-image: url('nen-cua-toi.jpg') !important;
-            /* background-size: 100% auto đảm bảo ảnh luôn rộng bằng màn hình */
-            background-size: 100% auto !important;
+            
+            /* 100% đảm bảo ảnh luôn rộng bằng màn hình, không bị hở trắng 2 bên */
+            background-size: 100% auto !important; 
+            
+            /* Cho phép lặp lại ảnh theo chiều dọc */
             background-repeat: repeat-y !important;
-            background-attachment: scroll !important;
+            
+            /* scroll giúp nền trượt theo khi Hoang vuốt màn hình */
+            background-attachment: scroll !important; 
+            
             background-position: top center;
             background-color: var(--pink-bg);
         }
@@ -95,7 +101,6 @@
             padding: 40px 15px 150px 15px; 
             width: 100%; 
             box-sizing: border-box;
-            background: transparent;
         }
 
         .wish-container-box {
@@ -146,20 +151,13 @@
         .input-sticky input { border: none; outline: none; flex: 1; padding: 5px; }
         .btn-send { background: var(--accent); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; }
 
-        #wish-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
-        .floating-bubble {
-            position: absolute; left: 50%; transform: translateX(-50%);
-            width: 80%; max-width: 300px; background: white;
-            padding: 15px; border-radius: 15px; border-top: 5px solid var(--accent);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            animation: flowUpOnce 10s linear forwards; opacity: 0;
-        }
-        @keyframes flowUpOnce { 0% { bottom: -120px; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { bottom: 95vh; opacity: 0; } }
-
         @media screen and (max-width: 768px) {
             .name { font-size: 40px; }
-            /* Mobile: Đảm bảo ảnh nền bao phủ tuyệt đối ngang màn hình */
-            body { background-size: 100% auto !important; }
+            body { 
+                /* Quan trọng cho điện thoại: ép lấp đầy ngang và trượt theo nội dung */
+                background-size: 100% auto !important; 
+                background-attachment: scroll !important; 
+            }
         }
     </style>
 </head>
@@ -186,46 +184,40 @@
         </div>
     </div>
 
-    <div id="wish-overlay"></div>
-
     <div class="gallery-container">
         <div class="photo-block" data-aos="fade-up">
             <div class="photo-frame"><img src="anh1.jpg"></div>
             <div class="meaning-box">
                 <h3>Tự do & tỏa sáng</h3>
-                <p>Yêu thương bản thân và luôn giữ nụ cười trên môi, vì mỗi ngày đi qua đều là một món quà của tuổi trẻ. Hãy cứ là chính mình: rạng rỡ, tự tin và đầy hy vọng vào tương lai phía trước. Đừng ngại tỏa sáng theo cách của riêng bạn!</p>
+                <p>Yêu thương bản thân và luôn giữ nụ cười trên môi, vì mỗi ngày đi qua đều là một món quà của tuổi trẻ.</p>
             </div>
         </div>
-
         <div class="photo-block" data-aos="fade-up">
             <div class="photo-frame"><img src="anh2.jpg"></div>
             <div class="meaning-box">
                 <h3>Mảnh ghép thanh xuân</h3>
-                <p>Tốt nghiệp không phải là kết thúc, mà là mở ra những lối đi riêng nhưng ký ức về tập thể này sẽ mãi luôn ở đó. Cảm ơn những người bạn đã cùng mình đi qua những kỳ thi căng thẳng, cùng chia sẻ những tiếng cười dưới mái trường này. Chúng ta là một phần thanh xuân của nhau.</p>
+                <p>Tốt nghiệp không phải là kết thúc, mà là mở ra những lối đi riêng nhưng ký ức về tập thể này sẽ mãi luôn ở đó.</p>
             </div>
         </div>
-
         <div class="photo-block" data-aos="fade-up">
             <div class="photo-frame"><img src="anh3.jpg"></div>
             <div class="meaning-box">
                 <h3>Gói ghem kỷ niệm</h3>
-                <p>Bộ đồng phục này có lẽ từ mai bạn sẽ không còn mặc nữa, nhưng những bài học và tình thầy trò sẽ theo bạn mãi về sau. Gói ghém tất cả sự ngây ngô và chân thành vào màu áo trắng, hãy sẵn sàng bước tiếp chương tiếp theo của cuộc đời với sự tự tin và lòng trắc ẩn.</p>
+                <p>Sẵn sàng bước tiếp chương tiếp theo của cuộc đời với sự tự tin và lòng trắc ẩn.</p>
             </div>
         </div>
-
         <div class="photo-block" data-aos="fade-up">
             <div class="photo-frame"><img src="anh5.jpg"></div>
             <div class="meaning-box">
                 <h3>Bản lĩnh & nhiệt huyết</h3>
-                <p>Màu áo xanh gắn liền với những ngày nắng gió trên thao trường, nơi bạn học được cách kiên cường và trân trọng những giá trị giản đơn. Hãy mang theo tinh thần chiến binh ấy vào đời, để vượt qua mọi thử thách và biến ước mơ thành hiện thực.</p>
+                <p>Hãy mang theo tinh thần chiến binh ấy vào đời, để vượt qua mọi thử thách.</p>
             </div>
         </div>
-
         <div class="photo-block" data-aos="fade-up">
             <div class="photo-frame"><img src="anh6.jpg"></div>
             <div class="meaning-box">
                 <h3>Nơi giấc mơ bắt đầu</h3>
-                <p>Cảm ơn phiên bản nhỏ bé năm ấy đã luôn chăm chỉ và không ngừng mơ ước. Hành trình vạn dặm bắt đầu từ những bước chân đầu tiên này. Hãy luôn giữ vững niềm tin thơ ngây ấy, vì chính nó sẽ dẫn lối bạn đến những đỉnh cao mới.</p>
+                <p>Hành trình vạn dặm bắt đầu từ những bước chân đầu tiên này.</p>
             </div>
         </div>
     </div>
@@ -253,86 +245,79 @@
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
     
     <script>
-    AOS.init({ duration: 1200, once: true });
+        AOS.init({ duration: 1200, once: true });
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyB4PKGLjoQ_-TtjMZfJVXz8dD_6DBeJQeM",
-        authDomain: "thieptotnghiep-1e79e.firebaseapp.com",
-        databaseURL: "https://thieptotnghiep-1e79e-default-rtdb.asia-southeast1.firebasedatabase.app",
-        projectId: "thieptotnghiep-1e79e",
-        storageBucket: "thieptotnghiep-1e79e.firebasestorage.app",
-        messagingSenderId: "6578169222",
-        appId: "1:6578169222:web:23bb55a36b073d60eff807"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
+        const firebaseConfig = {
+            apiKey: "AIzaSyB4PKGLjoQ_-TtjMZfJVXz8dD_6DBeJQeM",
+            authDomain: "thieptotnghiep-1e79e.firebaseapp.com",
+            databaseURL: "https://thieptotnghiep-1e79e-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "thieptotnghiep-1e79e",
+            storageBucket: "thieptotnghiep-1e79e.firebasestorage.app",
+            messagingSenderId: "6578169222",
+            appId: "1:6578169222:web:23bb55a36b073d60eff807"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
 
-    const audio = document.getElementById('bg-audio');
-    const mBtn = document.getElementById('music-btn');
+        const audio = document.getElementById('bg-audio');
+        const mBtn = document.getElementById('music-btn');
 
-    function toggleMusic() {
-        if (audio.paused) { 
-            audio.play(); 
-            mBtn.classList.add('rotating'); 
-        } else { 
-            audio.pause(); 
-            mBtn.classList.remove('rotating'); 
+        function toggleMusic() {
+            if (audio.paused) { audio.play(); mBtn.classList.add('rotating'); }
+            else { audio.pause(); mBtn.classList.remove('rotating'); }
         }
-    }
 
-    function enableAutoPlay() {
-        if (audio.paused) {
-            audio.play().then(() => {
-                mBtn.classList.add('rotating');
-                window.removeEventListener('touchstart', enableAutoPlay);
-                window.removeEventListener('click', enableAutoPlay);
-                window.removeEventListener('scroll', enableAutoPlay);
-            }).catch(e => {
-                console.log("Chờ tương tác...");
-            });
+        function enableAutoPlay() {
+            if (audio.paused) {
+                audio.play().then(() => {
+                    mBtn.classList.add('rotating');
+                    window.removeEventListener('touchstart', enableAutoPlay);
+                    window.removeEventListener('click', enableAutoPlay);
+                    window.removeEventListener('scroll', enableAutoPlay);
+                }).catch(e => console.log("Chờ tương tác..."));
+            }
         }
-    }
 
-    window.addEventListener('touchstart', enableAutoPlay);
-    window.addEventListener('click', enableAutoPlay);
-    window.addEventListener('scroll', enableAutoPlay);
+        window.addEventListener('touchstart', enableAutoPlay);
+        window.addEventListener('click', enableAutoPlay);
+        window.addEventListener('scroll', enableAutoPlay);
 
-    db.ref('wishes').on('value', (snapshot) => {
-        const listContainer = document.getElementById('static-wish-list');
-        listContainer.innerHTML = ''; 
-        if (snapshot.exists()) {
-            snapshot.forEach((child) => {
-                const data = child.val();
-                const card = document.createElement('div');
-                card.className = 'wish-card';
-                card.innerHTML = `<strong>${data.name}:</strong> ${data.message}`;
-                listContainer.prepend(card); 
-            });
+        db.ref('wishes').on('value', (snapshot) => {
+            const listContainer = document.getElementById('static-wish-list');
+            listContainer.innerHTML = ''; 
+            if (snapshot.exists()) {
+                snapshot.forEach((child) => {
+                    const data = child.val();
+                    const card = document.createElement('div');
+                    card.className = 'wish-card';
+                    card.innerHTML = `<strong>${data.name}:</strong> ${data.message}`;
+                    listContainer.prepend(card); 
+                });
+            }
+        });
+
+        function send() {
+            const n = document.getElementById('name-in').value;
+            const m = document.getElementById('msg-in').value;
+            if(n && m) {
+                db.ref('wishes').push({ name: n, message: m, timestamp: Date.now() });
+                confetti({ particleCount: 150, origin: { y: 0.8 } });
+                document.getElementById('name-in').value = '';
+                document.getElementById('msg-in').value = '';
+            }
         }
-    });
 
-    function send() {
-        const n = document.getElementById('name-in').value;
-        const m = document.getElementById('msg-in').value;
-        if(n && m) {
-            db.ref('wishes').push({ name: n, message: m, timestamp: Date.now() });
-            confetti({ particleCount: 150, origin: { y: 0.8 } });
-            document.getElementById('name-in').value = '';
-            document.getElementById('msg-in').value = '';
+        function updateCountdown() {
+            const target = new Date("April 26, 2026 10:00:00").getTime();
+            const now = new Date().getTime();
+            const diff = target - now;
+            if (diff < 0) return;
+            document.getElementById("days").innerText = Math.floor(diff / (1000*60*60*24));
+            document.getElementById("hours").innerText = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+            document.getElementById("minutes").innerText = Math.floor((diff % (1000*60*60)) / (1000*60));
+            document.getElementById("seconds").innerText = Math.floor((diff % (1000*60)) / 1000);
         }
-    }
-
-    function updateCountdown() {
-        const target = new Date("April 26, 2026 10:00:00").getTime();
-        const now = new Date().getTime();
-        const diff = target - now;
-        if (diff < 0) return;
-        document.getElementById("days").innerText = Math.floor(diff / (1000*60*60*24));
-        document.getElementById("hours").innerText = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
-        document.getElementById("minutes").innerText = Math.floor((diff % (1000*60*60)) / (1000*60));
-        document.getElementById("seconds").innerText = Math.floor((diff % (1000*60)) / 1000);
-    }
-    setInterval(updateCountdown, 1000);
+        setInterval(updateCountdown, 1000);
     </script>
 </body>
 </html>
