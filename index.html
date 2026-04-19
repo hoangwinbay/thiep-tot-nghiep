@@ -31,36 +31,117 @@
     margin: 0;
     padding: 0;
     
-    background-image: url('nen-cua-toi.jpg');
+    /* Gradient nền chính */
+    background: linear-gradient(135deg, 
+        #ffeef2 0%, 
+        #ffd6e0 25%, 
+        #ffe0f0 50%, 
+        #ffd1dc 75%, 
+        #ffeef2 100%);
     
-    /* Chọn màu nền trùng với màu viền ngoài cùng của ảnh */
-    background-color: #FFD1DC; /* Thay bằng màu viền ảnh của bạn */
-    
-    background-size: 100% auto;
-    background-repeat: repeat-y;
-    background-position: top center;
-    background-attachment: scroll;
-}
-html {
-    overflow-x: hidden;
-    margin: 0;
-    padding: 0;
+    position: relative;
 }
 
+/* Họa tiết hoa anh đào rơi */
+body::before {
+    content: '🌸';
+    position: fixed;
+    font-size: 30px;
+    top: 5%;
+    left: 3%;
+    opacity: 0.3;
+    animation: float 8s infinite ease-in-out;
+    z-index: 0;
+}
+
+body::after {
+    content: '✨';
+    position: fixed;
+    font-size: 25px;
+    bottom: 8%;
+    right: 5%;
+    opacity: 0.4;
+    animation: sparkle 3s infinite;
+    z-index: 0;
+}
+
+/* Container cho tất cả họa tiết trang trí */
+.floating-elements {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Các họa tiết hoa */
+.floating-elements span {
+    position: absolute;
+    opacity: 0.15;
+    font-size: 40px;
+    animation: floatAround 20s infinite linear;
+}
+
+/* Họa tiết tốt nghiệp */
+.floating-elements .grad-cap {
+    position: absolute;
+    opacity: 0.1;
+    font-size: 50px;
+}
+
+/* Animation cho các element bay */
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(10deg); }
+}
+
+@keyframes sparkle {
+    0%, 100% { opacity: 0.2; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.2); }
+}
+
+@keyframes floatAround {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(30px, 20px) rotate(90deg); }
+    50% { transform: translate(0, 40px) rotate(180deg); }
+    75% { transform: translate(-30px, 20px) rotate(270deg); }
+    100% { transform: translate(0, 0) rotate(360deg); }
+}
+
+/* Wave ở dưới cùng */
+.wave-decoration {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background: linear-gradient(transparent, rgba(194, 24, 91, 0.05));
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Đảm bảo nội dung hiển thị trên background */
+.section-intro, 
+.gallery-container, 
+.section-info-detail, 
+.section-wishes,
+.wish-container-box,
+.input-sticky {
+    position: relative;
+    z-index: 1;
+}
+
+/* Mobile tối ưu */
 @media screen and (max-width: 768px) {
-    body {
-        background-size: cover;
-        background-attachment: scroll;
+    body::before {
+        font-size: 20px;
     }
-}
-/* Fix cho các phần tử con không vượt quá màn hình */
-* {
-    box-sizing: border-box;
-}
-
-img {
-    max-width: 100%;
-    height: auto;
+    
+    .floating-elements span {
+        font-size: 30px;
+    }
 }
         /* Đảm bảo nền trong suốt để thấy ảnh body */
         .section-intro, .gallery-container, .section-info-detail, .section-wishes {
