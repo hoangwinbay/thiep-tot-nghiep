@@ -90,7 +90,9 @@
             animation: flyUpWish 20s linear forwards;
             cursor: grab;
             pointer-events: auto !important;
-            transition: box-shadow 0.2s, transform 0.2s;
+            transition: box-shadow 0.2s;
+            user-select: none;
+            touch-action: none;
         }
 
         .flying-wish:hover {
@@ -548,7 +550,6 @@
             <div class="countdown-item"><div class="countdown-time" id="seconds">00</div>Giây</div>
         </div>
 
-        <!-- Hướng dẫn kéo xuống -->
         <div class="scroll-hint" data-aos="fade-up" data-aos-delay="500">
             <div class="scroll-icon">
                 <span>👇</span>
@@ -697,22 +698,27 @@
         let flyingWishCount = 0;
         let flyInterval = null;
 
-        // Hiệu ứng ném
         function addThrowEffect(wishDiv) {
             let startX, startY, startTime;
             let isDragging = false;
             let longPressTimer;
+            let hasMoved = false;
             
             wishDiv.addEventListener('mousedown', startDrag);
-            wishDiv.addEventListener('touchstart', startDrag, { passive: true });
+            wishDiv.addEventListener('touchstart', startDrag, { passive: false });
             
             function startDrag(e) {
                 e.preventDefault();
+                e.stopPropagation();
+                
                 const touch = e.touches ? e.touches[0] : e;
                 startX = touch.clientX;
                 startY = touch.clientY;
                 startTime = Date.now();
                 isDragging = true;
+                hasMoved = false;
+                
+                if (e.cancelable) e.preventDefault();
                 
                 longPressTimer = setTimeout(() => {
                     if (isDragging) {
@@ -725,17 +731,24 @@
                 window.addEventListener('touchmove', onDrag, { passive: false });
                 window.addEventListener('mouseup', onDrop);
                 window.addEventListener('touchend', onDrop);
+                window.addEventListener('touchcancel', onDrop);
             }
             
             function onDrag(e) {
                 if (!isDragging) return;
                 e.preventDefault();
+                e.stopPropagation();
                 
                 const touch = e.touches ? e.touches[0] : e;
                 const deltaX = touch.clientX - startX;
                 const deltaY = touch.clientY - startY;
                 
+                if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
+                    hasMoved = true;
+                }
+                
                 wishDiv.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(${deltaX * 0.5}deg) scale(1.05)`;
+                wishDiv.style.animation = 'none';
             }
             
             function onDrop(e) {
@@ -748,6 +761,7 @@
                 window.removeEventListener('touchmove', onDrag);
                 window.removeEventListener('mouseup', onDrop);
                 window.removeEventListener('touchend', onDrop);
+                window.removeEventListener('touchcancel', onDrop);
                 
                 const endTouch = e.changedTouches ? e.changedTouches[0] : e;
                 const deltaX = endTouch.clientX - startX;
@@ -755,7 +769,7 @@
                 const deltaTime = Date.now() - startTime;
                 const velocity = Math.sqrt(deltaX * deltaX + deltaY * deltaY) / deltaTime;
                 
-                if (Math.abs(deltaX) > 40 || Math.abs(deltaY) > 40 || velocity > 0.3) {
+                if (hasMoved && (Math.abs(deltaX) > 40 || Math.abs(deltaY) > 40 || velocity > 0.3)) {
                     const angle = Math.atan2(deltaY, deltaX);
                     const distance = Math.max(window.innerWidth, window.innerHeight) * 1.5;
                     const flyX = Math.cos(angle) * distance;
@@ -764,6 +778,7 @@
                     wishDiv.style.transition = 'all 0.8s cubic-bezier(0.2, 0.8, 0.4, 1)';
                     wishDiv.style.transform = `translate(${flyX}px, ${flyY}px) rotate(${deltaX * 3}deg) scale(0.3)`;
                     wishDiv.style.opacity = '0';
+                    wishDiv.style.animation = 'none';
                     
                     const rect = wishDiv.getBoundingClientRect();
                     confetti({
@@ -781,32 +796,22 @@
                     }, 800);
                 } else {
                     wishDiv.style.transition = 'all 0.3s ease-out';
-                    wishDiv.style.transform = 'scale(0.95)';
-                    setTimeout(() => { wishDiv.style.transform = ''; }, 150);
+                    wishDiv.style.transform = '';
                     
-                    const rect = wishDiv.getBoundingClientRect();
-                    confetti({
-                        particleCount: 5,
-                        spread: 30,
-                        origin: { x: rect.left / window.innerWidth, y: rect.top / window.innerHeight }
-                    });
+                    setTimeout(() => {
+                        wishDiv.style.animation = '';
+                    }, 300);
+                    
+                    if (!hasMoved) {
+                        const rect = wishDiv.getBoundingClientRect();
+                        confetti({
+                            particleCount: 5,
+                            spread: 30,
+                            origin: { x: rect.left / window.innerWidth, y: rect.top / window.innerHeight }
+                        });
+                    }
                 }
             }
-            
-            wishDiv.addEventListener('click', (e) => {
-                if (!isDragging) {
-                    wishDiv.style.transition = 'transform 0.3s';
-                    wishDiv.style.transform = 'scale(0.9) rotate(5deg)';
-                    setTimeout(() => { wishDiv.style.transform = 'scale(1) rotate(0deg)'; }, 150);
-                    
-                    const rect = wishDiv.getBoundingClientRect();
-                    confetti({
-                        particleCount: 5,
-                        spread: 30,
-                        origin: { x: rect.left / window.innerWidth, y: rect.top / window.innerHeight }
-                    });
-                }
-            });
         }
 
         function createFlyingWish(name, message) {
