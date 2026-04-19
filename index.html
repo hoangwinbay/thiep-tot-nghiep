@@ -25,125 +25,115 @@
         }
 
         body {
-    font-family: 'Quicksand', sans-serif;
-    color: #333;
-    overflow-x: hidden;
-    margin: 0;
-    padding: 0;
-    
-    /* Gradient nền chính */
-    background: linear-gradient(135deg, 
-        #ffeef2 0%, 
-        #ffd6e0 25%, 
-        #ffe0f0 50%, 
-        #ffd1dc 75%, 
-        #ffeef2 100%);
-    
-    position: relative;
-}
+            font-family: 'Quicksand', sans-serif;
+            color: #333;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            
+            /* Gradient nền chính */
+            background: linear-gradient(135deg, 
+                #ffeef2 0%, 
+                #ffd6e0 25%, 
+                #ffe0f0 50%, 
+                #ffd1dc 75%, 
+                #ffeef2 100%);
+            
+            /* Pattern chấm bi mờ */
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.4) 2px, transparent 2px),
+                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.3) 2px, transparent 2px),
+                radial-gradient(circle at 40% 80%, rgba(194, 24, 91, 0.08) 3px, transparent 3px),
+                radial-gradient(circle at 90% 10%, rgba(194, 24, 91, 0.08) 3px, transparent 3px),
+                linear-gradient(135deg, #ffeef2 0%, #ffd6e0 25%, #ffe0f0 50%, #ffd1dc 75%, #ffeef2 100%);
+            
+            background-size: 60px 60px, 80px 80px, 100px 100px, 120px 120px, 100% 100%;
+            position: relative;
+        }
 
-/* Họa tiết hoa anh đào rơi */
-body::before {
-    content: '🌸';
-    position: fixed;
-    font-size: 30px;
-    top: 5%;
-    left: 3%;
-    opacity: 0.3;
-    animation: float 8s infinite ease-in-out;
-    z-index: 0;
-}
+        /* Container cho tất cả họa tiết bay */
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
 
-body::after {
-    content: '✨';
-    position: fixed;
-    font-size: 25px;
-    bottom: 8%;
-    right: 5%;
-    opacity: 0.4;
-    animation: sparkle 3s infinite;
-    z-index: 0;
-}
+        /* Style chung cho các element bay */
+        .floating-item {
+            position: absolute;
+            opacity: 0.25;
+            font-size: 35px;
+            animation: floatAround 25s infinite linear;
+            filter: drop-shadow(0 2px 5px rgba(194, 24, 91, 0.1));
+        }
 
-/* Container cho tất cả họa tiết trang trí */
-.floating-elements {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 0;
-}
+        /* Animation bay lượn */
+        @keyframes floatAround {
+            0% {
+                transform: translate(0, 0) rotate(0deg) scale(1);
+            }
+            10% {
+                transform: translate(20px, -15px) rotate(45deg) scale(1.05);
+            }
+            20% {
+                transform: translate(40px, 10px) rotate(90deg) scale(0.95);
+            }
+            30% {
+                transform: translate(15px, 25px) rotate(135deg) scale(1.02);
+            }
+            40% {
+                transform: translate(-10px, 15px) rotate(180deg) scale(0.98);
+            }
+            50% {
+                transform: translate(-30px, -10px) rotate(225deg) scale(1.03);
+            }
+            60% {
+                transform: translate(-40px, 20px) rotate(270deg) scale(0.97);
+            }
+            70% {
+                transform: translate(-15px, -20px) rotate(315deg) scale(1.01);
+            }
+            80% {
+                transform: translate(10px, 5px) rotate(380deg) scale(0.99);
+            }
+            90% {
+                transform: translate(25px, -10px) rotate(420deg) scale(1.04);
+            }
+            100% {
+                transform: translate(0, 0) rotate(450deg) scale(1);
+            }
+        }
 
-/* Các họa tiết hoa */
-.floating-elements span {
-    position: absolute;
-    opacity: 0.15;
-    font-size: 40px;
-    animation: floatAround 20s infinite linear;
-}
+        /* Wave ở dưới cùng */
+        .wave-decoration {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(to top, rgba(194, 24, 91, 0.08) 0%, transparent 100%);
+            pointer-events: none;
+            z-index: 0;
+        }
 
-/* Họa tiết tốt nghiệp */
-.floating-elements .grad-cap {
-    position: absolute;
-    opacity: 0.1;
-    font-size: 50px;
-}
+        /* Đảm bảo nội dung hiển thị trên background */
+        .section-intro, 
+        .gallery-container, 
+        .section-info-detail, 
+        .section-wishes,
+        .wish-container-box,
+        .input-sticky,
+        #music-btn {
+            position: relative;
+            z-index: 1;
+        }
 
-/* Animation cho các element bay */
-@keyframes float {
-    0%, 100% { transform: translateY(0px) rotate(0deg); }
-    50% { transform: translateY(-20px) rotate(10deg); }
-}
-
-@keyframes sparkle {
-    0%, 100% { opacity: 0.2; transform: scale(1); }
-    50% { opacity: 0.6; transform: scale(1.2); }
-}
-
-@keyframes floatAround {
-    0% { transform: translate(0, 0) rotate(0deg); }
-    25% { transform: translate(30px, 20px) rotate(90deg); }
-    50% { transform: translate(0, 40px) rotate(180deg); }
-    75% { transform: translate(-30px, 20px) rotate(270deg); }
-    100% { transform: translate(0, 0) rotate(360deg); }
-}
-
-/* Wave ở dưới cùng */
-.wave-decoration {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100px;
-    background: linear-gradient(transparent, rgba(194, 24, 91, 0.05));
-    pointer-events: none;
-    z-index: 0;
-}
-
-/* Đảm bảo nội dung hiển thị trên background */
-.section-intro, 
-.gallery-container, 
-.section-info-detail, 
-.section-wishes,
-.wish-container-box,
-.input-sticky {
-    position: relative;
-    z-index: 1;
-}
-
-/* Mobile tối ưu */
-@media screen and (max-width: 768px) {
-    body::before {
-        font-size: 20px;
-    }
-    
-    .floating-elements span {
-        font-size: 30px;
-    }
-}
-        /* Đảm bảo nền trong suốt để thấy ảnh body */
+        /* Đảm bảo nền trong suốt để thấy background */
         .section-intro, .gallery-container, .section-info-detail, .section-wishes {
             background: transparent !important;
         }
@@ -227,17 +217,46 @@ body::after {
             max-height: 500px; 
             overflow-y: auto; 
             padding: 5px 10px;
+            
+            /* Tạo hiệu ứng mờ dần ở cạnh */
+            mask-image: linear-gradient(to bottom, 
+                transparent 0%, 
+                black 5%, 
+                black 95%, 
+                transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, 
+                transparent 0%, 
+                black 5%, 
+                black 95%, 
+                transparent 100%);
         }
 
         #static-wish-list::-webkit-scrollbar { width: 6px; }
         #static-wish-list::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
 
+        /* 🌟 HIỆU ỨNG LỜI CHÚC TRÔI LÊN CHẬM */
         .wish-card { 
             background: white !important; 
             padding: 15px; 
             border-radius: 15px; 
             border-left: 5px solid var(--accent);
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            
+            /* Animation trôi lên */
+            animation: floatUp 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        @keyframes floatUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .input-sticky { 
@@ -249,10 +268,63 @@ body::after {
         .input-sticky input { border: none; outline: none; flex: 1; padding: 5px; }
         .btn-send { background: var(--accent); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; }
 
-        
+        /* Animation shake cho input trống */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* Mobile tối ưu */
+        @media screen and (max-width: 768px) {
+            .name { font-size: 40px; }
+            .floating-item {
+                font-size: 25px;
+            }
+            #static-wish-list {
+                max-height: 400px;
+            }
+        }
     </style>
 </head>
 <body>
+
+    <!-- Background Decorations - Hoa và sách vở bay -->
+    <div class="floating-elements">
+        <!-- Hoa - 12 bông -->
+        <div class="floating-item" style="top: 5%; left: 3%; animation-duration: 20s; animation-delay: 0s;">🌸</div>
+        <div class="floating-item" style="top: 12%; right: 8%; animation-duration: 28s; animation-delay: 2s;">🌺</div>
+        <div class="floating-item" style="top: 25%; left: 12%; animation-duration: 22s; animation-delay: 5s;">🌸</div>
+        <div class="floating-item" style="top: 35%; right: 15%; animation-duration: 30s; animation-delay: 8s;">🌷</div>
+        <div class="floating-item" style="top: 45%; left: 5%; animation-duration: 18s; animation-delay: 12s;">🌸</div>
+        <div class="floating-item" style="top: 55%; right: 5%; animation-duration: 26s; animation-delay: 15s;">🌼</div>
+        <div class="floating-item" style="top: 65%; left: 18%; animation-duration: 24s; animation-delay: 3s;">🌸</div>
+        <div class="floating-item" style="top: 75%; right: 12%; animation-duration: 32s; animation-delay: 7s;">🌺</div>
+        <div class="floating-item" style="top: 85%; left: 8%; animation-duration: 19s; animation-delay: 10s;">🌸</div>
+        <div class="floating-item" style="top: 92%; right: 20%; animation-duration: 27s; animation-delay: 14s;">🌷</div>
+        <div class="floating-item" style="top: 15%; left: 40%; animation-duration: 23s; animation-delay: 1s;">🌸</div>
+        <div class="floating-item" style="top: 50%; right: 35%; animation-duration: 29s; animation-delay: 6s;">🌺</div>
+        
+        <!-- Sách vở - 4 cuốn -->
+        <div class="floating-item" style="top: 8%; left: 20%; animation-duration: 35s; animation-delay: 1s;">📚</div>
+        <div class="floating-item" style="top: 40%; right: 25%; animation-duration: 40s; animation-delay: 6s;">📖</div>
+        <div class="floating-item" style="top: 70%; left: 25%; animation-duration: 33s; animation-delay: 11s;">📕</div>
+        <div class="floating-item" style="top: 30%; right: 40%; animation-duration: 38s; animation-delay: 3s;">📗</div>
+        
+        <!-- Mũ tốt nghiệp - 3 cái -->
+        <div class="floating-item" style="top: 18%; right: 30%; animation-duration: 38s; animation-delay: 4s;">🎓</div>
+        <div class="floating-item" style="top: 60%; left: 30%; animation-duration: 42s; animation-delay: 9s;">🎓</div>
+        <div class="floating-item" style="top: 80%; right: 40%; animation-duration: 36s; animation-delay: 2s;">🎓</div>
+        
+        <!-- Sao lấp lánh - 5 ngôi -->
+        <div class="floating-item" style="top: 3%; right: 15%; animation-duration: 15s; animation-delay: 0s;">✨</div>
+        <div class="floating-item" style="top: 30%; left: 2%; animation-duration: 18s; animation-delay: 5s;">⭐</div>
+        <div class="floating-item" style="top: 50%; right: 2%; animation-duration: 20s; animation-delay: 10s;">✨</div>
+        <div class="floating-item" style="top: 80%; left: 15%; animation-duration: 16s; animation-delay: 2s;">⭐</div>
+        <div class="floating-item" style="top: 95%; left: 50%; animation-duration: 17s; animation-delay: 8s;">✨</div>
+    </div>
+
+    <div class="wave-decoration"></div>
 
     <div id="music-btn" onclick="toggleMusic()">
         <span id="music-icon">🎵</span>
@@ -277,35 +349,35 @@ body::after {
 
     <div class="gallery-container">
         <div class="photo-block" data-aos="fade-up">
-            <div class="photo-frame"><img src="anh1.jpg"></div>
+            <div class="photo-frame"><img src="anh1.jpg" alt="Ảnh 1"></div>
             <div class="meaning-box">
                 <h3>Tự do & tỏa sáng</h3>
                 <p>Yêu thương bản thân và luôn giữ nụ cười trên môi, vì mỗi ngày đi qua đều là một món quà của tuổi trẻ. Hãy cứ là chính mình: rạng rỡ, tự tin và đầy hy vọng vào tương lai phía trước. Đừng ngại tỏa sáng theo cách của riêng bạn!</p>
             </div>
         </div>
         <div class="photo-block" data-aos="fade-up">
-            <div class="photo-frame"><img src="anh2.jpg"></div>
+            <div class="photo-frame"><img src="anh2.jpg" alt="Ảnh 2"></div>
             <div class="meaning-box">
                 <h3>Mảnh ghép thanh xuân</h3>
                 <p>Tốt nghiệp không phải là kết thúc, mà là mở ra những lối đi riêng nhưng ký ức về tập thể này sẽ mãi luôn ở đó. Cảm ơn những người bạn đã cùng mình đi qua những kỳ thi căng thẳng, cùng chia sẻ những tiếng cười dưới mái trường này. Chúng ta là một phần thanh xuân của nhau.</p>
             </div>
         </div>
         <div class="photo-block" data-aos="fade-up">
-            <div class="photo-frame"><img src="anh3.jpg"></div>
+            <div class="photo-frame"><img src="anh3.jpg" alt="Ảnh 3"></div>
             <div class="meaning-box">
                 <h3>Gói ghem kỷ niệm</h3>
                 <p>Bộ đồng phục này có lẽ từ mai bạn sẽ không còn mặc nữa, nhưng những bài học và tình thầy trò sẽ theo bạn mãi về sau. Gói ghém tất cả sự ngây ngô và chân thành vào màu áo trắng, hãy sẵn sàng bước tiếp chương tiếp theo của cuộc đời với sự tự tin và lòng trắc ẩn.</p>
             </div>
         </div>
         <div class="photo-block" data-aos="fade-up">
-            <div class="photo-frame"><img src="anh5.jpg"></div>
+            <div class="photo-frame"><img src="anh5.jpg" alt="Ảnh 5"></div>
             <div class="meaning-box">
                 <h3>Bản lĩnh & nhiệt huyết</h3>
                 <p>Màu áo xanh gắn liền với những ngày nắng gió trên thao trường, nơi bạn học được cách kiên cường và trân trọng những giá trị giản đơn. Hãy mang theo tinh thần chiến binh ấy vào đời, để vượt qua mọi thử thách và biến ước mơ thành hiện thực.</p>
             </div>
         </div>
         <div class="photo-block" data-aos="fade-up">
-            <div class="photo-frame"><img src="anh6.jpg"></div>
+            <div class="photo-frame"><img src="anh6.jpg" alt="Ảnh 6"></div>
             <div class="meaning-box">
                 <h3>Nơi giấc mơ bắt đầu</h3>
                 <p>Cảm ơn phiên bản nhỏ bé năm ấy đã luôn chăm chỉ và không ngừng mơ ước. Hành trình vạn dặm bắt đầu từ những bước chân đầu tiên này. Hãy luôn giữ vững niềm tin thơ ngây ấy, vì chính nó sẽ dẫn lối bạn đến những đỉnh cao mới.</p>
@@ -373,28 +445,67 @@ body::after {
         window.addEventListener('click', enableAutoPlay);
         window.addEventListener('scroll', enableAutoPlay);
 
+        // Cập nhật hàm load wishes để có animation trôi lên
         db.ref('wishes').on('value', (snapshot) => {
             const listContainer = document.getElementById('static-wish-list');
             listContainer.innerHTML = ''; 
             if (snapshot.exists()) {
+                const wishes = [];
                 snapshot.forEach((child) => {
-                    const data = child.val();
+                    wishes.push(child.val());
+                });
+                
+                // Đảo ngược để hiển thị mới nhất lên đầu
+                wishes.reverse();
+                
+                wishes.forEach((data, index) => {
                     const card = document.createElement('div');
                     card.className = 'wish-card';
+                    card.style.animationDelay = `${index * 0.05}s`;
                     card.innerHTML = `<strong>${data.name}:</strong> ${data.message}`;
-                    listContainer.prepend(card); 
+                    listContainer.appendChild(card);
                 });
             }
         });
 
         function send() {
-            const n = document.getElementById('name-in').value;
-            const m = document.getElementById('msg-in').value;
+            const n = document.getElementById('name-in').value.trim();
+            const m = document.getElementById('msg-in').value.trim();
             if(n && m) {
                 db.ref('wishes').push({ name: n, message: m, timestamp: Date.now() });
-                confetti({ particleCount: 150, origin: { y: 0.8 } });
+                
+                // Confetti ăn mừng
+                confetti({
+                    particleCount: 150,
+                    spread: 100,
+                    origin: { y: 0.8 },
+                    colors: ['#c2185b', '#ffccd5', '#fff0f3', '#ff8a80']
+                });
+                
+                // Thêm đợt confetti nhỏ
+                setTimeout(() => {
+                    confetti({
+                        particleCount: 50,
+                        spread: 60,
+                        origin: { y: 0.8, x: 0.3 }
+                    });
+                    confetti({
+                        particleCount: 50,
+                        spread: 60,
+                        origin: { y: 0.8, x: 0.7 }
+                    });
+                }, 200);
+                
                 document.getElementById('name-in').value = '';
                 document.getElementById('msg-in').value = '';
+                
+                // Focus lại vào ô nhập tin nhắn
+                document.getElementById('msg-in').focus();
+            } else {
+                // Rung nhẹ nếu chưa nhập đủ
+                const input = document.getElementById('msg-in');
+                input.style.animation = 'shake 0.5s';
+                setTimeout(() => input.style.animation = '', 500);
             }
         }
 
