@@ -21,17 +21,19 @@
 body { 
     margin: 0; 
     font-family: 'Quicksand', sans-serif; 
-    /* 1. Xóa gradient cũ đi */
-    background-color: transparent; 
     
-    /* 2. Thêm ảnh nền của bạn vào đây (Thay 'nen-cua-toi.jpg' bằng tên file ảnh) */
+    /* 1. Thay link ảnh của bạn vào đây */
     background-image: url('nen-cua-toi.jpg'); 
     
-    /* 3. Cấu hình để ảnh nền hiển thị đẹp trên mọi màn hình */
-    background-size: cover;       /* Phủ kín toàn màn hình */
-    background-position: center;   /* Căn giữa ảnh */
-    background-repeat: no-repeat;  /* Không lặp lại ảnh */
-    background-attachment: fixed;  /* Ghim ảnh nền khi cuộn trang (tạo hiệu ứng đẹp) */
+    /* 2. Cấu hình để ảnh lặp lại khi trang dài hơn ảnh */
+    background-repeat: repeat-y; /* Chỉ lặp lại theo chiều dọc để không bị nát ảnh */
+    
+    /* 3. Cấu hình kích thước */
+    background-size: 100% auto; /* Chiều ngang luôn rộng hết màn hình, chiều cao tự động theo tỉ lệ ảnh */
+    
+    /* 4. Cho phép ảnh cuộn theo khi vuốt */
+    background-attachment: scroll;
+    background-position: top center;
     
     color: #333; 
     overflow-x: hidden; 
