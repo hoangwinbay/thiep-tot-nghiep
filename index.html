@@ -73,7 +73,7 @@
             overflow: hidden;
         }
 
-        /* Style cho lời chúc bay - CÓ THỂ TƯƠNG TÁC */
+        /* Style cho lời chúc bay */
         .flying-wish {
             position: absolute;
             bottom: -100px;
@@ -88,20 +88,17 @@
             color: #333;
             opacity: 0;
             animation: flyUpWish 20s linear forwards;
-            cursor: grab;
+            cursor: pointer;
             pointer-events: auto !important;
-            transition: box-shadow 0.2s;
+            transition: box-shadow 0.2s, transform 0.2s;
             user-select: none;
             touch-action: none;
         }
 
-        .flying-wish:hover {
+        .flying-wish.paused {
+            animation-play-state: paused !important;
             box-shadow: 0 8px 25px rgba(194, 24, 91, 0.35);
             transform: scale(1.02);
-        }
-
-        .flying-wish:active {
-            cursor: grabbing;
         }
 
         .flying-wish strong {
@@ -192,6 +189,7 @@
             animation: bounce 2s infinite;
             cursor: pointer;
             transition: opacity 0.5s;
+            pointer-events: auto;
         }
 
         .scroll-hint.hidden {
@@ -605,7 +603,7 @@
     <div class="section-wishes">
         <div class="wish-container-box" data-aos="fade-up">
             <div class="wish-list-title">Dòng Lưu Bút</div>
-            <p style="text-align: center; color: #666; margin-bottom: 20px;">Những lời chúc đang bay trong gió... 👆 (chạm vào để ném đi!)</p>
+            <p style="text-align: center; color: #666; margin-bottom: 20px;">Những lời chúc đang bay trong gió...</p>
             <button class="view-all-wishes-btn" onclick="openWishesModal()">📖 Xem tất cả lời chúc</button>
         </div>
     </div>
@@ -670,18 +668,25 @@
         const scrollHint = document.querySelector('.scroll-hint');
         let hintHidden = false;
 
-        window.addEventListener('scroll', function() {
-            if (!hintHidden && window.scrollY > 100) {
+        function checkScrollHint() {
+            if (!hintHidden && window.scrollY > 50) {
                 scrollHint.classList.add('hidden');
                 hintHidden = true;
             }
-        });
+        }
+
+        window.addEventListener('scroll', checkScrollHint);
+        
+        // Kiểm tra ngay khi load trang
+        setTimeout(checkScrollHint, 100);
 
         scrollHint.addEventListener('click', function() {
             window.scrollTo({
                 top: window.innerHeight,
                 behavior: 'smooth'
             });
+            scrollHint.classList.add('hidden');
+            hintHidden = true;
         });
 
         // ==== TEXTAREA TỰ MỞ RỘNG ====
@@ -691,127 +696,75 @@
             this.style.height = Math.min(this.scrollHeight, 120) + 'px';
         });
 
-        // ==== GIỚI HẠN LỜI CHÚC BAY + HIỆU ỨNG NÉM ====
+        // ==== LỜI CHÚC BAY + CHẠM ĐỂ DỪNG ====
         let allWishes = [];
         const floatingContainer = document.getElementById('floatingWishes');
         const MAX_FLYING_WISHES = 6;
         let flyingWishCount = 0;
         let flyInterval = null;
 
-        function addThrowEffect(wishDiv) {
-            let startX, startY, startTime;
-            let isDragging = false;
-            let longPressTimer;
-            let hasMoved = false;
+        function addPauseEffect(wishDiv) {
+            let touchTimer = null;
+            let isPaused = false;
             
-            wishDiv.addEventListener('mousedown', startDrag);
-            wishDiv.addEventListener('touchstart', startDrag, { passive: false });
-            
-            function startDrag(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                const touch = e.touches ? e.touches[0] : e;
-                startX = touch.clientX;
-                startY = touch.clientY;
-                startTime = Date.now();
-                isDragging = true;
-                hasMoved = false;
-                
-                if (e.cancelable) e.preventDefault();
-                
-                longPressTimer = setTimeout(() => {
-                    if (isDragging) {
-                        wishDiv.style.transition = 'transform 0.2s';
-                        wishDiv.style.transform = 'scale(1.1)';
-                    }
-                }, 200);
-                
-                window.addEventListener('mousemove', onDrag);
-                window.addEventListener('touchmove', onDrag, { passive: false });
-                window.addEventListener('mouseup', onDrop);
-                window.addEventListener('touchend', onDrop);
-                window.addEventListener('touchcancel', onDrop);
-            }
-            
-            function onDrag(e) {
-                if (!isDragging) return;
-                e.preventDefault();
-                e.stopPropagation();
-                
-                const touch = e.touches ? e.touches[0] : e;
-                const deltaX = touch.clientX - startX;
-                const deltaY = touch.clientY - startY;
-                
-                if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
-                    hasMoved = true;
-                }
-                
-                wishDiv.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(${deltaX * 0.5}deg) scale(1.05)`;
-                wishDiv.style.animation = 'none';
-            }
-            
-            function onDrop(e) {
-                if (!isDragging) return;
-                
-                clearTimeout(longPressTimer);
-                isDragging = false;
-                
-                window.removeEventListener('mousemove', onDrag);
-                window.removeEventListener('touchmove', onDrag);
-                window.removeEventListener('mouseup', onDrop);
-                window.removeEventListener('touchend', onDrop);
-                window.removeEventListener('touchcancel', onDrop);
-                
-                const endTouch = e.changedTouches ? e.changedTouches[0] : e;
-                const deltaX = endTouch.clientX - startX;
-                const deltaY = endTouch.clientY - startY;
-                const deltaTime = Date.now() - startTime;
-                const velocity = Math.sqrt(deltaX * deltaX + deltaY * deltaY) / deltaTime;
-                
-                if (hasMoved && (Math.abs(deltaX) > 40 || Math.abs(deltaY) > 40 || velocity > 0.3)) {
-                    const angle = Math.atan2(deltaY, deltaX);
-                    const distance = Math.max(window.innerWidth, window.innerHeight) * 1.5;
-                    const flyX = Math.cos(angle) * distance;
-                    const flyY = Math.sin(angle) * distance;
+            function pauseWish() {
+                if (!isPaused) {
+                    isPaused = true;
+                    wishDiv.classList.add('paused');
                     
-                    wishDiv.style.transition = 'all 0.8s cubic-bezier(0.2, 0.8, 0.4, 1)';
-                    wishDiv.style.transform = `translate(${flyX}px, ${flyY}px) rotate(${deltaX * 3}deg) scale(0.3)`;
-                    wishDiv.style.opacity = '0';
-                    wishDiv.style.animation = 'none';
-                    
+                    // Confetti nhỏ khi dừng
                     const rect = wishDiv.getBoundingClientRect();
                     confetti({
-                        particleCount: 20,
-                        spread: 40,
+                        particleCount: 3,
+                        spread: 20,
                         origin: { x: rect.left / window.innerWidth, y: rect.top / window.innerHeight },
-                        colors: ['#c2185b', '#ffccd5', '#ff8a80']
+                        colors: ['#c2185b', '#ffccd5']
                     });
-                    
-                    setTimeout(() => {
-                        if (wishDiv.parentNode) {
-                            wishDiv.remove();
-                            flyingWishCount--;
-                        }
-                    }, 800);
-                } else {
-                    wishDiv.style.transition = 'all 0.3s ease-out';
-                    wishDiv.style.transform = '';
-                    
-                    setTimeout(() => {
-                        wishDiv.style.animation = '';
-                    }, 300);
-                    
-                    if (!hasMoved) {
-                        const rect = wishDiv.getBoundingClientRect();
-                        confetti({
-                            particleCount: 5,
-                            spread: 30,
-                            origin: { x: rect.left / window.innerWidth, y: rect.top / window.innerHeight }
-                        });
-                    }
                 }
             }
+            
+            function resumeWish() {
+                if (isPaused) {
+                    isPaused = false;
+                    wishDiv.classList.remove('paused');
+                }
+            }
+            
+            wishDiv.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                pauseWish();
+                
+                clearTimeout(touchTimer);
+                touchTimer = setTimeout(() => {
+                    resumeWish();
+                }, 3000); // Tự động trôi tiếp sau 3 giây
+            }, { passive: false });
+            
+            wishDiv.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                pauseWish();
+                
+                clearTimeout(touchTimer);
+                touchTimer = setTimeout(() => {
+                    resumeWish();
+                }, 3000);
+            });
+            
+            wishDiv.addEventListener('touchend', () => {
+                // Không tự resume, đợi timeout hoặc người dùng chạm tiếp
+            });
+            
+            wishDiv.addEventListener('mouseup', () => {
+                // Không tự resume
+            });
+            
+            // Chạm lần nữa để resume ngay
+            wishDiv.addEventListener('dblclick', () => {
+                clearTimeout(touchTimer);
+                resumeWish();
+            });
         }
 
         function createFlyingWish(name, message) {
@@ -830,7 +783,7 @@
             const delay = Math.random() * 3;
             wishDiv.style.animationDelay = delay + 's';
             
-            addThrowEffect(wishDiv);
+            addPauseEffect(wishDiv);
             
             floatingContainer.appendChild(wishDiv);
             flyingWishCount++;
