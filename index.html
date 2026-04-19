@@ -10,53 +10,6 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     
     <style>
-    /* 1. Reset toàn bộ khoảng cách mặc định của trình duyệt */
-    html, body {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        min-height: 100%;
-        /* Ngăn chặn hiện tượng giật màn hình khi cuộn trên mobile */
-        height: -webkit-fill-available; 
-    }
-
-    body {
-        font-family: 'Quicksand', sans-serif;
-        
-        /* 2. Cấu hình ảnh nền SIÊU BAO TRỌN */
-        background-image: url('ten-anh-cua-ban.jpg');
-        
-        /* Bao trọn chiều ngang (100%) và giữ tỉ lệ cao tự động (auto) */
-        background-size: 100% auto; 
-        
-        /* Lặp lại theo chiều dọc khi cuộn xuống */
-        background-repeat: repeat-y; 
-        
-        /* Vuốt theo nội dung trang web */
-        background-attachment: scroll; 
-        
-        /* Luôn bắt đầu từ đỉnh màn hình và căn giữa */
-        background-position: top center;
-        
-        color: #333;
-        /* Ngăn chặn trang web bị xê dịch sang ngang trên điện thoại */
-        overflow-x: hidden;
-        
-        /* Đảm bảo nền luôn chiếm ít nhất 100% chiều cao màn hình */
-        display: flex;
-        flex-direction: column;
-    }
-
-    /* 3. Đảm bảo ảnh nền luôn khít trên các thiết bị có màn hình siêu cao hoặc đặc biệt */
-    @media screen and (max-width: 768px) {
-        body {
-            /* Trên mobile, đôi khi cover sẽ cho cảm giác bao trọn tốt hơn nếu ảnh của bạn bị mờ */
-            /* Nếu bạn vẫn muốn 100% và lặp lại thì giữ nguyên dòng dưới đây */
-            background-size: 100% auto;
-        }
-    }
-<style>
-        /* Định nghĩa các biến màu sắc để dễ quản lý */
         :root {
             --pink-bg: #fff0f3;
             --pink-light: #ffccd5;
@@ -64,13 +17,12 @@
             --white-glass: rgba(255, 255, 255, 0.85);
         }
 
-        /* 1. Reset & Khử khoảng trống trình duyệt tuyệt đối */
+        /* 1. Reset toàn bộ khoảng cách mặc định */
         html, body {
             margin: 0;
             padding: 0;
             width: 100%;
             min-height: 100%;
-            /* Fix lỗi chiều cao trên Safari iPhone */
             height: -webkit-fill-available;
         }
 
@@ -81,21 +33,12 @@
             display: flex;
             flex-direction: column;
 
-            /* 2. Cấu hình ảnh nền SIÊU BAO TRỌN & LẶP LẠI */
-            /* Thay 'ten-anh-cua-ban.jpg' bằng link ảnh của Hoang */
-            background-image: url('ten-anh-cua-ban.jpg');
-            
-            /* Bao trọn chiều ngang 100% mọi thiết bị, cao tự động theo tỉ lệ */
-            background-size: 100% auto;
-            
-            /* Lặp lại theo chiều dọc khi web dài ra */
-            background-repeat: repeat-y;
-            
-            /* Luôn bắt đầu từ đỉnh trang và căn giữa */
+            /* 2. Cấu hình ảnh nền BAO TRỌN 2 BÊN & LẶP LẠI */
+            background-image: url('ten-anh-cua-ban.jpg'); /* Thay tên file ảnh tại đây */
+            background-size: 100% auto; 
+            background-repeat: repeat-y; 
+            background-attachment: scroll; 
             background-position: top center;
-            
-            /* Ảnh trôi theo nội dung khi vuốt */
-            background-attachment: scroll;
         }
 
         /* Music Button */
@@ -127,8 +70,7 @@
             justify-content: center; 
             align-items: center; 
             text-align: center; 
-            /* Để nhìn rõ ảnh nền, ta làm nền intro trong suốt nhẹ */
-            background: rgba(255, 240, 243, 0.4); 
+            background: rgba(255, 240, 243, 0.3); /* Làm mờ nhẹ để thấy ảnh nền */
             padding: 20px; 
             box-sizing: border-box;
         }
@@ -158,12 +100,10 @@
         .photo-frame { width: 85%; max-width: 400px; background: white; padding: 15px; border-radius: 20px; box-shadow: 0 30px 60px rgba(0,0,0,0.12); }
         .photo-frame img { width: 100%; height: 480px; object-fit: cover; border-radius: 12px; }
         .meaning-box { width: 95%; background: var(--white-glass); padding: 25px; border-radius: 25px; margin-top: -60px; z-index: 2; border-left: 8px solid var(--accent); box-sizing: border-box; }
-        
         .photo-block:nth-child(even) .photo-frame { align-self: flex-end; }
         .photo-block:nth-child(even) .meaning-box { align-self: flex-start; border-left: 0; border-right: 8px solid var(--accent); }
         .photo-block:nth-child(odd) .photo-frame { align-self: flex-start; }
         .photo-block:nth-child(odd) .meaning-box { align-self: flex-end; }
-        
         .meaning-box h3 { margin: 0 0 12px 0; color: var(--accent); font-family: 'Dancing Script', cursive; font-size: 28px; }
         .meaning-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #444; text-align: justify; }
 
@@ -201,12 +141,6 @@
         .input-sticky input { border: none; outline: none; flex: 1; font-size: 15px; }
         #name-in { width: 30%; border-right: 1px solid #eee; padding-right: 8px; }
         .btn-send { background: var(--accent); color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; }
-
-        /* Tối ưu riêng cho màn hình nhỏ */
-        @media screen and (max-width: 768px) {
-            body { background-size: 100% auto; }
-            .name { font-size: 40px; }
-        }
     </style>
 </head>
 <body>
@@ -296,43 +230,38 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // Thay thế đoạn logic nhạc cũ bằng đoạn này
-const audio = document.getElementById('bg-audio');
-const mBtn = document.getElementById('music-btn');
+        const audio = document.getElementById('bg-audio');
+        const mBtn = document.getElementById('music-btn');
 
-function playMusic() {
-    audio.play().then(() => {
-        mBtn.classList.add('rotating');
-        // Sau khi đã phát thành công, gỡ bỏ các sự kiện lắng nghe để tránh phát lại từ đầu
-        window.removeEventListener('click', playMusic);
-        window.removeEventListener('touchstart', playMusic);
-        window.removeEventListener('scroll', playMusic);
-    }).catch(error => {
-        console.log("Trình duyệt chặn autoplay, chờ tương tác người dùng.");
-    });
-}
+        function playMusic() {
+            audio.play().then(() => {
+                mBtn.classList.add('rotating');
+                window.removeEventListener('click', playMusic);
+                window.removeEventListener('touchstart', playMusic);
+                window.removeEventListener('scroll', playMusic);
+            }).catch(error => {
+                console.log("Autoplay bị chặn, chờ tương tác.");
+            });
+        }
 
-// Lắng nghe mọi tương tác đầu tiên của người dùng để phát nhạc ngay lập tức
-window.addEventListener('click', playMusic);
-window.addEventListener('touchstart', playMusic); // Cho điện thoại
-window.addEventListener('scroll', playMusic, { once: true });
+        window.addEventListener('click', playMusic);
+        window.addEventListener('touchstart', playMusic);
+        window.addEventListener('scroll', playMusic, { once: true });
 
-function toggleMusic() {
-    if (audio.paused) {
-        audio.play();
-        mBtn.classList.add('rotating');
-    } else {
-        audio.pause();
-        mBtn.classList.remove('rotating');
-    }
-}
+        function toggleMusic() {
+            if (audio.paused) {
+                audio.play();
+                mBtn.classList.add('rotating');
+            } else {
+                audio.pause();
+                mBtn.classList.remove('rotating');
+            }
+        }
 
-        // --- PHẦN LỜI CHÚC TRÔI LÊN (CẬP NHẬT) ---
         let wishesArr = [];
-        let shownIndices = new Set(); // Lưu lại những lời chúc đã trôi qua
+        let shownIndices = new Set();
         let lastScrollPos = 0;
 
-        // Tải lời chúc từ Firebase
         db.ref('wishes').on('value', (snapshot) => {
             const listContainer = document.getElementById('static-wish-list');
             listContainer.innerHTML = ''; 
@@ -349,50 +278,30 @@ function toggleMusic() {
             }
         });
 
-        // Hàm tạo bong bóng trôi lên
         function spawnWishBubble(index) {
-            if (shownIndices.has(index)) return; // Nếu đã hiện rồi thì thôi
+            if (shownIndices.has(index)) return;
             shownIndices.add(index);
-
             const wish = wishesArr[index];
             const bubble = document.createElement('div');
             bubble.className = 'floating-bubble';
             bubble.innerHTML = `<strong>${wish.name}:</strong> ${wish.message}`;
-            
-            // Random vị trí ngang một chút để không bị trùng khít
             bubble.style.left = (40 + Math.random() * 20) + "%"; 
-            
             document.getElementById('wish-overlay').appendChild(bubble);
             bubble.addEventListener('animationend', () => bubble.remove());
         }
 
-        // Lắng nghe sự kiện cuộn trang
         window.addEventListener('scroll', () => {
             const currentScroll = window.scrollY;
-            const scrollStep = 300; // Cứ mỗi 300px cuộn xuống sẽ hiện 1 lời chúc mới
-
+            const scrollStep = 300;
             if (wishesArr.length > 0) {
-                // Tính toán xem nên hiện lời chúc thứ mấy dựa trên vị trí cuộn
                 let wishIndex = Math.floor(currentScroll / scrollStep);
-                
-                // Nếu index hợp lệ và chưa được hiện
                 if (wishIndex < wishesArr.length && !shownIndices.has(wishIndex)) {
                     spawnWishBubble(wishIndex);
-                }
-                
-                // Tip: Nếu cuộn quá nhanh, ta có thể hiện ngẫu nhiên 1 cái chưa hiện
-                if (currentScroll > lastScrollPos + 500) {
-                   let unshown = wishesArr.map((_, i) => i).filter(i => !shownIndices.has(i));
-                   if (unshown.length > 0) {
-                       spawnWishBubble(unshown[Math.floor(Math.random() * unshown.length)]);
-                   }
                 }
             }
             lastScrollPos = currentScroll;
         });
-        // ----------------------------------------
 
-        // Countdown Logic
         function updateCountdown() {
             const target = new Date("April 26, 2026 10:00:00").getTime();
             const now = new Date().getTime();
@@ -405,7 +314,6 @@ function toggleMusic() {
         }
         setInterval(updateCountdown, 1000);
 
-        // Send Wish
         function send() {
             const n = document.getElementById('name-in').value;
             const m = document.getElementById('msg-in').value;
