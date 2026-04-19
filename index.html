@@ -30,24 +30,25 @@
             overflow-x: hidden;
             display: block;
 
-            /* HÌNH NỀN: ÉP PHỦ KÍN NGANG VÀ CUỘN THEO TAY */
+            /* HÌNH NỀN: PHẦN QUAN TRỌNG ĐỂ LẤP ĐẦY */
             background-image: url('nen-cua-toi.jpg') !important;
             
-            /* 100% đảm bảo ảnh luôn rộng bằng màn hình, không bị hở trắng 2 bên */
-            background-size: 100% auto !important; 
+            /* Dùng cover để ảnh luôn phủ kín chiều ngang và chiều cao khung nhìn */
+            background-size: cover !important; 
             
-            /* Cho phép lặp lại ảnh theo chiều dọc */
+            /* repeat-y để khi danh sách lưu bút dài ra, nền vẫn tiếp tục lặp lại */
             background-repeat: repeat-y !important;
             
-            /* scroll giúp nền trượt theo khi Hoang vuốt màn hình */
-            background-attachment: scroll !important; 
+            /* fixed giúp ảnh nền đứng yên khi cuộn, tạo cảm giác lấp đầy mọi lúc */
+            background-attachment: fixed !important; 
             
-            background-position: top center;
+            background-position: center top;
             background-color: var(--pink-bg);
         }
 
-        .section-intro, .section-wishes { 
-            background: transparent !important; 
+        /* Đảm bảo nền trong suốt để thấy ảnh body */
+        .section-intro, .gallery-container, .section-info-detail, .section-wishes {
+            background: transparent !important;
         }
 
         #music-btn {
@@ -154,9 +155,8 @@
         @media screen and (max-width: 768px) {
             .name { font-size: 40px; }
             body { 
-                /* Quan trọng cho điện thoại: ép lấp đầy ngang và trượt theo nội dung */
-                background-size: 100% auto !important; 
-                background-attachment: scroll !important; 
+                background-size: cover !important; 
+                background-attachment: scroll !important; /* Trên mobile scroll thường mượt hơn fixed */
             }
         }
     </style>
@@ -189,7 +189,7 @@
             <div class="photo-frame"><img src="anh1.jpg"></div>
             <div class="meaning-box">
                 <h3>Tự do & tỏa sáng</h3>
-                <p>Yêu thương bản thân và luôn giữ nụ cười trên môi, vì mỗi ngày đi qua đều là một món quà của tuổi trẻ.</p>
+                <p>Yêu thương bản thân và luôn giữ nụ cười trên môi, vì mỗi ngày đi qua đều là một món quà của tuổi trẻ. Hãy cứ là chính mình: rạng rỡ, tự tin và đầy hy vọng vào tương lai phía trước. Đừng ngại tỏa sáng theo cách của riêng bạn!</p>
             </div>
         </div>
         <div class="photo-block" data-aos="fade-up">
