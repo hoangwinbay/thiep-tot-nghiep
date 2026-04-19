@@ -10,38 +10,52 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     
     <style>
-        :root { 
-            --accent: #c2185b; 
-            --pink-light: #fce4ec; 
-            --pink-bg: #ffe0e9; 
-            --white-glass: rgba(255, 255, 255, 0.92);
+    /* 1. Reset toàn bộ khoảng cách mặc định của trình duyệt */
+    html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        min-height: 100%;
+        /* Ngăn chặn hiện tượng giật màn hình khi cuộn trên mobile */
+        height: -webkit-fill-available; 
+    }
+
+    body {
+        font-family: 'Quicksand', sans-serif;
+        
+        /* 2. Cấu hình ảnh nền SIÊU BAO TRỌN */
+        background-image: url('ten-anh-cua-ban.jpg');
+        
+        /* Bao trọn chiều ngang (100%) và giữ tỉ lệ cao tự động (auto) */
+        background-size: 100% auto; 
+        
+        /* Lặp lại theo chiều dọc khi cuộn xuống */
+        background-repeat: repeat-y; 
+        
+        /* Vuốt theo nội dung trang web */
+        background-attachment: scroll; 
+        
+        /* Luôn bắt đầu từ đỉnh màn hình và căn giữa */
+        background-position: top center;
+        
+        color: #333;
+        /* Ngăn chặn trang web bị xê dịch sang ngang trên điện thoại */
+        overflow-x: hidden;
+        
+        /* Đảm bảo nền luôn chiếm ít nhất 100% chiều cao màn hình */
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* 3. Đảm bảo ảnh nền luôn khít trên các thiết bị có màn hình siêu cao hoặc đặc biệt */
+    @media screen and (max-width: 768px) {
+        body {
+            /* Trên mobile, đôi khi cover sẽ cho cảm giác bao trọn tốt hơn nếu ảnh của bạn bị mờ */
+            /* Nếu bạn vẫn muốn 100% và lặp lại thì giữ nguyên dòng dưới đây */
+            background-size: 100% auto;
         }
-
-        /* --- SỬA ĐOẠN NÀY --- */
-body { 
-    margin: 0; 
-    padding: 0;
-    font-family: 'Quicksand', sans-serif; 
-    
-    /* 1. Link ảnh nền */
-    background-image: url('nen-cua-toi.jpg'); 
-    
-    /* 2. ÉP BAO TRỌN 2 BÊN VÀ LẶP LẠI */
-    background-size: 100% auto;       /* Chiều ngang luôn khít 100% màn hình */
-    background-repeat: repeat;        /* Lặp lại cả chiều ngang và dọc để chắc chắn không hở */
-    background-position: top center;
-    background-attachment: scroll;    /* Vuốt theo nội dung */
-    
-    /* 3. KHỬ KHOẢNG TRẮNG TRÌNH DUYỆT */
-    width: 100vw;                     /* Rộng bằng 100% chiều rộng khung nhìn */
-    min-height: 100vh;                /* Cao ít nhất bằng 100% chiều cao khung nhìn */
-    display: block;
-    position: relative;
-    
-    color: #333; 
-    overflow-x: hidden;               /* Ngăn chặn bị xê dịch chiều ngang */
-}
-
+    }
+</style>
 /* Khử khoảng trống cho thẻ HTML để ảnh tràn ra tận mép màn hình */
 html {
     margin: 0;
