@@ -28,103 +28,57 @@
 
         /* Music Button */
         #music-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 45px;
-            height: 45px;
-            background: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            z-index: 10001;
-            cursor: pointer;
-            font-size: 20px;
-            transition: all 0.3s ease;
+            position: fixed; top: 20px; right: 20px;
+            width: 45px; height: 45px; background: white;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15); z-index: 10001;
+            cursor: pointer; font-size: 20px; transition: all 0.3s ease;
         }
         .rotating { animation: rotateMusic 4s linear infinite; }
         @keyframes rotateMusic { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* 1. Intro Section */
+        /* Sections */
         .section-intro { 
-            height: 100vh; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: center; 
-            align-items: center; 
-            text-align: center; 
-            background: linear-gradient(to bottom, var(--pink-bg), var(--pink-light)); 
-            padding: 20px; 
-            box-sizing: border-box;
+            height: 100vh; display: flex; flex-direction: column; justify-content: center; 
+            align-items: center; text-align: center; padding: 20px; box-sizing: border-box;
+            background: linear-gradient(to bottom, var(--pink-bg), var(--pink-light));
         }
         .name { font-family: 'Dancing Script', cursive; font-size: 50px; color: var(--accent); margin: 10px 0; }
-        .hero-photo {
-            width: 160px; height: 160px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 5px solid white;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            margin: 15px 0;
-        }
+        .hero-photo { width: 160px; height: 160px; border-radius: 50%; object-fit: cover; border: 5px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.15); margin: 15px 0; }
 
-        /* Countdown */
-        .countdown-container {
-            display: flex; gap: 12px; margin-top: 20px;
-            background: rgba(255, 255, 255, 0.5);
-            padding: 10px 15px; border-radius: 25px;
-        }
-        .countdown-item { display: flex; flex-direction: column; min-width: 50px; }
+        .countdown-container { display: flex; gap: 12px; margin-top: 20px; background: rgba(255, 255, 255, 0.5); padding: 10px 15px; border-radius: 25px; }
         .countdown-time { font-size: 22px; font-weight: 700; color: var(--accent); }
         .countdown-label { font-size: 10px; text-transform: uppercase; color: #777; }
 
-        /* 2. Gallery Layout */
         .gallery-container { padding: 80px 15px; max-width: 850px; margin: 0 auto; display: flex; flex-direction: column; gap: 140px; }
         .photo-block { display: flex; flex-direction: column; width: 100%; position: relative; }
         .photo-frame { width: 85%; max-width: 400px; background: white; padding: 15px; border-radius: 20px; box-shadow: 0 30px 60px rgba(0,0,0,0.12); }
         .photo-frame img { width: 100%; height: 480px; object-fit: cover; border-radius: 12px; }
         .meaning-box { width: 95%; background: var(--white-glass); padding: 25px; border-radius: 25px; margin-top: -60px; z-index: 2; border-left: 8px solid var(--accent); box-sizing: border-box; }
-        .photo-block:nth-child(even) .photo-frame { align-self: flex-end; }
-        .photo-block:nth-child(even) .meaning-box { align-self: flex-start; border-left: 0; border-right: 8px solid var(--accent); }
-        .photo-block:nth-child(odd) .photo-frame { align-self: flex-start; }
-        .photo-block:nth-child(odd) .meaning-box { align-self: flex-end; }
-        .meaning-box h3 { margin: 0 0 12px 0; color: var(--accent); font-family: 'Dancing Script', cursive; font-size: 28px; }
-        .meaning-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #444; text-align: justify; }
-
-        /* 3. Event Info Card */
-        .section-info-detail {
-            max-width: 500px; margin: 50px auto;
-            background: white; padding: 30px;
-            border-radius: 30px; text-align: center;
-            box-shadow: 0 15px 40px rgba(194, 24, 91, 0.15);
-            border: 2px dashed var(--accent);
-        }
-        .info-title { font-family: 'Dancing Script', cursive; font-size: 32px; color: var(--accent); margin-bottom: 15px; }
-        .info-row { font-size: 17px; margin: 10px 0; color: #444; }
-
-        /* Floating Overlay */
+        
+        /* Floating Messages Logic */
         #wish-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
         .floating-bubble {
-            position: absolute; left: 50%; transform: translateX(-50%);
-            width: 85%; max-width: 320px; background: white;
-            padding: 18px; border-radius: 20px; border-top: 5px solid var(--accent);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2); font-size: 14px;
-            animation: flowUpOnce 10s linear forwards;
+            position: absolute;
+            width: 75%; max-width: 280px; background: white;
+            padding: 15px; border-radius: 18px; border-top: 4px solid var(--accent);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15); font-size: 13px;
+            animation: flowUpOnce 12s linear forwards; /* Tăng thời gian để trôi mượt hơn */
             opacity: 0;
         }
-        @keyframes flowUpOnce { 0% { bottom: -120px; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { bottom: 95vh; opacity: 0; } }
+        @keyframes flowUpOnce { 
+            0% { bottom: -150px; opacity: 0; transform: translateX(0); } 
+            10% { opacity: 1; } 
+            90% { opacity: 1; } 
+            100% { bottom: 105vh; opacity: 0; transform: translateX(10px); } 
+        }
 
-        /* 4. Wish Section */
         .section-wishes { background: white; padding: 60px 20px 180px 20px; border-radius: 50px 50px 0 0; }
-        .wish-list-title { text-align: center; font-family: 'Dancing Script', cursive; font-size: 40px; color: var(--accent); margin-bottom: 35px; }
         #static-wish-list { display: flex; flex-direction: column; gap: 20px; max-width: 550px; margin: 0 auto; }
         .wish-card { background: var(--pink-light); padding: 18px; border-radius: 15px; border-left: 5px solid var(--accent); }
 
-        /* Input */
         .input-sticky { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 420px; background: white; padding: 12px 18px; border-radius: 50px; display: flex; align-items: center; box-shadow: 0 10px 40px rgba(0,0,0,0.25); z-index: 10000; }
         .input-sticky input { border: none; outline: none; flex: 1; font-size: 15px; }
-        #name-in { width: 30%; border-right: 1px solid #eee; padding-right: 8px; }
         .btn-send { background: var(--accent); color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; }
     </style>
 </head>
@@ -140,10 +94,9 @@
     <div class="section-intro">
         <div data-aos="zoom-in" style="font-size: 60px;">✨</div>
         <h1 data-aos="fade-down">Lễ Tốt Nghiệp</h1>
-        <div class="name" data-aos="fade-down">Trần Đoàn Yến Nhi</div>
-        <img src="anh_hero.jpg" alt="Yến Nhi" class="hero-photo" data-aos="zoom-in">
-        
-        <div class="countdown-container" data-aos="fade-up">
+        <div class="name">Trần Đoàn Yến Nhi</div>
+        <img src="anh_hero.jpg" class="hero-photo" data-aos="zoom-in">
+        <div class="countdown-container">
             <div class="countdown-item"><div class="countdown-time" id="days">00</div><div class="countdown-label">Ngày</div></div>
             <div class="countdown-item"><div class="countdown-time" id="hours">00</div><div class="countdown-label">Giờ</div></div>
             <div class="countdown-item"><div class="countdown-time" id="minutes">00</div><div class="countdown-label">Phút</div></div>
@@ -161,31 +114,10 @@
                 <p>Mỗi hành trình vạn dặm đều bắt đầu từ một bước chân nhỏ bé...</p>
             </div>
         </div>
-        <div class="photo-block" data-aos="fade-up">
-            <div class="photo-frame"><img src="anh2.jpg"></div>
-            <div class="meaning-box">
-                <h3>Bản lĩnh qua từng trang sách</h3>
-                <p>Thành công của ngày hôm nay không được xây đắp bằng hoa hồng...</p>
-            </div>
-        </div>
-        <div class="photo-block" data-aos="fade-up">
-            <div class="photo-frame"><img src="anh3.jpg"></div>
-            <div class="meaning-box">
-                <h3>Những mảnh ghép thanh xuân</h3>
-                <p>Thanh xuân sẽ thật tẻ nhạt nếu thiếu đi những người bạn đồng hành...</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="section-info-detail" data-aos="zoom-in">
-        <div class="info-title">Thông Tin Buổi Lễ</div>
-        <div class="info-row"><strong>⏰ Thời gian:</strong> 10:00 sáng</div>
-        <div class="info-row"><strong>📅 Ngày:</strong> 26/04/2026</div>
-        <div class="info-row"><strong>📍 Địa điểm:</strong> Trường THPT Nguyễn Trường Thúy</div>
     </div>
 
     <div class="section-wishes">
-        <div class="wish-list-title">Dòng Lưu Bút</div>
+        <div style="text-align:center; font-family:'Dancing Script'; font-size:40px; color:var(--accent); margin-bottom:30px;">Dòng Lưu Bút</div>
         <div id="static-wish-list"></div>
     </div>
 
@@ -202,7 +134,7 @@
     <script>
         AOS.init({ duration: 1200, once: true });
 
-        // Firebase Config
+        // Firebase & Music (Giữ nguyên)
         const firebaseConfig = {
             apiKey: "AIzaSyB4PKGLjoQ_-TtjMZfJVXz8dD_6DBeJQeM",
             authDomain: "thieptotnghiep-1e79e.firebaseapp.com",
@@ -215,21 +147,18 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // Music Logic
         const audio = document.getElementById('bg-audio');
         const mBtn = document.getElementById('music-btn');
-        const mIcon = document.getElementById('music-icon');
         function toggleMusic() {
-            if (audio.paused) { audio.play(); mBtn.classList.add('rotating'); mIcon.innerText = '📻'; }
-            else { audio.pause(); mBtn.classList.remove('rotating'); mIcon.innerText = '🎵'; }
+            if (audio.paused) { audio.play(); mBtn.classList.add('rotating'); }
+            else { audio.pause(); mBtn.classList.remove('rotating'); }
         }
 
-        // --- PHẦN LỜI CHÚC TRÔI LÊN (CẬP NHẬT) ---
+        // --- HỆ THỐNG TRÔI TIN NHẮN KHÔNG CHỒNG LẤP ---
         let wishesArr = [];
-        let shownIndices = new Set(); // Lưu lại những lời chúc đã trôi qua
-        let lastScrollPos = 0;
+        let shownIndices = new Set();
+        let lastLane = -1; // Lưu làn đường vừa dùng
 
-        // Tải lời chúc từ Firebase
         db.ref('wishes').on('value', (snapshot) => {
             const listContainer = document.getElementById('static-wish-list');
             listContainer.innerHTML = ''; 
@@ -246,9 +175,8 @@
             }
         });
 
-        // Hàm tạo bong bóng trôi lên
         function spawnWishBubble(index) {
-            if (shownIndices.has(index)) return; // Nếu đã hiện rồi thì thôi
+            if (shownIndices.has(index)) return;
             shownIndices.add(index);
 
             const wish = wishesArr[index];
@@ -256,40 +184,37 @@
             bubble.className = 'floating-bubble';
             bubble.innerHTML = `<strong>${wish.name}:</strong> ${wish.message}`;
             
-            // Random vị trí ngang một chút để không bị trùng khít
-            bubble.style.left = (40 + Math.random() * 20) + "%"; 
+            // Xử lý Làn đường (Lane) để không che nhau
+            // Chia màn hình làm 3 làn (Trái - Giữa - Phải)
+            let lane;
+            do {
+                lane = Math.floor(Math.random() * 3); 
+            } while (lane === lastLane); // Không dùng lại làn cũ của tin vừa hiện
+            lastLane = lane;
+
+            const positions = [5, 35, 65]; // % left tương ứng 3 làn
+            bubble.style.left = (positions[lane] + (Math.random() * 5)) + "%"; 
             
             document.getElementById('wish-overlay').appendChild(bubble);
             bubble.addEventListener('animationend', () => bubble.remove());
         }
 
-        // Lắng nghe sự kiện cuộn trang
         window.addEventListener('scroll', () => {
             const currentScroll = window.scrollY;
-            const scrollStep = 300; // Cứ mỗi 300px cuộn xuống sẽ hiện 1 lời chúc mới
+            const scrollStep = 250; 
 
             if (wishesArr.length > 0) {
-                // Tính toán xem nên hiện lời chúc thứ mấy dựa trên vị trí cuộn
                 let wishIndex = Math.floor(currentScroll / scrollStep);
+                // Đảm bảo lấy tin nhắn theo vòng lặp nếu cuộn quá nhiều
+                let actualIndex = wishIndex % wishesArr.length; 
                 
-                // Nếu index hợp lệ và chưa được hiện
-                if (wishIndex < wishesArr.length && !shownIndices.has(wishIndex)) {
-                    spawnWishBubble(wishIndex);
-                }
-                
-                // Tip: Nếu cuộn quá nhanh, ta có thể hiện ngẫu nhiên 1 cái chưa hiện
-                if (currentScroll > lastScrollPos + 500) {
-                   let unshown = wishesArr.map((_, i) => i).filter(i => !shownIndices.has(i));
-                   if (unshown.length > 0) {
-                       spawnWishBubble(unshown[Math.floor(Math.random() * unshown.length)]);
-                   }
+                if (!shownIndices.has(actualIndex)) {
+                    spawnWishBubble(actualIndex);
                 }
             }
-            lastScrollPos = currentScroll;
         });
-        // ----------------------------------------
 
-        // Countdown Logic
+        // Countdown Logic & Send (Giữ nguyên)
         function updateCountdown() {
             const target = new Date("April 26, 2026 10:00:00").getTime();
             const now = new Date().getTime();
@@ -302,7 +227,6 @@
         }
         setInterval(updateCountdown, 1000);
 
-        // Send Wish
         function send() {
             const n = document.getElementById('name-in').value;
             const m = document.getElementById('msg-in').value;
