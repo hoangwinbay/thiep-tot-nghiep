@@ -28,12 +28,13 @@
     font-family: 'Quicksand', sans-serif;
     color: #333;
     overflow-x: hidden;
-    display: block;
 
     background-image: url('nen-cua-toi.jpg');
-    background-size: cover;          /* QUAN TRỌNG */
-    background-position: center;     /* CĂN GIỮA */
-    background-repeat: no-repeat;    /* KHÔNG LẶP */
+
+    /* QUAN TRỌNG */
+    background-size: 100% auto;   /* full ngang, cao tự co */
+    background-repeat: repeat-y;  /* lặp theo chiều dọc */
+    background-position: top center;
 
     background-color: var(--pink-bg);
 }
