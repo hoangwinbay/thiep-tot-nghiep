@@ -26,19 +26,29 @@
         }
 
         body {
-            font-family: 'Quicksand', sans-serif;
-            color: #333;
-            overflow-x: hidden;
-            display: block; /* Ép nội dung chảy dài tự nhiên */
+    font-family: 'Quicksand', sans-serif;
+    color: #333;
+    overflow-x: hidden;
+    display: block; /* Giữ block để nội dung chảy dài tự nhiên */
 
-            /* CẤU HÌNH LẶP LẠI VÔ TẬN */
-            background-image: url('nen-cua-toi.jpg') !important;
-            background-size: 100% auto !important; /* Bao trọn 2 bên màn hình */
-            background-repeat: repeat-y !important; /* Lặp lại liên tục xuống dưới */
-            background-attachment: scroll !important;
-            background-position: top center;
-            background-color: var(--pink-bg);
-        }
+    /* CẤU HÌNH SIÊU LẤP ĐẦY & LẶP LẠI VÔ TẬN */
+    background-image: url('nen-cua-toi.jpg') !important;
+    
+    /* 1. Lệnh QUAN TRỌNG NHẤT: Phóng to ảnh để luôn KHÍT màn hình (lấp đầy 2 bên) */
+    background-size: cover !important; 
+    
+    /* 2. Cố định ảnh nền để nó không trôi khi cuộn, giúp 'cover' hoạt động đúng */
+    background-attachment: fixed !important; 
+    
+    /* 3. Vẫn giữ lặp lại theo chiều dọc */
+    background-repeat: repeat-y !important; 
+    
+    /* 4. Căn giữa ảnh */
+    background-position: center center !important;
+    
+    /* Màu nền dự phòng */
+    background-color: var(--pink-bg);
+}
 
         /* 2. Xóa các mảng màu che mất ảnh nền */
         .section-intro, .section-wishes { 
