@@ -27,45 +27,35 @@
         body {
     font-family: 'Quicksand', sans-serif;
     color: #333;
-    
-    /* Chặn thanh cuộn ngang - RẤT QUAN TRỌNG */
     overflow-x: hidden;
     margin: 0;
     padding: 0;
     
-    /* Ảnh nền tỷ lệ 1080x1920 */
     background-image: url('nen-cua-toi.jpg');
     background-color: var(--pink-bg);
     
-    /* QUAN TRỌNG NHẤT: Luôn giữ ảnh rộng 100%, cao tự động theo tỷ lệ */
-    background-size: 100% auto;
+    /* THAY ĐỔI Ở ĐÂY: Dùng cover thay vì 100% auto */
+    background-size: cover;
     
-    /* Lặp theo chiều dọc - tạo hiệu ứng nối tiếp */
+    /* Giữ nguyên lặp dọc */
     background-repeat: repeat-y;
     
-    /* Căn từ đỉnh, giữa ngang */
     background-position: top center;
-    
-    /* Scroll mượt trên mobile */
     background-attachment: scroll;
 }
 
-/* Đảm bảo HTML cũng chặn cuộn ngang */
 html {
     overflow-x: hidden;
     margin: 0;
     padding: 0;
 }
 
-/* Mobile và Desktop dùng chung style - không cần media query riêng */
 @media screen and (max-width: 768px) {
     body {
-        /* Giữ nguyên mọi thứ, chỉ thêm dòng này để chắc chắn */
-        background-size: 100% auto;
+        background-size: cover;
         background-attachment: scroll;
     }
 }
-
 /* Fix cho các phần tử con không vượt quá màn hình */
 * {
     box-sizing: border-box;
