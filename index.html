@@ -8,7 +8,6 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
     
     <style>
         :root {
@@ -241,42 +240,6 @@
             0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
             40% { transform: translateX(-50%) translateY(-15px); }
             60% { transform: translateX(-50%) translateY(-8px); }
-        }
-
-        /* QR Code */
-        .qr-section {
-            text-align: center;
-            margin: 30px auto 20px;
-            max-width: 200px;
-        }
-
-        #qrcode {
-            background: white;
-            padding: 12px;
-            border-radius: 20px;
-            display: inline-block;
-            box-shadow: 0 5px 20px rgba(194, 24, 91, 0.15);
-        }
-
-        .qr-text {
-            margin-top: 8px;
-            color: var(--accent);
-            font-weight: 600;
-            font-size: 13px;
-        }
-
-        /* Bảng điểm ném */
-        .throw-score {
-            text-align: center;
-            margin-top: 15px;
-            color: var(--accent);
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        #throwCount {
-            font-size: 18px;
-            font-weight: 700;
         }
 
         /* Đảm bảo nội dung hiển thị trên background */
@@ -642,19 +605,7 @@
         <div class="wish-container-box" data-aos="fade-up">
             <div class="wish-list-title">Dòng Lưu Bút</div>
             <p style="text-align: center; color: #666; margin-bottom: 20px;">Những lời chúc đang bay trong gió... 👆 (chạm vào để ném đi!)</p>
-            
-            <!-- Bảng điểm ném -->
-            <div class="throw-score">
-                🎯 Đã ném: <span id="throwCount">0</span> lời chúc
-            </div>
-            
             <button class="view-all-wishes-btn" onclick="openWishesModal()">📖 Xem tất cả lời chúc</button>
-            
-            <!-- QR Code -->
-            <div class="qr-section">
-                <div id="qrcode"></div>
-                <div class="qr-text">📱 Quét mã để chia sẻ</div>
-            </div>
         </div>
     </div>
 
@@ -714,16 +665,6 @@
         window.addEventListener('click', enableAutoPlay);
         window.addEventListener('scroll', enableAutoPlay);
 
-        // ==== QR CODE ====
-        new QRCode(document.getElementById("qrcode"), {
-            text: window.location.href,
-            width: 150,
-            height: 150,
-            colorDark: "#c2185b",
-            colorLight: "#ffffff",
-            correctLevel: QRCode.CorrectLevel.H
-        });
-
         // ==== HƯỚNG DẪN KÉO XUỐNG ====
         const scrollHint = document.querySelector('.scroll-hint');
         let hintHidden = false;
@@ -755,15 +696,12 @@
         const MAX_FLYING_WISHES = 6;
         let flyingWishCount = 0;
         let flyInterval = null;
-        let thrownCount = 0;
-        const throwCountSpan = document.getElementById('throwCount');
 
         // Hiệu ứng ném
         function addThrowEffect(wishDiv) {
             let startX, startY, startTime;
             let isDragging = false;
             let longPressTimer;
-            let currentTransform = { x: 0, y: 0, rot: 0 };
             
             wishDiv.addEventListener('mousedown', startDrag);
             wishDiv.addEventListener('touchstart', startDrag, { passive: true });
@@ -796,10 +734,6 @@
                 const touch = e.touches ? e.touches[0] : e;
                 const deltaX = touch.clientX - startX;
                 const deltaY = touch.clientY - startY;
-                
-                currentTransform.x = deltaX;
-                currentTransform.y = deltaY;
-                currentTransform.rot = deltaX * 0.5;
                 
                 wishDiv.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(${deltaX * 0.5}deg) scale(1.05)`;
             }
@@ -838,13 +772,6 @@
                         origin: { x: rect.left / window.innerWidth, y: rect.top / window.innerHeight },
                         colors: ['#c2185b', '#ffccd5', '#ff8a80']
                     });
-                    
-                    thrownCount++;
-                    throwCountSpan.textContent = thrownCount;
-                    
-                    if (thrownCount % 5 === 0) {
-                        confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
-                    }
                     
                     setTimeout(() => {
                         if (wishDiv.parentNode) {
