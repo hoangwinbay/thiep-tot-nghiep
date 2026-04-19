@@ -117,13 +117,18 @@
         .meaning-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #444; text-align: justify; }
 
         /* 3. Event Info Card */
-        .section-info-detail {
-            max-width: 500px; margin: 50px auto;
-            background: white; padding: 30px;
-            border-radius: 30px; text-align: center;
-            box-shadow: 0 15px 40px rgba(194, 24, 91, 0.15);
-            border: 2px dashed var(--accent);
-        }
+        .section-intro { 
+    height: 100vh; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+    text-align: center; 
+    /* Sửa dòng này từ linear-gradient hoặc màu hồng thành transparent */
+    background: transparent !important; 
+    padding: 20px; 
+    box-sizing: border-box;
+}
         .info-title { font-family: 'Dancing Script', cursive; font-size: 32px; color: var(--accent); margin-bottom: 15px; }
         .info-row { font-size: 17px; margin: 10px 0; color: #444; }
 
