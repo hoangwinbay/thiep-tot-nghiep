@@ -20,21 +20,20 @@
         /* --- SỬA ĐOẠN NÀY --- */
 body { 
     margin: 0; 
+    padding: 0;
     font-family: 'Quicksand', sans-serif; 
     
-    /* 1. Thay link ảnh của bạn vào đây */
+    /* 1. Thay link ảnh nền của bạn vào đây */
     background-image: url('nen-cua-toi.jpg'); 
     
-    /* 2. Cấu hình để ảnh lặp lại khi trang dài hơn ảnh */
-    background-repeat: repeat-y; /* Chỉ lặp lại theo chiều dọc để không bị nát ảnh */
+    /* 2. Cấu hình bao trọn hai bên (rộng 100%) và lặp lại chiều dọc */
+    background-size: 100% auto;    /* Chiều ngang 100% để khít 2 bên, chiều cao tự động theo tỉ lệ ảnh */
+    background-repeat: repeat-y;   /* Chỉ lặp lại theo chiều dọc xuống dưới */
+    background-attachment: scroll; /* Ảnh nền vuốt đi cùng nội dung */
+    background-position: top center; 
     
-    /* 3. Cấu hình kích thước */
-    background-size: 100% auto; /* Chiều ngang luôn rộng hết màn hình, chiều cao tự động theo tỉ lệ ảnh */
-    
-    /* 4. Cho phép ảnh cuộn theo khi vuốt */
-    background-attachment: scroll;
-    background-position: top center;
-    
+    /* 3. Các thông số bổ trợ */
+    min-height: 100vh;
     color: #333; 
     overflow-x: hidden; 
 }
