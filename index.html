@@ -17,7 +17,7 @@
             --white-glass: rgba(255, 255, 255, 0.85);
         }
 
-        /* 1. Reset: Bỏ height cố định để ảnh có thể lặp lại theo nội dung */
+        /* 1. Reset: Bỏ height cố định để trang có thể kéo dài theo nội dung */
         html, body {
             margin: 0;
             padding: 0;
@@ -26,37 +26,28 @@
         }
 
         body {
-    font-family: 'Quicksand', sans-serif;
-    color: #333;
-    overflow-x: hidden;
-    display: block;
+            font-family: 'Quicksand', sans-serif;
+            color: #333;
+            overflow-x: hidden;
+            display: block;
 
-    /* 1. Đường dẫn ảnh của bạn */
-    background-image: url('nen-cua-toi.jpg') !important;
+            /* HÌNH NỀN: Lấp đầy ngang và lặp lại dọc */
+            background-image: url('nen-cua-toi.jpg') !important;
+            
+            /* 100vw ép ảnh rộng khít 2 bên màn hình, auto giữ tỉ lệ ảnh không bị méo */
+            background-size: 100vw auto !important;
+            
+            /* Cho phép lặp lại ảnh xuống dưới khi nội dung dài ra */
+            background-repeat: repeat-y !important;
+            
+            /* Để ảnh cuộn theo nội dung để có thể thấy đoạn lặp tiếp theo */
+            background-attachment: scroll !important;
+            
+            background-position: top center;
+            background-color: var(--pink-bg);
+        }
 
-    /* 2. CHÌA KHÓA: 100vw đảm bảo chiều ngang luôn bằng đúng chiều rộng màn hình thiết bị */
-    /* auto giúp chiều cao tự nhảy theo tỉ lệ ảnh để không bị méo */
-    background-size: 100vw auto !important;
-
-    /* 3. Lặp lại theo chiều dọc cho đến hết trang */
-    background-repeat: repeat-y !important;
-
-    /* 4. Để ảnh trôi theo khi cuộn trang (quan trọng để lặp lại được) */
-    background-attachment: scroll !important;
-
-    /* 5. Căn giữa để nếu ảnh có chi tiết quan trọng thì nó luôn nằm giữa màn hình */
-    background-position: top center;
-    
-    background-color: var(--pink-bg);
-}
-@media screen and (max-width: 768px) {
-    body {
-        /* Không cần quy định lại background-size ở đây */
-    }
-/* XÓA BỎ đoạn @media screen bên dưới nếu nó có background-size: cover */
-/* Vì cover sẽ ghi đè và làm mất tính năng lặp lại */
-
-        /* 2. Xóa các mảng màu che mất ảnh nền */
+        /* 2. Đảm bảo các Section trong suốt để thấy ảnh nền lặp lại */
         .section-intro, .section-wishes { 
             background: transparent !important; 
         }
@@ -112,7 +103,7 @@
             border-radius: 25px; text-align: center; border: 2px dashed var(--accent);
         }
 
-        /* 3. LƯU BÚT (Đảm bảo hiện rõ) */
+        /* 3. LƯU BÚT */
         .section-wishes { 
             padding: 40px 15px 150px 15px; 
             width: 100%; box-sizing: border-box;
@@ -127,7 +118,7 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
 
-        /* Input Cố định */
+        /* Input Cố định ở dưới cùng */
         .input-sticky { 
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); 
             width: 90%; max-width: 400px; background: white; padding: 10px 15px; 
@@ -137,6 +128,7 @@
         .input-sticky input { border: none; outline: none; flex: 1; padding: 5px; }
         .btn-send { background: var(--accent); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; }
 
+        /* Hiệu ứng bóng khí lời chúc bay lên */
         #wish-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
         .floating-bubble {
             position: absolute; left: 50%; transform: translateX(-50%);
@@ -147,7 +139,10 @@
         }
         @keyframes flowUpOnce { 0% { bottom: -120px; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { bottom: 95vh; opacity: 0; } }
 
-        
+        @media screen and (max-width: 768px) {
+            .name { font-size: 40px; }
+        }
+    </style>
 </head>
 <body>
 
@@ -174,81 +169,47 @@
 
     <div id="wish-overlay"></div>
 
-     <div class="gallery-container">
-
+    <div class="gallery-container">
         <div class="photo-block" data-aos="fade-up">
-
             <div class="photo-frame"><img src="anh1.jpg"></div>
-
             <div class="meaning-box">
-
                 <h3>Tự do & tỏa sáng</h3>
-
                 <p>Yêu thương bản thân và luôn giữ nụ cười trên môi, vì mỗi ngày đi qua đều là một món quà của tuổi trẻ. Hãy cứ là chính mình: rạng rỡ, tự tin và đầy hy vọng vào tương lai phía trước. Đừng ngại tỏa sáng theo cách của riêng bạn!</p>
-
             </div>
-
         </div>
 
         <div class="photo-block" data-aos="fade-up">
-
             <div class="photo-frame"><img src="anh2.jpg"></div>
-
             <div class="meaning-box">
-
                 <h3>Mảnh ghép thanh xuân</h3>
-
                 <p>Tốt nghiệp không phải là kết thúc, mà là mở ra những lối đi riêng nhưng ký ức về tập thể này sẽ mãi luôn ở đó. Cảm ơn những người bạn đã cùng mình đi qua những kỳ thi căng thẳng, cùng chia sẻ những tiếng cười dưới mái trường này. Chúng ta là một phần thanh xuân của nhau.</p>
-
             </div>
-
         </div>
 
         <div class="photo-block" data-aos="fade-up">
-
             <div class="photo-frame"><img src="anh3.jpg"></div>
-
             <div class="meaning-box">
-
                 <h3>Gói ghem kỷ niệm</h3>
-
                 <p>Bộ đồng phục này có lẽ từ mai bạn sẽ không còn mặc nữa, nhưng những bài học và tình thầy trò sẽ theo bạn mãi về sau. Gói ghém tất cả sự ngây ngô và chân thành vào màu áo trắng, hãy sẵn sàng bước tiếp chương tiếp theo của cuộc đời với sự tự tin và lòng trắc ẩn.</p>
-
             </div>
-
         </div>
 
         <div class="photo-block" data-aos="fade-up">
-
             <div class="photo-frame"><img src="anh5.jpg"></div>
-
             <div class="meaning-box">
-
                 <h3>Bản lĩnh & nhiệt huyết</h3>
-
                 <p>Màu áo xanh gắn liền với những ngày nắng gió trên thao trường, nơi bạn học được cách kiên cường và trân trọng những giá trị giản đơn. Hãy mang theo tinh thần chiến binh ấy vào đời, để vượt qua mọi thử thách và biến ước mơ thành hiện thực.</p>
-
             </div>
-
         </div>
 
         <div class="photo-block" data-aos="fade-up">
-
             <div class="photo-frame"><img src="anh6.jpg"></div>
-
             <div class="meaning-box">
-
                 <h3>Nơi giấc mơ bắt đầu</h3>
-
                 <p>Cảm ơn phiên bản nhỏ bé năm ấy đã luôn chăm chỉ và không ngừng mơ ước. Hành trình vạn dặm bắt đầu từ những bước chân đầu tiên này. Hãy luôn giữ vững niềm tin thơ ngây ấy, vì chính nó sẽ dẫn lối bạn đến những đỉnh cao mới.</p>
-
             </div>
-
         </div>
-
     </div>
-
-
 
     <div class="section-info-detail" data-aos="zoom-in">
         <div class="info-title">Thông Tin Buổi Lễ</div>
@@ -273,7 +234,7 @@
     <script>
         AOS.init({ duration: 1200, once: true });
 
-        // Firebase Config (Giữ nguyên của bạn)
+        // Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyB4PKGLjoQ_-TtjMZfJVXz8dD_6DBeJQeM",
             authDomain: "thieptotnghiep-1e79e.firebaseapp.com",
@@ -286,13 +247,18 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // Nhạc
+        // Nhạc nền
         const audio = document.getElementById('bg-audio');
         const mBtn = document.getElementById('music-btn');
         function toggleMusic() {
             if (audio.paused) { audio.play(); mBtn.classList.add('rotating'); }
             else { audio.pause(); mBtn.classList.remove('rotating'); }
         }
+
+        // Tự động play nhạc khi có tương tác đầu tiên
+        window.addEventListener('click', () => {
+            if(audio.paused) { audio.play(); mBtn.classList.add('rotating'); }
+        }, {once: true});
 
         // Firebase Wishes
         db.ref('wishes').on('value', (snapshot) => {
