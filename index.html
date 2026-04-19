@@ -23,19 +23,31 @@ body {
     padding: 0;
     font-family: 'Quicksand', sans-serif; 
     
-    /* 1. Thay link ảnh nền của bạn vào đây */
-    background-image: url('nen-cua-toi.jpg'); 
+    /* 1. Link ảnh nền */
+    background-image: url('ten-anh-cua-ban.jpg'); 
     
-    /* 2. Cấu hình bao trọn hai bên (rộng 100%) và lặp lại chiều dọc */
-    background-size: 100% auto;    /* Chiều ngang 100% để khít 2 bên, chiều cao tự động theo tỉ lệ ảnh */
-    background-repeat: repeat-y;   /* Chỉ lặp lại theo chiều dọc xuống dưới */
-    background-attachment: scroll; /* Ảnh nền vuốt đi cùng nội dung */
-    background-position: top center; 
+    /* 2. ÉP BAO TRỌN 2 BÊN VÀ LẶP LẠI */
+    background-size: 100% auto;       /* Chiều ngang luôn khít 100% màn hình */
+    background-repeat: repeat;        /* Lặp lại cả chiều ngang và dọc để chắc chắn không hở */
+    background-position: top center;
+    background-attachment: scroll;    /* Vuốt theo nội dung */
     
-    /* 3. Các thông số bổ trợ */
-    min-height: 100vh;
+    /* 3. KHỬ KHOẢNG TRẮNG TRÌNH DUYỆT */
+    width: 100vw;                     /* Rộng bằng 100% chiều rộng khung nhìn */
+    min-height: 100vh;                /* Cao ít nhất bằng 100% chiều cao khung nhìn */
+    display: block;
+    position: relative;
+    
     color: #333; 
-    overflow-x: hidden; 
+    overflow-x: hidden;               /* Ngăn chặn bị xê dịch chiều ngang */
+}
+
+/* Khử khoảng trống cho thẻ HTML để ảnh tràn ra tận mép màn hình */
+html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
 }
 /* -------------------- */
 
