@@ -14,72 +14,99 @@
             --accent: #c2185b; 
             --pink-light: #fce4ec; 
             --pink-bg: #ffe0e9; 
-            --white-glass: rgba(255, 255, 255, 0.92);
+            --white-glass: rgba(255, 255, 255, 0.95);
         }
 
         body { 
-            margin: 0; 
+            margin: 0; padding: 0;
             font-family: 'Quicksand', sans-serif; 
             background-color: var(--pink-light); 
             background-image: linear-gradient(135deg, #fffafa 0%, #fde2e4 100%);
             color: #333; 
-            overflow-x: hidden; 
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
         }
 
         /* Music Button */
         #music-btn {
-            position: fixed; top: 20px; right: 20px;
-            width: 45px; height: 45px; background: white;
+            position: fixed; top: 15px; right: 15px;
+            width: 40px; height: 40px; background: white;
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15); z-index: 10001;
-            cursor: pointer; font-size: 20px; transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15); z-index: 10002;
+            cursor: pointer; font-size: 18px;
         }
         .rotating { animation: rotateMusic 4s linear infinite; }
         @keyframes rotateMusic { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* Sections */
+        /* Intro */
         .section-intro { 
             height: 100vh; display: flex; flex-direction: column; justify-content: center; 
             align-items: center; text-align: center; padding: 20px; box-sizing: border-box;
-            background: linear-gradient(to bottom, var(--pink-bg), var(--pink-light));
         }
-        .name { font-family: 'Dancing Script', cursive; font-size: 50px; color: var(--accent); margin: 10px 0; }
-        .hero-photo { width: 160px; height: 160px; border-radius: 50%; object-fit: cover; border: 5px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.15); margin: 15px 0; }
+        .name { font-family: 'Dancing Script', cursive; font-size: clamp(35px, 10vw, 55px); color: var(--accent); margin: 10px 0; }
+        .hero-photo { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 4px solid white; box-shadow: 0 8px 25px rgba(0,0,0,0.1); margin: 15px 0; }
 
-        .countdown-container { display: flex; gap: 12px; margin-top: 20px; background: rgba(255, 255, 255, 0.5); padding: 10px 15px; border-radius: 25px; }
-        .countdown-time { font-size: 22px; font-weight: 700; color: var(--accent); }
-        .countdown-label { font-size: 10px; text-transform: uppercase; color: #777; }
+        /* Countdown */
+        .countdown-container { display: flex; gap: 10px; margin-top: 15px; background: rgba(255, 255, 255, 0.6); padding: 10px 15px; border-radius: 20px; }
+        .countdown-time { font-size: 20px; font-weight: 700; color: var(--accent); }
+        .countdown-label { font-size: 9px; text-transform: uppercase; color: #666; }
 
-        .gallery-container { padding: 80px 15px; max-width: 850px; margin: 0 auto; display: flex; flex-direction: column; gap: 140px; }
-        .photo-block { display: flex; flex-direction: column; width: 100%; position: relative; }
-        .photo-frame { width: 85%; max-width: 400px; background: white; padding: 15px; border-radius: 20px; box-shadow: 0 30px 60px rgba(0,0,0,0.12); }
-        .photo-frame img { width: 100%; height: 480px; object-fit: cover; border-radius: 12px; }
-        .meaning-box { width: 95%; background: var(--white-glass); padding: 25px; border-radius: 25px; margin-top: -60px; z-index: 2; border-left: 8px solid var(--accent); box-sizing: border-box; }
-        
-        /* Floating Messages Logic */
+        /* Floating Messages - Optimized for Mobile */
         #wish-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
         .floating-bubble {
             position: absolute;
-            width: 75%; max-width: 280px; background: white;
-            padding: 15px; border-radius: 18px; border-top: 4px solid var(--accent);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.15); font-size: 13px;
-            animation: flowUpOnce 12s linear forwards; /* Tăng thời gian để trôi mượt hơn */
+            width: 70%; max-width: 260px; /* Thu nhỏ chiều rộng trên mobile */
+            background: var(--white-glass);
+            padding: 12px 15px; border-radius: 15px; 
+            border-left: 4px solid var(--accent);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.12); 
+            font-size: 13px;
+            animation: flowUpOnce 14s linear forwards; 
             opacity: 0;
+            word-wrap: break-word;
         }
         @keyframes flowUpOnce { 
-            0% { bottom: -150px; opacity: 0; transform: translateX(0); } 
-            10% { opacity: 1; } 
+            0% { bottom: -120px; opacity: 0; transform: scale(0.9); } 
+            10% { opacity: 1; transform: scale(1); } 
             90% { opacity: 1; } 
-            100% { bottom: 105vh; opacity: 0; transform: translateX(10px); } 
+            100% { bottom: 105vh; opacity: 0; } 
         }
 
-        .section-wishes { background: white; padding: 60px 20px 180px 20px; border-radius: 50px 50px 0 0; }
-        #static-wish-list { display: flex; flex-direction: column; gap: 20px; max-width: 550px; margin: 0 auto; }
-        .wish-card { background: var(--pink-light); padding: 18px; border-radius: 15px; border-left: 5px solid var(--accent); }
+        /* Gallery */
+        .gallery-container { padding: 50px 15px; max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 100px; }
+        .photo-block { display: flex; flex-direction: column; width: 100%; position: relative; }
+        .photo-frame { width: 90%; max-width: 350px; background: white; padding: 10px; border-radius: 15px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .photo-frame img { width: 100%; height: auto; max-height: 400px; object-fit: cover; border-radius: 10px; }
+        .meaning-box { width: 95%; background: var(--white-glass); padding: 20px; border-radius: 20px; margin-top: -40px; z-index: 2; border-right: 6px solid var(--accent); box-sizing: border-box; }
 
-        .input-sticky { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 420px; background: white; padding: 12px 18px; border-radius: 50px; display: flex; align-items: center; box-shadow: 0 10px 40px rgba(0,0,0,0.25); z-index: 10000; }
-        .input-sticky input { border: none; outline: none; flex: 1; font-size: 15px; }
-        .btn-send { background: var(--accent); color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; }
+        /* Input Bar - Fixed for Mobile */
+        .input-sticky { 
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); 
+            width: 92%; max-width: 450px; background: white; 
+            padding: 8px 12px; border-radius: 40px; 
+            display: flex; align-items: center; 
+            box-shadow: 0 -5px 25px rgba(0,0,0,0.15), 0 10px 30px rgba(0,0,0,0.2); 
+            z-index: 10001; /* Đảm bảo luôn nằm trên overlay tin nhắn */
+        }
+        .input-sticky input { border: none; outline: none; padding: 8px; font-size: 14px; background: transparent; }
+        #name-in { width: 70px; border-right: 1px solid #eee; }
+        #msg-in { flex: 1; min-width: 0; }
+        .btn-send { 
+            background: var(--accent); color: white; border: none; 
+            width: 40px; height: 40px; border-radius: 50%; 
+            cursor: pointer; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        /* Static Wish List */
+        .section-wishes { background: white; padding: 40px 20px 150px 20px; border-radius: 40px 40px 0 0; }
+        .wish-card { background: var(--pink-light); padding: 15px; border-radius: 12px; margin-bottom: 15px; border-left: 4px solid var(--accent); font-size: 14px; }
+
+        @media (max-width: 600px) {
+            .gallery-container { gap: 80px; }
+            .floating-bubble { width: 65%; font-size: 12px; }
+            .input-sticky { bottom: 15px; padding: 6px 10px; }
+        }
     </style>
 </head>
 <body>
@@ -91,9 +118,11 @@
         </audio>
     </div>
 
+    <div id="wish-overlay"></div>
+
     <div class="section-intro">
-        <div data-aos="zoom-in" style="font-size: 60px;">✨</div>
-        <h1 data-aos="fade-down">Lễ Tốt Nghiệp</h1>
+        <div data-aos="zoom-in" style="font-size: 50px;">✨</div>
+        <h1 data-aos="fade-down" style="margin:0; font-size: 1.5rem;">Lễ Tốt Nghiệp</h1>
         <div class="name">Trần Đoàn Yến Nhi</div>
         <img src="anh_hero.jpg" class="hero-photo" data-aos="zoom-in">
         <div class="countdown-container">
@@ -104,26 +133,24 @@
         </div>
     </div>
 
-    <div id="wish-overlay"></div>
-
     <div class="gallery-container">
         <div class="photo-block" data-aos="fade-up">
             <div class="photo-frame"><img src="anh1.jpg"></div>
             <div class="meaning-box">
-                <h3>Khúc dạo đầu của ước mơ</h3>
-                <p>Mỗi hành trình vạn dặm đều bắt đầu từ một bước chân nhỏ bé...</p>
+                <h3 style="margin:0; color:var(--accent); font-family:'Dancing Script';">Hành trình bắt đầu</h3>
+                <p style="font-size:14px; margin-top:10px;">Mỗi bước chân hôm nay là kết quả của sự nỗ lực không ngừng nghỉ suốt những năm tháng qua...</p>
             </div>
         </div>
     </div>
 
     <div class="section-wishes">
-        <div style="text-align:center; font-family:'Dancing Script'; font-size:40px; color:var(--accent); margin-bottom:30px;">Dòng Lưu Bút</div>
+        <h2 style="text-align:center; font-family:'Dancing Script'; color:var(--accent); font-size:35px;">Lưu Bút</h2>
         <div id="static-wish-list"></div>
     </div>
 
     <div class="input-sticky">
-        <input type="text" id="name-in" placeholder="Tên..">
-        <input type="text" id="msg-in" placeholder="Gửi lời chúc đến Nhi...">
+        <input type="text" id="name-in" placeholder="Tên">
+        <input type="text" id="msg-in" placeholder="Gửi lời chúc...">
         <button class="btn-send" onclick="send()">❤</button>
     </div>
 
@@ -132,9 +159,8 @@
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
     
     <script>
-        AOS.init({ duration: 1200, once: true });
+        AOS.init({ duration: 1000, once: true });
 
-        // Firebase & Music (Giữ nguyên)
         const firebaseConfig = {
             apiKey: "AIzaSyB4PKGLjoQ_-TtjMZfJVXz8dD_6DBeJQeM",
             authDomain: "thieptotnghiep-1e79e.firebaseapp.com",
@@ -147,6 +173,7 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
+        // Music
         const audio = document.getElementById('bg-audio');
         const mBtn = document.getElementById('music-btn');
         function toggleMusic() {
@@ -154,10 +181,10 @@
             else { audio.pause(); mBtn.classList.remove('rotating'); }
         }
 
-        // --- HỆ THỐNG TRÔI TIN NHẮN KHÔNG CHỒNG LẤP ---
+        // Logic trôi tin nhắn
         let wishesArr = [];
         let shownIndices = new Set();
-        let lastLane = -1; // Lưu làn đường vừa dùng
+        let lastLane = -1;
 
         db.ref('wishes').on('value', (snapshot) => {
             const listContainer = document.getElementById('static-wish-list');
@@ -184,16 +211,16 @@
             bubble.className = 'floating-bubble';
             bubble.innerHTML = `<strong>${wish.name}:</strong> ${wish.message}`;
             
-            // Xử lý Làn đường (Lane) để không che nhau
-            // Chia màn hình làm 3 làn (Trái - Giữa - Phải)
+            // Chia làn đường (2 làn cho Mobile, 3 làn cho Desktop)
+            const isMobile = window.innerWidth < 600;
+            const laneCount = isMobile ? 2 : 3;
+            
             let lane;
-            do {
-                lane = Math.floor(Math.random() * 3); 
-            } while (lane === lastLane); // Không dùng lại làn cũ của tin vừa hiện
+            do { lane = Math.floor(Math.random() * laneCount); } while (lane === lastLane);
             lastLane = lane;
 
-            const positions = [5, 35, 65]; // % left tương ứng 3 làn
-            bubble.style.left = (positions[lane] + (Math.random() * 5)) + "%"; 
+            const positions = isMobile ? [5, 30] : [5, 35, 65];
+            bubble.style.left = positions[lane] + "%"; 
             
             document.getElementById('wish-overlay').appendChild(bubble);
             bubble.addEventListener('animationend', () => bubble.remove());
@@ -202,39 +229,32 @@
         window.addEventListener('scroll', () => {
             const currentScroll = window.scrollY;
             const scrollStep = 250; 
-
             if (wishesArr.length > 0) {
-                let wishIndex = Math.floor(currentScroll / scrollStep);
-                // Đảm bảo lấy tin nhắn theo vòng lặp nếu cuộn quá nhiều
-                let actualIndex = wishIndex % wishesArr.length; 
-                
-                if (!shownIndices.has(actualIndex)) {
-                    spawnWishBubble(actualIndex);
-                }
+                let actualIndex = Math.floor(currentScroll / scrollStep) % wishesArr.length;
+                if (!shownIndices.has(actualIndex)) spawnWishBubble(actualIndex);
             }
         });
 
-        // Countdown Logic & Send (Giữ nguyên)
-        function updateCountdown() {
-            const target = new Date("April 26, 2026 10:00:00").getTime();
-            const now = new Date().getTime();
-            const diff = target - now;
+        // Countdown
+        setInterval(() => {
+            const diff = new Date("April 26, 2026 10:00:00").getTime() - new Date().getTime();
             if (diff < 0) return;
-            document.getElementById("days").innerText = Math.floor(diff / (1000*60*60*24));
-            document.getElementById("hours").innerText = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
-            document.getElementById("minutes").innerText = Math.floor((diff % (1000*60*60)) / (1000*60));
-            document.getElementById("seconds").innerText = Math.floor((diff % (1000*60)) / 1000);
-        }
-        setInterval(updateCountdown, 1000);
+            document.getElementById("days").innerText = Math.floor(diff / 86400000);
+            document.getElementById("hours").innerText = Math.floor((diff % 86400000) / 3600000);
+            document.getElementById("minutes").innerText = Math.floor((diff % 3600000) / 60000);
+            document.getElementById("seconds").innerText = Math.floor((diff % 60000) / 1000);
+        }, 1000);
 
         function send() {
             const n = document.getElementById('name-in').value;
             const m = document.getElementById('msg-in').value;
             if(n && m) {
                 db.ref('wishes').push({ name: n, message: m, timestamp: Date.now() });
-                confetti({ particleCount: 150, origin: { y: 0.8 } });
+                confetti({ particleCount: 100, origin: { y: 0.8 } });
                 document.getElementById('name-in').value = '';
                 document.getElementById('msg-in').value = '';
+                // Ẩn bàn phím sau khi gửi trên mobile
+                document.activeElement.blur();
             }
         }
     </script>
