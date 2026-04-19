@@ -29,26 +29,29 @@
     font-family: 'Quicksand', sans-serif;
     color: #333;
     overflow-x: hidden;
-    display: block; /* Giữ block để nội dung chảy dài tự nhiên */
+    display: block;
 
-    /* CẤU HÌNH SIÊU LẤP ĐẦY & LẶP LẠI VÔ TẬN */
+    /* 1. Đường dẫn ảnh của bạn */
     background-image: url('nen-cua-toi.jpg') !important;
+
+    /* 2. CHÌA KHÓA: 100vw đảm bảo chiều ngang luôn bằng đúng chiều rộng màn hình thiết bị */
+    /* auto giúp chiều cao tự nhảy theo tỉ lệ ảnh để không bị méo */
+    background-size: 100vw auto !important;
+
+    /* 3. Lặp lại theo chiều dọc cho đến hết trang */
+    background-repeat: repeat-y !important;
+
+    /* 4. Để ảnh trôi theo khi cuộn trang (quan trọng để lặp lại được) */
+    background-attachment: scroll !important;
+
+    /* 5. Căn giữa để nếu ảnh có chi tiết quan trọng thì nó luôn nằm giữa màn hình */
+    background-position: top center;
     
-    /* 1. Lệnh QUAN TRỌNG NHẤT: Phóng to ảnh để luôn KHÍT màn hình (lấp đầy 2 bên) */
-    background-size: cover !important; 
-    
-    /* 2. Cố định ảnh nền để nó không trôi khi cuộn, giúp 'cover' hoạt động đúng */
-    background-attachment: fixed !important; 
-    
-    /* 3. Vẫn giữ lặp lại theo chiều dọc */
-    background-repeat: repeat-y !important; 
-    
-    /* 4. Căn giữa ảnh */
-    background-position: center center !important;
-    
-    /* Màu nền dự phòng */
     background-color: var(--pink-bg);
 }
+
+/* XÓA BỎ đoạn @media screen bên dưới nếu nó có background-size: cover */
+/* Vì cover sẽ ghi đè và làm mất tính năng lặp lại */
 
         /* 2. Xóa các mảng màu che mất ảnh nền */
         .section-intro, .section-wishes { 
@@ -141,11 +144,7 @@
         }
         @keyframes flowUpOnce { 0% { bottom: -120px; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { bottom: 95vh; opacity: 0; } }
 
-        @media screen and (max-width: 768px) {
-            .name { font-size: 40px; }
-            /* Tuyệt đối không để background-size: cover ở đây để tránh lỗi lặp ảnh */
-        }
-    </style>
+        
 </head>
 <body>
 
