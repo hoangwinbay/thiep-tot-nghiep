@@ -17,13 +17,14 @@
             --white-glass: rgba(255, 255, 255, 0.85);
         }
 
-        /* 1. Reset toàn bộ khoảng cách mặc định */
+        /* 1. Reset tuyệt đối để tràn viền */
         html, body {
             margin: 0;
             padding: 0;
             width: 100%;
             min-height: 100%;
             height: -webkit-fill-available;
+            background-color: var(--pink-bg); /* Màu nền dự phòng nếu ảnh chưa load */
         }
 
         body {
@@ -33,14 +34,27 @@
             display: flex;
             flex-direction: column;
 
-            /* 2. Cấu hình ảnh nền BAO TRỌN 2 BÊN & LẶP LẠI */
-            background-image: url('nen-cua-toi.jpg'); /* Thay tên file ảnh tại đây */
-            background-size: 100% auto; 
-            background-repeat: repeat-y; 
-            background-attachment: scroll; 
-            background-position: top center;
+            /* 2. Cấu hình SIÊU TRÀN VIỀN (COVER) */
+            background-image: url('ten-anh-cua-ban.jpg'); 
+            
+            /* Lệnh QUAN TRỌNG NHẤT: Phóng to ảnh để luôn khít màn hình */
+            background-size: cover; 
+            
+            /* Giữ ảnh cố định hoặc trôi theo tùy bạn, nhưng repeat phải tắt khi dùng cover */
+            background-repeat: no-repeat; 
+            background-attachment: fixed; /* Ghim nền sẽ giúp ảnh luôn căng cực nét trên mọi máy */
+            background-position: center center;
         }
 
+        /* Khi cuộn trên mobile, nếu muốn ảnh trôi đi thì dùng đoạn này */
+        @media screen and (max-width: 768px) {
+            body {
+                background-attachment: scroll; /* Giúp mượt mà hơn trên điện thoại */
+                background-size: cover;
+            }
+        }
+
+        /* Giữ nguyên các phần CSS còn lại của bạn phía dưới... */
         /* Music Button */
         #music-btn {
             position: fixed;
