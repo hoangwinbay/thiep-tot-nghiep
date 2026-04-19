@@ -8,6 +8,7 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
     
     <style>
         :root {
@@ -31,7 +32,6 @@
             margin: 0;
             padding: 0;
             
-            /* Gradient nền chính */
             background: linear-gradient(135deg, 
                 #ffeef2 0%, 
                 #ffd6e0 25%, 
@@ -39,7 +39,6 @@
                 #ffd1dc 75%, 
                 #ffeef2 100%);
             
-            /* Pattern chấm bi mờ */
             background-image: 
                 radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.4) 2px, transparent 2px),
                 radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.3) 2px, transparent 2px),
@@ -75,27 +74,55 @@
             overflow: hidden;
         }
 
-        /* Style cho lời chúc bay */
+        /* Style cho lời chúc bay - CÓ THỂ TƯƠNG TÁC */
         .flying-wish {
             position: absolute;
             bottom: -100px;
             max-width: 280px;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             padding: 12px 18px;
             border-radius: 25px;
             border-left: 4px solid var(--accent);
-            box-shadow: 0 5px 20px rgba(194, 24, 91, 0.15);
+            box-shadow: 0 5px 20px rgba(194, 24, 91, 0.2);
             backdrop-filter: blur(5px);
             font-size: 14px;
             color: #333;
-            pointer-events: none;
             opacity: 0;
             animation: flyUpWish 20s linear forwards;
+            cursor: grab;
+            pointer-events: auto !important;
+            transition: box-shadow 0.2s, transform 0.2s;
+        }
+
+        .flying-wish:hover {
+            box-shadow: 0 8px 25px rgba(194, 24, 91, 0.35);
+            transform: scale(1.02);
+        }
+
+        .flying-wish:active {
+            cursor: grabbing;
         }
 
         .flying-wish strong {
             color: var(--accent);
             margin-right: 5px;
+        }
+
+        /* Hint nhỏ trên lời chúc */
+        .flying-wish::after {
+            content: '👆';
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            font-size: 16px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+            pointer-events: none;
+        }
+
+        .flying-wish:hover::after {
+            opacity: 1;
         }
 
         @keyframes flyUpWish {
@@ -109,7 +136,7 @@
                 transform: translateX(10px) rotate(0deg);
             }
             80% {
-                opacity: 0.8;
+                opacity: 0.9;
             }
             100% {
                 bottom: 110vh;
@@ -127,41 +154,18 @@
             filter: drop-shadow(0 2px 5px rgba(194, 24, 91, 0.1));
         }
 
-        /* Animation bay lượn */
         @keyframes floatAround {
-            0% {
-                transform: translate(0, 0) rotate(0deg) scale(1);
-            }
-            10% {
-                transform: translate(20px, -15px) rotate(45deg) scale(1.05);
-            }
-            20% {
-                transform: translate(40px, 10px) rotate(90deg) scale(0.95);
-            }
-            30% {
-                transform: translate(15px, 25px) rotate(135deg) scale(1.02);
-            }
-            40% {
-                transform: translate(-10px, 15px) rotate(180deg) scale(0.98);
-            }
-            50% {
-                transform: translate(-30px, -10px) rotate(225deg) scale(1.03);
-            }
-            60% {
-                transform: translate(-40px, 20px) rotate(270deg) scale(0.97);
-            }
-            70% {
-                transform: translate(-15px, -20px) rotate(315deg) scale(1.01);
-            }
-            80% {
-                transform: translate(10px, 5px) rotate(380deg) scale(0.99);
-            }
-            90% {
-                transform: translate(25px, -10px) rotate(420deg) scale(1.04);
-            }
-            100% {
-                transform: translate(0, 0) rotate(450deg) scale(1);
-            }
+            0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            10% { transform: translate(20px, -15px) rotate(45deg) scale(1.05); }
+            20% { transform: translate(40px, 10px) rotate(90deg) scale(0.95); }
+            30% { transform: translate(15px, 25px) rotate(135deg) scale(1.02); }
+            40% { transform: translate(-10px, 15px) rotate(180deg) scale(0.98); }
+            50% { transform: translate(-30px, -10px) rotate(225deg) scale(1.03); }
+            60% { transform: translate(-40px, 20px) rotate(270deg) scale(0.97); }
+            70% { transform: translate(-15px, -20px) rotate(315deg) scale(1.01); }
+            80% { transform: translate(10px, 5px) rotate(380deg) scale(0.99); }
+            90% { transform: translate(25px, -10px) rotate(420deg) scale(1.04); }
+            100% { transform: translate(0, 0) rotate(450deg) scale(1); }
         }
 
         /* Wave ở dưới cùng */
@@ -176,6 +180,105 @@
             z-index: 0;
         }
 
+        /* Hướng dẫn kéo xuống */
+        .scroll-hint {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            z-index: 10;
+            animation: bounce 2s infinite;
+            cursor: pointer;
+            transition: opacity 0.5s;
+        }
+
+        .scroll-hint.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .scroll-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .scroll-icon span:first-child {
+            font-size: 28px;
+            background: rgba(255, 255, 255, 0.85);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(194, 24, 91, 0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        .scroll-text {
+            color: var(--accent);
+            font-size: 14px;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 5px 15px;
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+            white-space: nowrap;
+        }
+
+        .scroll-line {
+            width: 2px;
+            height: 40px;
+            background: linear-gradient(to bottom, var(--accent), transparent);
+            margin: 10px auto 0;
+            opacity: 0.5;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-15px); }
+            60% { transform: translateX(-50%) translateY(-8px); }
+        }
+
+        /* QR Code */
+        .qr-section {
+            text-align: center;
+            margin: 30px auto 20px;
+            max-width: 200px;
+        }
+
+        #qrcode {
+            background: white;
+            padding: 12px;
+            border-radius: 20px;
+            display: inline-block;
+            box-shadow: 0 5px 20px rgba(194, 24, 91, 0.15);
+        }
+
+        .qr-text {
+            margin-top: 8px;
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        /* Bảng điểm ném */
+        .throw-score {
+            text-align: center;
+            margin-top: 15px;
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        #throwCount {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
         /* Đảm bảo nội dung hiển thị trên background */
         .section-intro, 
         .gallery-container, 
@@ -188,7 +291,6 @@
             z-index: 1;
         }
 
-        /* Đảm bảo nền trong suốt để thấy background */
         .section-intro, .gallery-container, .section-info-detail, .section-wishes {
             background: transparent !important;
         }
@@ -207,6 +309,7 @@
             display: flex; flex-direction: column; 
             justify-content: center; align-items: center; 
             text-align: center; padding: 20px; box-sizing: border-box;
+            position: relative;
         }
         .name { font-family: 'Dancing Script', cursive; font-size: 50px; color: var(--accent); margin: 10px 0; }
         .hero-photo {
@@ -265,7 +368,6 @@
             margin-bottom: 25px; 
         }
 
-        /* Nút để xem tất cả lời chúc */
         .view-all-wishes-btn {
             display: block;
             margin: 20px auto 0;
@@ -286,7 +388,6 @@
             box-shadow: 0 6px 20px rgba(194, 24, 91, 0.4);
         }
 
-        /* Modal xem tất cả lời chúc */
         .wishes-modal {
             display: none;
             position: fixed;
@@ -347,7 +448,6 @@
             margin-bottom: 12px;
         }
 
-        /* Ô nhập sticky - CẢI TIẾN */
         .input-sticky { 
             position: fixed; 
             bottom: 20px; 
@@ -409,35 +509,33 @@
             transform: scale(1.05);
         }
 
-        /* Animation shake cho input trống */
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             25% { transform: translateX(-5px); }
             75% { transform: translateX(5px); }
         }
 
-        /* Mobile tối ưu */
         @media screen and (max-width: 768px) {
             .name { font-size: 40px; }
-            .floating-item {
-                font-size: 25px;
-            }
+            .floating-item { font-size: 25px; }
             .flying-wish {
                 max-width: 240px;
                 font-size: 13px;
                 padding: 10px 15px;
             }
-            .input-sticky {
-                padding: 8px 12px;
+            .input-sticky { padding: 8px 12px; }
+            .scroll-hint { bottom: 20px; }
+            .scroll-icon span:first-child {
+                width: 40px;
+                height: 40px;
+                font-size: 24px;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- Background Decorations - Hoa và sách vở bay -->
     <div class="floating-elements">
-        <!-- Hoa - 12 bông -->
         <div class="floating-item" style="top: 5%; left: 3%; animation-duration: 20s; animation-delay: 0s;">🌸</div>
         <div class="floating-item" style="top: 12%; right: 8%; animation-duration: 28s; animation-delay: 2s;">🌺</div>
         <div class="floating-item" style="top: 25%; left: 12%; animation-duration: 22s; animation-delay: 5s;">🌸</div>
@@ -450,19 +548,13 @@
         <div class="floating-item" style="top: 92%; right: 20%; animation-duration: 27s; animation-delay: 14s;">🌷</div>
         <div class="floating-item" style="top: 15%; left: 40%; animation-duration: 23s; animation-delay: 1s;">🌸</div>
         <div class="floating-item" style="top: 50%; right: 35%; animation-duration: 29s; animation-delay: 6s;">🌺</div>
-        
-        <!-- Sách vở - 4 cuốn -->
         <div class="floating-item" style="top: 8%; left: 20%; animation-duration: 35s; animation-delay: 1s;">📚</div>
         <div class="floating-item" style="top: 40%; right: 25%; animation-duration: 40s; animation-delay: 6s;">📖</div>
         <div class="floating-item" style="top: 70%; left: 25%; animation-duration: 33s; animation-delay: 11s;">📕</div>
         <div class="floating-item" style="top: 30%; right: 40%; animation-duration: 38s; animation-delay: 3s;">📗</div>
-        
-        <!-- Mũ tốt nghiệp - 3 cái -->
         <div class="floating-item" style="top: 18%; right: 30%; animation-duration: 38s; animation-delay: 4s;">🎓</div>
         <div class="floating-item" style="top: 60%; left: 30%; animation-duration: 42s; animation-delay: 9s;">🎓</div>
         <div class="floating-item" style="top: 80%; right: 40%; animation-duration: 36s; animation-delay: 2s;">🎓</div>
-        
-        <!-- Sao lấp lánh - 5 ngôi -->
         <div class="floating-item" style="top: 3%; right: 15%; animation-duration: 15s; animation-delay: 0s;">✨</div>
         <div class="floating-item" style="top: 30%; left: 2%; animation-duration: 18s; animation-delay: 5s;">⭐</div>
         <div class="floating-item" style="top: 50%; right: 2%; animation-duration: 20s; animation-delay: 10s;">✨</div>
@@ -470,9 +562,7 @@
         <div class="floating-item" style="top: 95%; left: 50%; animation-duration: 17s; animation-delay: 8s;">✨</div>
     </div>
 
-    <!-- Container cho lời chúc bay -->
     <div class="floating-wishes" id="floatingWishes"></div>
-
     <div class="wave-decoration"></div>
 
     <div id="music-btn" onclick="toggleMusic()">
@@ -493,6 +583,15 @@
             <div class="countdown-item"><div class="countdown-time" id="hours">00</div>Giờ</div>
             <div class="countdown-item"><div class="countdown-time" id="minutes">00</div>Phút</div>
             <div class="countdown-item"><div class="countdown-time" id="seconds">00</div>Giây</div>
+        </div>
+
+        <!-- Hướng dẫn kéo xuống -->
+        <div class="scroll-hint" data-aos="fade-up" data-aos-delay="500">
+            <div class="scroll-icon">
+                <span>👇</span>
+                <span class="scroll-text">Kéo xuống nè</span>
+            </div>
+            <div class="scroll-line"></div>
         </div>
     </div>
 
@@ -542,12 +641,23 @@
     <div class="section-wishes">
         <div class="wish-container-box" data-aos="fade-up">
             <div class="wish-list-title">Dòng Lưu Bút</div>
-            <p style="text-align: center; color: #666; margin-bottom: 20px;">Những lời chúc đang bay trong gió...</p>
+            <p style="text-align: center; color: #666; margin-bottom: 20px;">Những lời chúc đang bay trong gió... 👆 (chạm vào để ném đi!)</p>
+            
+            <!-- Bảng điểm ném -->
+            <div class="throw-score">
+                🎯 Đã ném: <span id="throwCount">0</span> lời chúc
+            </div>
+            
             <button class="view-all-wishes-btn" onclick="openWishesModal()">📖 Xem tất cả lời chúc</button>
+            
+            <!-- QR Code -->
+            <div class="qr-section">
+                <div id="qrcode"></div>
+                <div class="qr-text">📱 Quét mã để chia sẻ</div>
+            </div>
         </div>
     </div>
 
-    <!-- Modal xem tất cả lời chúc -->
     <div class="wishes-modal" id="wishesModal" onclick="closeModalOnBackground(event)">
         <div class="modal-content">
             <span class="modal-close" onclick="closeWishesModal()">&times;</span>
@@ -604,47 +714,195 @@
         window.addEventListener('click', enableAutoPlay);
         window.addEventListener('scroll', enableAutoPlay);
 
-        // ==== TỰ ĐỘNG MỞ RỘNG TEXTAREA ====
+        // ==== QR CODE ====
+        new QRCode(document.getElementById("qrcode"), {
+            text: window.location.href,
+            width: 150,
+            height: 150,
+            colorDark: "#c2185b",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+
+        // ==== HƯỚNG DẪN KÉO XUỐNG ====
+        const scrollHint = document.querySelector('.scroll-hint');
+        let hintHidden = false;
+
+        window.addEventListener('scroll', function() {
+            if (!hintHidden && window.scrollY > 100) {
+                scrollHint.classList.add('hidden');
+                hintHidden = true;
+            }
+        });
+
+        scrollHint.addEventListener('click', function() {
+            window.scrollTo({
+                top: window.innerHeight,
+                behavior: 'smooth'
+            });
+        });
+
+        // ==== TEXTAREA TỰ MỞ RỘNG ====
         const textarea = document.getElementById('msg-in');
         textarea.addEventListener('input', function() {
             this.style.height = 'auto';
             this.style.height = Math.min(this.scrollHeight, 120) + 'px';
         });
 
-        // ==== GIỚI HẠN SỐ LỜI CHÚC BAY ====
+        // ==== GIỚI HẠN LỜI CHÚC BAY + HIỆU ỨNG NÉM ====
         let allWishes = [];
         const floatingContainer = document.getElementById('floatingWishes');
-        const MAX_FLYING_WISHES = 6; // Tối đa 6 lời chúc bay cùng lúc
+        const MAX_FLYING_WISHES = 6;
         let flyingWishCount = 0;
         let flyInterval = null;
-        
-        // Hàm tạo lời chúc bay ngẫu nhiên
-        function createFlyingWish(name, message) {
-            // Giới hạn số lượng
-            if (flyingWishCount >= MAX_FLYING_WISHES) {
-                return;
+        let thrownCount = 0;
+        const throwCountSpan = document.getElementById('throwCount');
+
+        // Hiệu ứng ném
+        function addThrowEffect(wishDiv) {
+            let startX, startY, startTime;
+            let isDragging = false;
+            let longPressTimer;
+            let currentTransform = { x: 0, y: 0, rot: 0 };
+            
+            wishDiv.addEventListener('mousedown', startDrag);
+            wishDiv.addEventListener('touchstart', startDrag, { passive: true });
+            
+            function startDrag(e) {
+                e.preventDefault();
+                const touch = e.touches ? e.touches[0] : e;
+                startX = touch.clientX;
+                startY = touch.clientY;
+                startTime = Date.now();
+                isDragging = true;
+                
+                longPressTimer = setTimeout(() => {
+                    if (isDragging) {
+                        wishDiv.style.transition = 'transform 0.2s';
+                        wishDiv.style.transform = 'scale(1.1)';
+                    }
+                }, 200);
+                
+                window.addEventListener('mousemove', onDrag);
+                window.addEventListener('touchmove', onDrag, { passive: false });
+                window.addEventListener('mouseup', onDrop);
+                window.addEventListener('touchend', onDrop);
             }
+            
+            function onDrag(e) {
+                if (!isDragging) return;
+                e.preventDefault();
+                
+                const touch = e.touches ? e.touches[0] : e;
+                const deltaX = touch.clientX - startX;
+                const deltaY = touch.clientY - startY;
+                
+                currentTransform.x = deltaX;
+                currentTransform.y = deltaY;
+                currentTransform.rot = deltaX * 0.5;
+                
+                wishDiv.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(${deltaX * 0.5}deg) scale(1.05)`;
+            }
+            
+            function onDrop(e) {
+                if (!isDragging) return;
+                
+                clearTimeout(longPressTimer);
+                isDragging = false;
+                
+                window.removeEventListener('mousemove', onDrag);
+                window.removeEventListener('touchmove', onDrag);
+                window.removeEventListener('mouseup', onDrop);
+                window.removeEventListener('touchend', onDrop);
+                
+                const endTouch = e.changedTouches ? e.changedTouches[0] : e;
+                const deltaX = endTouch.clientX - startX;
+                const deltaY = endTouch.clientY - startY;
+                const deltaTime = Date.now() - startTime;
+                const velocity = Math.sqrt(deltaX * deltaX + deltaY * deltaY) / deltaTime;
+                
+                if (Math.abs(deltaX) > 40 || Math.abs(deltaY) > 40 || velocity > 0.3) {
+                    const angle = Math.atan2(deltaY, deltaX);
+                    const distance = Math.max(window.innerWidth, window.innerHeight) * 1.5;
+                    const flyX = Math.cos(angle) * distance;
+                    const flyY = Math.sin(angle) * distance;
+                    
+                    wishDiv.style.transition = 'all 0.8s cubic-bezier(0.2, 0.8, 0.4, 1)';
+                    wishDiv.style.transform = `translate(${flyX}px, ${flyY}px) rotate(${deltaX * 3}deg) scale(0.3)`;
+                    wishDiv.style.opacity = '0';
+                    
+                    const rect = wishDiv.getBoundingClientRect();
+                    confetti({
+                        particleCount: 20,
+                        spread: 40,
+                        origin: { x: rect.left / window.innerWidth, y: rect.top / window.innerHeight },
+                        colors: ['#c2185b', '#ffccd5', '#ff8a80']
+                    });
+                    
+                    thrownCount++;
+                    throwCountSpan.textContent = thrownCount;
+                    
+                    if (thrownCount % 5 === 0) {
+                        confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
+                    }
+                    
+                    setTimeout(() => {
+                        if (wishDiv.parentNode) {
+                            wishDiv.remove();
+                            flyingWishCount--;
+                        }
+                    }, 800);
+                } else {
+                    wishDiv.style.transition = 'all 0.3s ease-out';
+                    wishDiv.style.transform = 'scale(0.95)';
+                    setTimeout(() => { wishDiv.style.transform = ''; }, 150);
+                    
+                    const rect = wishDiv.getBoundingClientRect();
+                    confetti({
+                        particleCount: 5,
+                        spread: 30,
+                        origin: { x: rect.left / window.innerWidth, y: rect.top / window.innerHeight }
+                    });
+                }
+            }
+            
+            wishDiv.addEventListener('click', (e) => {
+                if (!isDragging) {
+                    wishDiv.style.transition = 'transform 0.3s';
+                    wishDiv.style.transform = 'scale(0.9) rotate(5deg)';
+                    setTimeout(() => { wishDiv.style.transform = 'scale(1) rotate(0deg)'; }, 150);
+                    
+                    const rect = wishDiv.getBoundingClientRect();
+                    confetti({
+                        particleCount: 5,
+                        spread: 30,
+                        origin: { x: rect.left / window.innerWidth, y: rect.top / window.innerHeight }
+                    });
+                }
+            });
+        }
+
+        function createFlyingWish(name, message) {
+            if (flyingWishCount >= MAX_FLYING_WISHES) return;
             
             const wishDiv = document.createElement('div');
             wishDiv.className = 'flying-wish';
             wishDiv.innerHTML = `<strong>${name}:</strong> ${message}`;
             
-            // Vị trí ngang ngẫu nhiên
             const leftPos = Math.random() * 80 + 10;
             wishDiv.style.left = leftPos + '%';
             
-            // Thời gian bay ngẫu nhiên
             const duration = Math.random() * 8 + 18;
             wishDiv.style.animationDuration = duration + 's';
             
-            // Delay ngẫu nhiên
             const delay = Math.random() * 3;
             wishDiv.style.animationDelay = delay + 's';
+            
+            addThrowEffect(wishDiv);
             
             floatingContainer.appendChild(wishDiv);
             flyingWishCount++;
             
-            // Xóa sau khi animation kết thúc
             setTimeout(() => {
                 if (wishDiv.parentNode) {
                     wishDiv.remove();
@@ -652,46 +910,36 @@
                 }
             }, (duration + delay) * 1000);
         }
-        
-        // Hàm bắt đầu hiển thị lời chúc bay
+
         function startFlyingWishes() {
             if (allWishes.length === 0) return;
-            
-            // Xóa interval cũ nếu có
-            if (flyInterval) {
-                clearInterval(flyInterval);
-            }
+            if (flyInterval) clearInterval(flyInterval);
             
             let index = 0;
             flyInterval = setInterval(() => {
-                // Chỉ tạo mới nếu chưa đạt giới hạn
                 if (flyingWishCount < MAX_FLYING_WISHES) {
                     const wish = allWishes[index % allWishes.length];
                     createFlyingWish(wish.name, wish.message);
                     index++;
                 }
-            }, 2500); // Mỗi 2.5 giây kiểm tra và tạo nếu còn chỗ
+            }, 2500);
         }
 
-        // Load lời chúc từ Firebase
         db.ref('wishes').on('value', (snapshot) => {
             allWishes = [];
             if (snapshot.exists()) {
                 snapshot.forEach((child) => {
                     allWishes.push(child.val());
                 });
-                
                 allWishes.reverse();
                 startFlyingWishes();
                 updateAllWishesList();
             }
         });
-        
-        // Cập nhật danh sách trong modal
+
         function updateAllWishesList() {
             const listContainer = document.getElementById('all-wishes-list');
             listContainer.innerHTML = '';
-            
             allWishes.forEach((data) => {
                 const card = document.createElement('div');
                 card.className = 'static-wish-card';
@@ -699,19 +947,16 @@
                 listContainer.appendChild(card);
             });
         }
-        
-        // Mở modal
+
         function openWishesModal() {
             document.getElementById('wishesModal').classList.add('active');
             updateAllWishesList();
         }
-        
-        // Đóng modal
+
         function closeWishesModal() {
             document.getElementById('wishesModal').classList.remove('active');
         }
-        
-        // Đóng modal khi click ra ngoài
+
         function closeModalOnBackground(event) {
             if (event.target.classList.contains('wishes-modal')) {
                 closeWishesModal();
@@ -723,33 +968,19 @@
             const m = document.getElementById('msg-in').value.trim();
             if(n && m) {
                 db.ref('wishes').push({ name: n, message: m, timestamp: Date.now() });
-                
-                // Tạo ngay một lời chúc bay (nếu chưa đạt giới hạn)
                 if (flyingWishCount < MAX_FLYING_WISHES) {
                     createFlyingWish(n, m);
                 }
-                
-                // Confetti ăn mừng
                 confetti({
                     particleCount: 150,
                     spread: 100,
                     origin: { y: 0.8 },
                     colors: ['#c2185b', '#ffccd5', '#fff0f3', '#ff8a80']
                 });
-                
                 setTimeout(() => {
-                    confetti({
-                        particleCount: 50,
-                        spread: 60,
-                        origin: { y: 0.8, x: 0.3 }
-                    });
-                    confetti({
-                        particleCount: 50,
-                        spread: 60,
-                        origin: { y: 0.8, x: 0.7 }
-                    });
+                    confetti({ particleCount: 50, spread: 60, origin: { y: 0.8, x: 0.3 } });
+                    confetti({ particleCount: 50, spread: 60, origin: { y: 0.8, x: 0.7 } });
                 }, 200);
-                
                 document.getElementById('name-in').value = '';
                 document.getElementById('msg-in').value = '';
                 textarea.style.height = 'auto';
@@ -760,8 +991,7 @@
                 setTimeout(() => input.style.animation = '', 500);
             }
         }
-        
-        // Enter để gửi (Shift+Enter để xuống dòng)
+
         textarea.addEventListener('keydown', function(e) {
             if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
