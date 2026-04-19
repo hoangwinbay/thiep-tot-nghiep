@@ -26,8 +26,8 @@
             overflow-x: hidden; 
         }
 
-        /* Music Toggle Button */
-        #music-control {
+        /* --- PHẦN NHẠC MỚI THÊM --- */
+        #music-btn {
             position: fixed;
             top: 20px;
             right: 20px;
@@ -44,8 +44,9 @@
             font-size: 20px;
             transition: all 0.3s ease;
         }
-        .music-rotating { animation: rotate 3s linear infinite; }
-        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .rotating { animation: rotateMusic 4s linear infinite; }
+        @keyframes rotateMusic { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        /* -------------------------- */
 
         /* 1. Intro Section */
         .section-intro { 
@@ -92,40 +93,33 @@
         .meaning-box h3 { margin: 0 0 12px 0; color: var(--accent); font-family: 'Dancing Script', cursive; font-size: 28px; }
         .meaning-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #444; text-align: justify; }
 
-        /* VÙNG TIN NHẮN TRÔI CỐ ĐỊNH (FIXED OVERLAY) */
-        #wish-overlay { 
-            position: fixed; 
-            top: 0; left: 0; 
-            width: 100%; height: 100%; 
-            pointer-events: none; 
-            z-index: 9999; 
-            overflow: hidden;
+        /* 3. Event Info Card */
+        .section-info-detail {
+            max-width: 500px; margin: 50px auto;
+            background: white; padding: 30px;
+            border-radius: 30px; text-align: center;
+            box-shadow: 0 15px 40px rgba(194, 24, 91, 0.15);
+            border: 2px dashed var(--accent);
         }
-        
-        #scroll-container {
-            position: absolute;
-            width: 250px;
-            left: 20px;
-            display: flex;
-            flex-direction: column;
-            animation: moveUp linear infinite;
-        }
+        .info-title { font-family: 'Dancing Script', cursive; font-size: 32px; color: var(--accent); margin-bottom: 15px; }
+        .info-row { font-size: 17px; margin: 10px 0; color: #444; }
 
+        /* Floating Overlay */
+        #wish-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
         .floating-bubble {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 12px 15px;
-            margin-bottom: 15px;
-            border-radius: 20px;
-            border-left: 5px solid var(--accent);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            font-size: 13px;
-            pointer-events: auto;
+            position: absolute; left: 50%; transform: translateX(-50%);
+            width: 85%; max-width: 320px; background: white;
+            padding: 18px; border-radius: 20px; border-top: 5px solid var(--accent);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2); font-size: 14px;
+            animation: flowUpOnce 10s linear forwards;
         }
+        @keyframes flowUpOnce { 0% { bottom: -120px; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { bottom: 95vh; opacity: 0; } }
 
-        @keyframes moveUp {
-            0% { transform: translateY(100vh); }
-            100% { transform: translateY(-100%); }
-        }
+        /* 4. Wish Section */
+        .section-wishes { background: white; padding: 60px 20px 180px 20px; border-radius: 50px 50px 0 0; }
+        .wish-list-title { text-align: center; font-family: 'Dancing Script', cursive; font-size: 40px; color: var(--accent); margin-bottom: 35px; }
+        #static-wish-list { display: flex; flex-direction: column; gap: 20px; max-width: 550px; margin: 0 auto; }
+        .wish-card { background: var(--pink-light); padding: 18px; border-radius: 15px; border-left: 5px solid var(--accent); }
 
         /* Input */
         .input-sticky { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 420px; background: white; padding: 12px 18px; border-radius: 50px; display: flex; align-items: center; box-shadow: 0 10px 40px rgba(0,0,0,0.25); z-index: 10000; }
@@ -136,22 +130,19 @@
 </head>
 <body>
 
-    <div id="music-control" onclick="toggleMusic()">
+    <div id="music-btn" onclick="toggleMusic()">
         <span id="music-icon">🎵</span>
-        <audio id="bg-music" loop>
+        <audio id="bg-audio" loop>
             <source src="https://www.bensound.com/bensound-music/bensound-sunny.mp3" type="audio/mpeg">
         </audio>
-    </div>
-
-    <div id="wish-overlay">
-        <div id="scroll-container"></div>
     </div>
 
     <div class="section-intro">
         <div data-aos="zoom-in" style="font-size: 60px;">✨</div>
         <h1 data-aos="fade-down">Lễ Tốt Nghiệp</h1>
         <div class="name" data-aos="fade-down">Trần Đoàn Yến Nhi</div>
-        <img src="anh_hero.jpg" alt="Yến Nhi" class="hero-photo" data-aos="zoom-in">
+        
+        <img src="anh_hero.jpg" alt="Yến Nhi" class="hero-photo" data-aos="zoom-in" data-aos-delay="300">
         
         <div class="countdown-container" data-aos="fade-up">
             <div class="countdown-item"><div class="countdown-time" id="days">00</div><div class="countdown-label">Ngày</div></div>
@@ -161,15 +152,37 @@
         </div>
     </div>
 
+    <div id="wish-overlay"></div>
+
     <div class="gallery-container">
         <div class="photo-block" data-aos="fade-up">
             <div class="photo-frame"><img src="anh1.jpg"></div>
             <div class="meaning-box">
                 <h3>Khúc dạo đầu của ước mơ</h3>
-                <p>Mỗi hành trình vạn dặm đều bắt đầu từ một bước chân nhỏ bé. Nhi có nhớ ngày đầu tiên ấy không?...</p>
+                <p>Mỗi hành trình vạn dặm đều bắt đầu từ một bước chân nhỏ bé. Nhi có nhớ ngày đầu tiên ấy không? Khi giảng đường còn là một khái niệm xa lạ và đầy bỡ ngỡ...</p>
+            </div>
+        </div>
+        <div class="photo-block" data-aos="fade-up">
+            <div class="photo-frame"><img src="anh2.jpg"></div>
+            <div class="meaning-box">
+                <h3>Bản lĩnh qua từng trang sách</h3>
+                <p>Thành công của ngày hôm nay không được xây đắp bằng hoa hồng, mà được dệt nên từ những đêm trắng miệt mài bên ánh đèn bàn leo lét...</p>
             </div>
         </div>
         </div>
+
+    <div class="section-info-detail" data-aos="zoom-in">
+        <div class="info-title">Thông Tin Buổi Lễ</div>
+        <div class="info-row"><strong>⏰ Thời gian:</strong> 10:00 sáng</div>
+        <div class="info-row"><strong>📅 Ngày:</strong> 26/04/2026</div>
+        <div class="info-row"><strong>📍 Địa điểm:</strong> Trường THPT Nguyễn Trường Thúy</div>
+        <p style="margin-top:20px; font-style: italic; color: #888; font-size: 14px;">Rất mong được đón tiếp mọi người!</p>
+    </div>
+
+    <div class="section-wishes">
+        <div class="wish-list-title">Dòng Lưu Bút</div>
+        <div id="static-wish-list"></div>
+    </div>
 
     <div class="input-sticky">
         <input type="text" id="name-in" placeholder="Tên..">
@@ -184,6 +197,28 @@
     <script>
         AOS.init({ duration: 1200, once: true });
 
+        // --- JS CHO NHẠC ---
+        const audio = document.getElementById('bg-audio');
+        const mBtn = document.getElementById('music-btn');
+        const mIcon = document.getElementById('music-icon');
+
+        function toggleMusic() {
+            if (audio.paused) {
+                audio.play();
+                mBtn.classList.add('rotating');
+                mIcon.innerText = '📻';
+            } else {
+                audio.pause();
+                mBtn.classList.remove('rotating');
+                mIcon.innerText = '🎵';
+            }
+        }
+        // Thử phát nhạc khi người dùng tương tác lần đầu (vì trình duyệt chặn autoplay)
+        document.body.addEventListener('click', () => {
+             // audio.play(); // Bạn có thể bỏ comment nếu muốn nhạc tự phát khi click bất cứ đâu
+        }, { once: true });
+        // ------------------
+
         const firebaseConfig = {
             apiKey: "AIzaSyB4PKGLjoQ_-TtjMZfJVXz8dD_6DBeJQeM",
             authDomain: "thieptotnghiep-1e79e.firebaseapp.com",
@@ -196,38 +231,23 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // Nhạc
-        const music = document.getElementById('bg-music');
-        const musicBtn = document.getElementById('music-control');
-        const musicIcon = document.getElementById('music-icon');
+        let wishesArr = [];
+        let hasSpawned = false; 
 
-        function toggleMusic() {
-            if (music.paused) {
-                music.play();
-                musicBtn.classList.add('music-rotating');
-                musicIcon.innerText = '📻';
-            } else {
-                music.pause();
-                musicBtn.classList.remove('music-rotating');
-                musicIcon.innerText = '🎵';
-            }
-        }
-
-        // Lấy Wishes và tạo hiệu ứng trôi
+        // Load Wishes
         db.ref('wishes').on('value', (snapshot) => {
-            const container = document.getElementById('scroll-container');
-            container.innerHTML = '';
+            const listContainer = document.getElementById('static-wish-list');
+            listContainer.innerHTML = ''; 
+            wishesArr = [];
             if (snapshot.exists()) {
                 snapshot.forEach((child) => {
                     const data = child.val();
-                    const bubble = document.createElement('div');
-                    bubble.className = 'floating-bubble';
-                    bubble.innerHTML = `<strong>${data.name}:</strong> ${data.message}`;
-                    container.appendChild(bubble);
+                    wishesArr.push(data);
+                    const card = document.createElement('div');
+                    card.className = 'wish-card';
+                    card.innerHTML = `<strong>${data.name}:</strong> ${data.message}`;
+                    listContainer.prepend(card); 
                 });
-                // Chỉnh tốc độ trôi dựa trên số tin nhắn
-                const duration = 10 + (snapshot.numChildren() * 2);
-                container.style.animationDuration = `${duration}s`;
             }
         });
 
@@ -236,15 +256,35 @@
             const target = new Date("April 26, 2026 10:00:00").getTime();
             const now = new Date().getTime();
             const diff = target - now;
-            if (diff < 0) return;
-            document.getElementById("days").innerText = Math.floor(diff / (1000*60*60*24));
-            document.getElementById("hours").innerText = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
-            document.getElementById("minutes").innerText = Math.floor((diff % (1000*60*60)) / (1000*60));
-            document.getElementById("seconds").innerText = Math.floor((diff % (1000*60)) / 1000);
+            if (diff < 0) {
+                document.querySelector('.countdown-container').innerHTML = "🎉 Lễ Tốt Nghiệp Đang Diễn Ra! 🎉";
+                return;
+            }
+            const d = Math.floor(diff / (1000*60*60*24));
+            const h = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+            const m = Math.floor((diff % (1000*60*60)) / (1000*60));
+            const s = Math.floor((diff % (1000*60)) / 1000);
+            document.getElementById("days").innerText = d < 10 ? "0"+d : d;
+            document.getElementById("hours").innerText = h < 10 ? "0"+h : h;
+            document.getElementById("minutes").innerText = m < 10 ? "0"+m : m;
+            document.getElementById("seconds").innerText = s < 10 ? "0"+s : s;
         }
         setInterval(updateCountdown, 1000);
 
-        // Gửi Wish
+        // One-time Floating Wish
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 200 && !hasSpawned && wishesArr.length > 0) {
+                hasSpawned = true;
+                const wish = wishesArr[Math.floor(Math.random() * wishesArr.length)];
+                const bubble = document.createElement('div');
+                bubble.className = 'floating-bubble';
+                bubble.innerHTML = `<strong>${wish.name}:</strong> ${wish.message}`;
+                document.getElementById('wish-overlay').appendChild(bubble);
+                bubble.addEventListener('animationend', () => bubble.remove());
+            }
+        });
+
+        // Send Wish
         function send() {
             const n = document.getElementById('name-in').value;
             const m = document.getElementById('msg-in').value;
