@@ -25,27 +25,24 @@
         }
 
         body {
-            font-family: 'Quicksand', sans-serif;
-            color: #333;
-            overflow-x: hidden;
-            display: block;
+    font-family: 'Quicksand', sans-serif;
+    color: #333;
+    overflow-x: hidden;
+    display: block;
 
-            /* HÌNH NỀN: PHẦN QUAN TRỌNG ĐỂ LẤP ĐẦY */
-            background-image: url('nen-cua-toi.jpg') !important;
-            
-            /* Dùng cover để ảnh luôn phủ kín chiều ngang và chiều cao khung nhìn */
-            background-size: cover !important; 
-            
-            /* repeat-y để khi danh sách lưu bút dài ra, nền vẫn tiếp tục lặp lại */
-            background-repeat: repeat-y !important;
-            
-            /* fixed giúp ảnh nền đứng yên khi cuộn, tạo cảm giác lấp đầy mọi lúc */
-            background-attachment: fixed !important; 
-            
-            background-position: center top;
-            background-color: var(--pink-bg);
-        }
+    background-image: url('nen-cua-toi.jpg');
+    background-size: cover;          /* QUAN TRỌNG */
+    background-position: center;     /* CĂN GIỮA */
+    background-repeat: no-repeat;    /* KHÔNG LẶP */
 
+    background-color: var(--pink-bg);
+}
+        @media screen and (max-width: 768px) {
+    body {
+        background-attachment: scroll !important; /* FIX LỖI MOBILE */
+        background-size: cover !important;
+    }
+}
         /* Đảm bảo nền trong suốt để thấy ảnh body */
         .section-intro, .gallery-container, .section-info-detail, .section-wishes {
             background: transparent !important;
