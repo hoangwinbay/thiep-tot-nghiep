@@ -215,14 +215,36 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // Music Logic
-        const audio = document.getElementById('bg-audio');
-        const mBtn = document.getElementById('music-btn');
-        const mIcon = document.getElementById('music-icon');
-        function toggleMusic() {
-            if (audio.paused) { audio.play(); mBtn.classList.add('rotating'); mIcon.innerText = '📻'; }
-            else { audio.pause(); mBtn.classList.remove('rotating'); mIcon.innerText = '🎵'; }
-        }
+        // Thay thế đoạn logic nhạc cũ bằng đoạn này
+const audio = document.getElementById('bg-audio');
+const mBtn = document.getElementById('music-btn');
+
+function playMusic() {
+    audio.play().then(() => {
+        mBtn.classList.add('rotating');
+        // Sau khi đã phát thành công, gỡ bỏ các sự kiện lắng nghe để tránh phát lại từ đầu
+        window.removeEventListener('click', playMusic);
+        window.removeEventListener('touchstart', playMusic);
+        window.removeEventListener('scroll', playMusic);
+    }).catch(error => {
+        console.log("Trình duyệt chặn autoplay, chờ tương tác người dùng.");
+    });
+}
+
+// Lắng nghe mọi tương tác đầu tiên của người dùng để phát nhạc ngay lập tức
+window.addEventListener('click', playMusic);
+window.addEventListener('touchstart', playMusic); // Cho điện thoại
+window.addEventListener('scroll', playMusic, { once: true });
+
+function toggleMusic() {
+    if (audio.paused) {
+        audio.play();
+        mBtn.classList.add('rotating');
+    } else {
+        audio.pause();
+        mBtn.classList.remove('rotating');
+    }
+}
 
         // --- PHẦN LỜI CHÚC TRÔI LÊN (CẬP NHẬT) ---
         let wishesArr = [];
