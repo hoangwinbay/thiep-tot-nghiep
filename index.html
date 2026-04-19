@@ -347,14 +347,67 @@
             margin-bottom: 12px;
         }
 
+        /* Ô nhập sticky - CẢI TIẾN */
         .input-sticky { 
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); 
-            width: 90%; max-width: 400px; background: white; padding: 10px 15px; 
-            border-radius: 50px; display: flex; align-items: center; 
-            box-shadow: 0 5px 25px rgba(0,0,0,0.2); z-index: 10000; 
+            position: fixed; 
+            bottom: 20px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            width: 90%; 
+            max-width: 400px; 
+            background: white; 
+            padding: 10px 15px; 
+            border-radius: 30px; 
+            display: flex; 
+            align-items: flex-end; 
+            gap: 8px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.2); 
+            z-index: 10000; 
         }
-        .input-sticky input { border: none; outline: none; flex: 1; padding: 5px; }
-        .btn-send { background: var(--accent); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; }
+        
+        .input-sticky input, 
+        .input-sticky textarea { 
+            border: none; 
+            outline: none; 
+            flex: 1; 
+            padding: 8px 5px; 
+            font-family: 'Quicksand', sans-serif;
+            font-size: 14px;
+            resize: none;
+            min-height: 20px;
+            max-height: 120px;
+            overflow-y: auto;
+            line-height: 1.4;
+        }
+        
+        .input-sticky textarea {
+            background: transparent;
+        }
+        
+        .input-sticky textarea::placeholder,
+        .input-sticky input::placeholder {
+            color: #999;
+        }
+        
+        .btn-send { 
+            background: var(--accent); 
+            color: white; 
+            border: none; 
+            width: 40px; 
+            height: 40px; 
+            border-radius: 50%; 
+            cursor: pointer; 
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: transform 0.2s;
+        }
+        
+        .btn-send:hover {
+            transform: scale(1.05);
+        }
 
         /* Animation shake cho input trống */
         @keyframes shake {
@@ -373,6 +426,9 @@
                 max-width: 240px;
                 font-size: 13px;
                 padding: 10px 15px;
+            }
+            .input-sticky {
+                padding: 8px 12px;
             }
         }
     </style>
@@ -501,8 +557,8 @@
     </div>
 
     <div class="input-sticky">
-        <input type="text" id="name-in" placeholder="Tên..">
-        <input type="text" id="msg-in" placeholder="Gửi lời chúc...">
+        <input type="text" id="name-in" placeholder="Tên.." maxlength="30">
+        <textarea id="msg-in" placeholder="Gửi lời chúc..." rows="1"></textarea>
         <button class="btn-send" onclick="send()">❤</button>
     </div>
 
@@ -548,34 +604,51 @@
         window.addEventListener('click', enableAutoPlay);
         window.addEventListener('scroll', enableAutoPlay);
 
-        // Mảng lưu tất cả lời chúc
+        // ==== TỰ ĐỘNG MỞ RỘNG TEXTAREA ====
+        const textarea = document.getElementById('msg-in');
+        textarea.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+        });
+
+        // ==== GIỚI HẠN SỐ LỜI CHÚC BAY ====
         let allWishes = [];
         const floatingContainer = document.getElementById('floatingWishes');
+        const MAX_FLYING_WISHES = 6; // Tối đa 6 lời chúc bay cùng lúc
+        let flyingWishCount = 0;
+        let flyInterval = null;
         
         // Hàm tạo lời chúc bay ngẫu nhiên
         function createFlyingWish(name, message) {
+            // Giới hạn số lượng
+            if (flyingWishCount >= MAX_FLYING_WISHES) {
+                return;
+            }
+            
             const wishDiv = document.createElement('div');
             wishDiv.className = 'flying-wish';
             wishDiv.innerHTML = `<strong>${name}:</strong> ${message}`;
             
             // Vị trí ngang ngẫu nhiên
-            const leftPos = Math.random() * 80 + 10; // 10% đến 90%
+            const leftPos = Math.random() * 80 + 10;
             wishDiv.style.left = leftPos + '%';
             
             // Thời gian bay ngẫu nhiên
-            const duration = Math.random() * 10 + 18; // 18s đến 28s
+            const duration = Math.random() * 8 + 18;
             wishDiv.style.animationDuration = duration + 's';
             
             // Delay ngẫu nhiên
-            const delay = Math.random() * 5;
+            const delay = Math.random() * 3;
             wishDiv.style.animationDelay = delay + 's';
             
             floatingContainer.appendChild(wishDiv);
+            flyingWishCount++;
             
             // Xóa sau khi animation kết thúc
             setTimeout(() => {
                 if (wishDiv.parentNode) {
                     wishDiv.remove();
+                    flyingWishCount--;
                 }
             }, (duration + delay) * 1000);
         }
@@ -584,13 +657,20 @@
         function startFlyingWishes() {
             if (allWishes.length === 0) return;
             
-            // Tạo lời chúc bay liên tục
+            // Xóa interval cũ nếu có
+            if (flyInterval) {
+                clearInterval(flyInterval);
+            }
+            
             let index = 0;
-            setInterval(() => {
-                const wish = allWishes[index % allWishes.length];
-                createFlyingWish(wish.name, wish.message);
-                index++;
-            }, 3000); // Mỗi 3 giây tạo một lời chúc mới
+            flyInterval = setInterval(() => {
+                // Chỉ tạo mới nếu chưa đạt giới hạn
+                if (flyingWishCount < MAX_FLYING_WISHES) {
+                    const wish = allWishes[index % allWishes.length];
+                    createFlyingWish(wish.name, wish.message);
+                    index++;
+                }
+            }, 2500); // Mỗi 2.5 giây kiểm tra và tạo nếu còn chỗ
         }
 
         // Load lời chúc từ Firebase
@@ -601,13 +681,8 @@
                     allWishes.push(child.val());
                 });
                 
-                // Đảo ngược để lời chúc mới nhất hiển thị trước
                 allWishes.reverse();
-                
-                // Bắt đầu hiển thị lời chúc bay
                 startFlyingWishes();
-                
-                // Cập nhật modal
                 updateAllWishesList();
             }
         });
@@ -649,8 +724,10 @@
             if(n && m) {
                 db.ref('wishes').push({ name: n, message: m, timestamp: Date.now() });
                 
-                // Tạo ngay một lời chúc bay
-                createFlyingWish(n, m);
+                // Tạo ngay một lời chúc bay (nếu chưa đạt giới hạn)
+                if (flyingWishCount < MAX_FLYING_WISHES) {
+                    createFlyingWish(n, m);
+                }
                 
                 // Confetti ăn mừng
                 confetti({
@@ -675,13 +752,22 @@
                 
                 document.getElementById('name-in').value = '';
                 document.getElementById('msg-in').value = '';
-                document.getElementById('msg-in').focus();
+                textarea.style.height = 'auto';
+                document.getElementById('name-in').focus();
             } else {
                 const input = document.getElementById('msg-in');
                 input.style.animation = 'shake 0.5s';
                 setTimeout(() => input.style.animation = '', 500);
             }
         }
+        
+        // Enter để gửi (Shift+Enter để xuống dòng)
+        textarea.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                send();
+            }
+        });
 
         function updateCountdown() {
             const target = new Date("April 26, 2026 10:00:00").getTime();
