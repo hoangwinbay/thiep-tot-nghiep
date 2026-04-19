@@ -28,34 +28,20 @@
     font-family: 'Quicksand', sans-serif;
     color: #333;
     overflow-x: hidden;
-
-    /* Ảnh nền */
     background-image: url('nen-cua-toi.jpg');
-
-    /* Cố định vị trí bắt đầu từ trên cùng, căn giữa ngang */
-    background-position: top center;
-    
-    /* Không cho phép ảnh lặp theo chiều ngang, chỉ lặp theo chiều dọc (nếu cần) */
-    background-repeat: repeat-y;
-    
-    /* SỬA LỖI CHÍNH: Thay vì 100vw, ta dùng 'contain' để ảnh vừa khít chiều ngang mà không bị cắt */
-    background-size: contain;
-
-    /* Màu nền dự phòng nếu ảnh không phủ hết chiều ngang */
     background-color: var(--pink-bg);
+    background-repeat: repeat-y;
+    background-position: top center;
+    background-attachment: scroll;
+    background-size: cover;
 }
 
-/* Xử lý riêng cho Mobile */
 @media screen and (max-width: 768px) {
     body {
-        /* Trên mobile, 'contain' vẫn đảm bảo ảnh không tràn mép */
-        background-size: contain;
-        
-        /* Bắt buộc scroll để tránh lỗi giật lag của background-attachment: fixed */
+        /* Dùng ảnh dọc cho mobile */
+        background-image: url('nen-cua-toi.jpg');
+        background-size: cover;
         background-attachment: scroll;
-        
-        /* Nếu ảnh có tỷ lệ ngang quá dài so với điện thoại, dùng cover để cắt bớt 2 bên thay vì để thừa nền trắng */
-        /* background-size: cover; */ /* (Bỏ comment dòng này nếu bạn muốn ảnh lấp đầy toàn bộ màn hình kể cả phải cắt bớt) */
     }
 }
         /* Đảm bảo nền trong suốt để thấy ảnh body */
