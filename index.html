@@ -29,19 +29,33 @@
     color: #333;
     overflow-x: hidden;
 
+    /* Ảnh nền */
     background-image: url('nen-cua-toi.jpg');
 
-    /* QUAN TRỌNG */
-    background-size: 100vw auto;   /* full ngang, cao tự co */
-    background-repeat: repeat-y;  /* lặp theo chiều dọc */
+    /* Cố định vị trí bắt đầu từ trên cùng, căn giữa ngang */
     background-position: top center;
+    
+    /* Không cho phép ảnh lặp theo chiều ngang, chỉ lặp theo chiều dọc (nếu cần) */
+    background-repeat: repeat-y;
+    
+    /* SỬA LỖI CHÍNH: Thay vì 100vw, ta dùng 'contain' để ảnh vừa khít chiều ngang mà không bị cắt */
+    background-size: contain;
 
+    /* Màu nền dự phòng nếu ảnh không phủ hết chiều ngang */
     background-color: var(--pink-bg);
 }
-        @media screen and (max-width: 768px) {
+
+/* Xử lý riêng cho Mobile */
+@media screen and (max-width: 768px) {
     body {
-        background-attachment: scroll !important; /* FIX LỖI MOBILE */
-        background-size: 100vw  !important;
+        /* Trên mobile, 'contain' vẫn đảm bảo ảnh không tràn mép */
+        background-size: contain;
+        
+        /* Bắt buộc scroll để tránh lỗi giật lag của background-attachment: fixed */
+        background-attachment: scroll;
+        
+        /* Nếu ảnh có tỷ lệ ngang quá dài so với điện thoại, dùng cover để cắt bớt 2 bên thay vì để thừa nền trắng */
+        /* background-size: cover; */ /* (Bỏ comment dòng này nếu bạn muốn ảnh lấp đầy toàn bộ màn hình kể cả phải cắt bớt) */
     }
 }
         /* Đảm bảo nền trong suốt để thấy ảnh body */
@@ -150,13 +164,7 @@
         .input-sticky input { border: none; outline: none; flex: 1; padding: 5px; }
         .btn-send { background: var(--accent); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; }
 
-        @media screen and (max-width: 768px) {
-            .name { font-size: 40px; }
-            body { 
-                background-size: cover !important; 
-                background-attachment: scroll !important; /* Trên mobile scroll thường mượt hơn fixed */
-            }
-        }
+        
     </style>
 </head>
 <body>
